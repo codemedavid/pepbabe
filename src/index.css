@@ -5,19 +5,19 @@
 @tailwind utilities;
 
 :root {
-  /* Better Than Bare - Soft Pink Luxury Theme */
-  --theme-bg: #FAFAFB;
-  --theme-text: #3D3D3D;
+  /* The Babe Studio - Luxury Biotech Theme */
+  --theme-bg: #FFFFFF;
+  --theme-text: #1E1E1E;
 
   /* Primary Palette */
-  --blush-pink: #F8C8D8;
-  --dusty-rose: #E8A4B8;
-  --soft-pink: #FADADD;
+  --rose-gold: #CFA07A;
+  --deep-copper: #8C5A44;
+  --light-rose: #F4E3DA;
 
   /* Backgrounds */
-  --cream: #FFFCFA;
-  --blush-light: #FDF5F7;
-  --warm-white: #FFFFFF;
+  --cream: #FFFFFF;
+  --blush-light: #F4E3DA;
+  --warm-white: #FDFDFD;
 }
 
 @layer base {
@@ -37,22 +37,22 @@
 
 @layer components {
 
-  /* Better Than Bare Button Styles */
+  /* The Babe Studio Button Styles */
   .btn-primary {
-    @apply bg-blush-500 text-white px-8 py-4 rounded-xl font-semibold text-sm tracking-wide transition-all duration-300 shadow-soft hover:bg-blush-600 hover:shadow-luxury active:transform active:scale-[0.98];
+    @apply bg-brand-400 text-white px-8 py-4 rounded-xl font-semibold text-sm tracking-wide transition-all duration-300 shadow-soft hover:bg-brand-500 hover:shadow-luxury active:transform active:scale-[0.98];
   }
 
   .btn-secondary {
-    @apply bg-transparent text-rose-500 border-2 border-rose-400 px-8 py-4 rounded-xl font-semibold text-sm transition-all duration-300 hover:bg-rose-50 hover:border-rose-500 active:transform active:scale-[0.98];
+    @apply bg-transparent text-charcoal-800 border-2 border-charcoal-200 px-8 py-4 rounded-xl font-semibold text-sm transition-all duration-300 hover:bg-charcoal-50 hover:border-charcoal-800 active:transform active:scale-[0.98];
   }
 
   /* Luxury Card Styles */
   .card {
-    @apply bg-white rounded-2xl shadow-soft border border-blush-100 p-6 transition-all duration-300 hover:shadow-luxury hover:border-blush-200;
+    @apply bg-white rounded-2xl shadow-soft border border-brand-300 p-6 transition-all duration-300 hover:shadow-luxury hover:border-brand-500;
   }
 
   .input-field {
-    @apply w-full px-4 py-3 bg-white border border-charcoal-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blush-400 focus:border-transparent transition-all placeholder-charcoal-400 text-charcoal-800;
+    @apply w-full px-4 py-3 bg-white border border-charcoal-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-all placeholder-charcoal-400 text-charcoal-800;
   }
 
   .badge {
@@ -60,27 +60,12 @@
   }
 
   .badge-primary {
-    @apply bg-blush-100 text-rose-700;
+    @apply bg-brand-50 text-brand-700;
   }
 
   .badge-accent {
-    @apply bg-rose-100 text-rose-800;
+    @apply bg-charcoal-50 text-charcoal-800;
   }
-}
-
-/* Subtle grain texture overlay */
-.grain-overlay {
-  position: relative;
-}
-
-.grain-overlay::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  opacity: 0.015;
-  pointer-events: none;
-  z-index: 1;
 }
 
 /* Animations */

@@ -13,100 +13,87 @@ const Hero: React.FC<HeroProps> = ({ onShopAll }) => {
   }, []);
 
   return (
-    <div className="relative min-h-[90vh] overflow-hidden grain-overlay flex items-center justify-center">
+    <div className="relative min-h-[90vh] overflow-hidden bg-white flex items-center justify-center pt-20 pb-16">
 
-      {/* Modern Gradient Background - Refined */}
-      <div className="absolute inset-0 bg-gradient-to-b from-white via-[#F5E6FA] to-[#EDE9FE]" />
-
-      {/* Abstract Shapes */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Top Right Blob */}
-        <div
-          className="absolute -top-[20%] -right-[10%] w-[800px] h-[800px] rounded-full blur-3xl opacity-30 animate-pulse"
-          style={{ background: 'radial-gradient(circle, #C4B5FD 0%, transparent 70%)', animationDuration: '8s' }}
-        />
-        {/* Bottom Left Blob */}
-        <div
-          className="absolute -bottom-[10%] -left-[10%] w-[600px] h-[600px] rounded-full blur-3xl opacity-20 animate-pulse"
-          style={{ background: 'radial-gradient(circle, #1ABC9C 0%, transparent 70%)', animationDuration: '10s' }}
-        />
-      </div>
+      {/* Background Subtle Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-white via-white to-charcoal-50 opacity-50" />
 
       {/* Main Container */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 flex flex-col items-center">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-12 items-center">
 
-        {/* Glass Card Container for Content Consistency */}
+        {/* Left Column: Content */}
         <div className={`
-          relative backdrop-blur-md bg-white/40 border border-white/60 rounded-[2rem] shadow-xl 
-          p-8 md:p-12 lg:p-16 max-w-4xl w-full text-center
+          flex flex-col text-left max-w-2xl
           transition-all duration-1000 ease-out transform
-          ${isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-10 scale-95'}
+          ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
         `}>
 
-          {/* Decorative Sparkle */}
-          <div className="absolute -top-6 -right-6 hidden md:block animate-bounce" style={{ animationDuration: '3s' }}>
-            <Sparkles className="w-12 h-12 text-blush-400 opacity-80" />
-          </div>
 
-          {/* Logo Brand */}
-          <div className="mb-8 md:mb-10">
-            <img
-              src="/glow-logo.jpg"
-              alt="Glow with Joo"
-              className="h-24 md:h-32 w-auto mx-auto object-contain drop-shadow-md rounded-xl"
-            />
-          </div>
-
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/80 border border-white shadow-sm mb-6">
-            <FlaskConical className="w-3.5 h-3.5 text-blush-600" />
-            <span className="text-xs font-bold text-charcoal-600 tracking-widest uppercase">Premium Grade • Lab Tested</span>
-          </div>
-
-          {/* Main Headline */}
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-charcoal-900 mb-6 leading-tight tracking-tight drop-shadow-sm">
-            Reject Average. <br className="hidden md:block" />
-            <span className="text-blush-600">
-              Reveal Your Radiance.
-            </span>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-semibold text-charcoal-900 mb-4 leading-tight tracking-tight">
+            The Babe Studio
           </h1>
+          <h2 className="text-xl md:text-2xl font-light text-brand-600 mb-6 tracking-wide uppercase">
+            Premium Peptide & Beauty Science
+          </h2>
 
-          {/* Subheading */}
-          <p className="text-lg md:text-xl text-charcoal-600 mb-10 max-w-2xl mx-auto leading-relaxed font-light">
-            Elevate your wellness with premium, high-purity peptides designed for results you can see and feel.
+          <p className="text-lg text-charcoal-600 mb-10 leading-relaxed font-light">
+            Advanced peptide formulations designed for research, innovation, and beauty science.
           </p>
 
           {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
+          <div className="flex flex-col sm:flex-row items-center gap-4 w-full">
             <button
               onClick={onShopAll}
-              className="w-full sm:w-auto min-w-[200px] px-8 py-4 bg-blush-600 hover:bg-blush-700 text-white font-semibold rounded-full shadow-lg hover:shadow-blush-300/50 transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 group"
+              className="w-full sm:w-auto px-8 py-4 bg-brand-400 hover:bg-brand-500 text-white font-semibold rounded-xl shadow-lg hover:shadow-brand-200 transition-all duration-300 flex items-center justify-center gap-2 group"
             >
-              Start Your Journey
+              Shop Peptides
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
-
-
+            <button
+              onClick={onShopAll}
+              className="w-full sm:w-auto px-8 py-4 bg-transparent border border-charcoal-300 text-charcoal-800 hover:border-charcoal-800 hover:bg-charcoal-50 font-semibold rounded-xl transition-all duration-300 flex items-center justify-center"
+            >
+              Learn More
+            </button>
           </div>
 
+          {/* Trust Indicators */}
+          <div className="mt-12 flex flex-wrap gap-6 border-t border-charcoal-100 pt-8">
+            {[
+              { icon: Shield, label: '99% Purity Guaranteed' },
+              { icon: FlaskConical, label: 'Lab Tested' },
+              { icon: Award, label: 'Premium Grade' },
+            ].map((item, idx) => (
+              <div key={idx} className="flex items-center gap-2 text-sm font-medium text-charcoal-600">
+                <item.icon className="w-4 h-4 text-brand-400" />
+                {item.label}
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* Trust Indicators - Floating Below */}
+        {/* Right Column: Visual / Layout element */}
         <div className={`
-          mt-12 flex flex-wrap justify-center gap-4 md:gap-8 
+          relative hidden md:flex justify-center items-center h-full min-h-[500px]
           transition-all duration-1000 delay-300 ease-out
-          ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
+          ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}
         `}>
-          {[
-            { icon: Shield, label: '99% Purity Guaranteed' },
-            { icon: FlaskConical, label: 'Third-Party Lab Tested' },
-            { icon: Award, label: 'Premium Grade Source' },
-          ].map((item, idx) => (
-            <div key={idx} className="flex items-center gap-2 px-5 py-2.5 bg-white/60 backdrop-blur-sm rounded-full border border-white/40 shadow-sm text-sm font-medium text-charcoal-600">
-              <item.icon className="w-4 h-4 text-blush-500" />
-              {item.label}
+          {/* A modern, abstract DNA/Biotech representation using CSS and Lucide icons */}
+          <div className="absolute inset-0 bg-brand-50 rounded-full blur-3xl opacity-30 animate-pulse" style={{ animationDuration: '6s' }} />
+
+          <div className="relative z-10 p-12 bg-white/40 border border-white/60 backdrop-blur-md rounded-3xl shadow-2xl flex flex-col items-center justify-center animate-float">
+            <div className="relative">
+              <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round" className="text-brand-300">
+                <path d="M2 15c6.667-6 13.333 0 20-6" />
+                <path d="M9 22c1.798-1.559 2.43-2.826 2.508-4.3M5.111 20.378c.849-1.928 2.308-3.085 4.38-3.472M18.889 3.622c-.849 1.928-2.308 3.085-4.38 3.472M15 2c-1.798 1.559-2.43 2.826-2.508 4.3M17 14.5l-2-2.5M10.5 7l-2-2.5M14 11s-2-2-4 0" />
+                <path d="M2 9c6.667 6 13.333 0 20 6" />
+              </svg>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                <Sparkles className="w-8 h-8 text-brand-500 animate-pulse" />
+              </div>
             </div>
-          ))}
+            <p className="mt-8 text-sm font-semibold tracking-widest text-charcoal-400 uppercase">Peptide Science</p>
+          </div>
         </div>
 
       </div>

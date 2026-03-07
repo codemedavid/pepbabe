@@ -7,74 +7,44 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Glow with Joo - Purple Theme
+        // The Babe Studio - Luxury Biotech Theme
         'theme-bg': '#FFFFFF',           // Pure White
-        'theme-text': '#4A4A4A',         // Soft Charcoal
+        'theme-text': '#1E1E1E',         // Luxury Dark text
 
-        // Primary - Glow Purple
-        'blush': {
-          DEFAULT: '#7A28CB', // Main Purple
-          50: '#F5F3FF',
-          100: '#EDE9FE',
-          200: '#DDD6FE',
-          300: '#C4B5FD',
-          400: '#A78BFA',
-          500: '#8B5CF6',
-          600: '#7A28CB', // Primary Brand Color
-          700: '#6D28D9',
-          800: '#5B21B6',
-          900: '#4C1D95',
+        // Primary Palette - Rose Gold
+        'brand': {
+          DEFAULT: '#CFA07A', // Rose Gold
+          50: '#FDF9F7',
+          100: '#F9F1EB',
+          200: '#E7C6B1',     // Soft Rose Gold
+          300: '#DFB49A',
+          400: '#CFA07A',     // Primary Rose Gold
+          500: '#BB855B',
+          600: '#A66B41',
+          700: '#8C5A44',     // Deep Copper
+          800: '#734A38',
+          900: '#5C3C2E',
         },
 
-        // Accent - Glow Teal
-        'glow-teal': {
-          DEFAULT: '#1ABC9C',
-          50: '#F0FDFA',
-          100: '#CCFBF1',
-          200: '#99F6E4',
-          300: '#5EEAD4',
-          400: '#2DD4BF',
-          500: '#14B8A6',
-          600: '#0D9488',
-          700: '#0F766E',
-          800: '#115E59',
-          900: '#134E4A',
-        },
-
-        // Secondary - Soft Gold/Accent
-        'rose': {
-          DEFAULT: '#FBBF24',
-          50: '#FFFBEB',
-          100: '#FEF3C7',
-          200: '#FDE68A',
-          300: '#FCD34D',
-          400: '#FBBF24',
-          500: '#F59E0B',
-          600: '#D97706',
-          700: '#B45309',
-          800: '#92400E',
-          900: '#78350F',
-        },
-
-        // Neutral - Soft Charcoal
+        // Secondary & Neutral
         'charcoal': {
-          DEFAULT: '#3D3D3D',
-          50: '#F7F7F7',
-          100: '#EFEFEF',
-          200: '#DFDFDF',
-          300: '#CFCFCF',
-          400: '#9F9F9F',
-          500: '#6F6F6F',
-          600: '#5F5F5F',
-          700: '#4F4F4F',
-          800: '#3D3D3D', // Primary Text
-          900: '#2D2D2D',
+          DEFAULT: '#1E1E1E',
+          50: '#F7F7F7',      // Soft Gray
+          100: '#EEEEEE',
+          200: '#D9D9D9',
+          300: '#B0B0B0',
+          400: '#858585',
+          500: '#595959',
+          600: '#4D4D4D',
+          700: '#3D3D3D',
+          800: '#2E2E2E',
+          900: '#1E1E1E',     // Luxury Dark
         },
 
-        // Backgrounds
+        // Backgrounds & Accents
         'cream': '#FFFFFF',
-        'blush-light': '#F5F3FF',
-        'warm-white': '#FAFAFB',
+        'blush-light': '#F4E3DA', // Light Rose Accent
+        'warm-white': '#FDFDFD',
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
@@ -86,8 +56,9 @@ export default {
         'DEFAULT': '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.03)',
         'md': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
         'lg': '0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02)',
-        'soft': '0 2px 8px rgba(248, 200, 216, 0.15), 0 4px 16px rgba(248, 200, 216, 0.1)',
-        'luxury': '0 4px 20px rgba(232, 164, 184, 0.15)',
+        // Soft white card shadow
+        'soft': '0 4px 20px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.02)',
+        'luxury': '0 8px 30px rgba(0, 0, 0, 0.08), 0 4px 10px rgba(0, 0, 0, 0.04)',
       },
       borderRadius: {
         'none': '0',

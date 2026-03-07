@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Minus, ShoppingCart, Package, Pen } from 'lucide-react';
+import { Package, Pen } from 'lucide-react';
 import type { Product, ProductVariation, PenType } from '../types';
 
 interface MenuItemCardProps {
@@ -52,11 +52,6 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
   // Get original price for strikethrough
   const originalPrice = selectedVariation ? selectedVariation.price : product.base_price;
 
-  const handleAddToCart = () => {
-    onAddToCart(product, selectedVariation, quantity, isInjectableProduct ? selectedPenType : null);
-    setQuantity(1);
-  };
-
   const availableStock = selectedVariation ? selectedVariation.stock_quantity : product.stock_quantity;
 
   // Check if product has any available stock (either in variations or product itself)
@@ -64,20 +59,8 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
     ? product.variations.some(v => v.stock_quantity > 0)
     : product.stock_quantity > 0;
 
-  const incrementQuantity = () => {
-    setQuantity(prev => {
-      if (prev >= availableStock) {
-        alert(`Only ${availableStock} item(s) available in stock.`);
-        return prev;
-      }
-      return prev + 1;
-    });
-  };
-
-  const decrementQuantity = () => setQuantity(prev => prev > 1 ? prev - 1 : 1);
-
   return (
-    <div className="bg-white h-full flex flex-col group relative border border-gray-100 rounded shadow-sm hover:border-blush-200 transition-all duration-300 hover:shadow-clinical">
+    <div className="card h-full flex flex-col group relative">
       {/* Click overlay for product details */}
       <div
         onClick={() => onProductClick?.(product)}
@@ -95,7 +78,7 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
             onError={() => setImageError(true)}
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-300 bg-blush-50/50">
+          <div className="w-full h-full flex items-center justify-center text-charcoal-200 bg-charcoal-50">
             <Package className="w-16 h-16 opacity-50" />
           </div>
         )}
@@ -125,8 +108,8 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
       </div>
 
       {/* Product Details */}
-      <div className="p-2.5 sm:p-4 flex-1 flex flex-col">
-        <h3 className="font-heading font-bold text-blush-900 text-xs sm:text-base mb-0.5 sm:mb-1 line-clamp-2 tracking-tight">
+      <div className="p-4 sm:p-5 flex-1 flex flex-col">
+        <h3 className="font-heading font-semibold text-charcoal-900 text-sm sm:text-base mb-1 line-clamp-2 tracking-tight">
           {product.name}
         </h3>
         <p className="text-[10px] sm:text-xs text-gray-500 mb-2 sm:mb-3 line-clamp-2 min-h-[1.5rem] sm:min-h-[2.5rem] leading-relaxed">
@@ -150,12 +133,12 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
                     }}
                     disabled={isOutOfStock}
                     className={`
-                      px-1.5 sm:px-2 py-0.5 sm:py-1 text-[9px] sm:text-[10px] font-medium rounded border transition-all duration-200 relative z-20
+                      px-2 sm:px-2.5 py-1 text-[10px] sm:text-xs font-medium rounded-lg border transition-all duration-200 relative z-20
                       ${selectedVariation?.id === variation.id && !isOutOfStock
-                        ? 'bg-blush-50 border-blush-500 text-blush-900'
+                        ? 'bg-brand-50 border-brand-400 text-brand-700'
                         : isOutOfStock
-                          ? 'bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed'
-                          : 'bg-white text-gray-600 border-gray-200 hover:border-blush-300 hover:text-blush-600'
+                          ? 'bg-charcoal-50 text-charcoal-300 border-charcoal-100 cursor-not-allowed'
+                          : 'bg-white text-charcoal-600 border-charcoal-200 hover:border-brand-300 hover:text-brand-600'
                       }
                     `}
                   >
@@ -183,10 +166,10 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
                   setSelectedPenType(null);
                 }}
                 className={`
-                  px-1.5 py-0.5 text-[8px] sm:text-[9px] font-medium rounded border transition-all relative z-20 flex items-center gap-1
+                  px-2 py-1 text-[9px] sm:text-[10px] font-medium rounded-lg border transition-all relative z-20 flex items-center gap-1
                   ${selectedPenType === null
-                    ? 'bg-blush-50 border-blush-500 text-blush-900'
-                    : 'bg-white text-gray-500 border-gray-200 hover:border-blush-300 hover:text-blush-600'
+                    ? 'bg-brand-50 border-brand-400 text-brand-700'
+                    : 'bg-white text-charcoal-500 border-charcoal-200 hover:border-brand-300 hover:text-brand-600'
                   }
                 `}
                 title="Complete Set (with insulin syringes & alcohol swabs)"
@@ -202,15 +185,15 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
                     setSelectedPenType('disposable');
                   }}
                   className={`
-                    px-1.5 py-0.5 text-[8px] sm:text-[9px] font-medium rounded border transition-all relative z-20 flex items-center gap-1
+                    px-2 py-1 text-[9px] sm:text-[10px] font-medium rounded-lg border transition-all relative z-20 flex items-center gap-1
                     ${selectedPenType === 'disposable'
-                      ? 'bg-blush-50 border-blush-500 text-blush-900'
-                      : 'bg-white text-gray-500 border-gray-200 hover:border-blush-300 hover:text-blush-600'
+                      ? 'bg-brand-50 border-brand-400 text-brand-700'
+                      : 'bg-white text-charcoal-500 border-charcoal-200 hover:border-brand-300 hover:text-brand-600'
                     }
                   `}
                   title="Disposable Pen (includes 3 needles)"
                 >
-                  <Pen className="w-2 h-2" />
+                  <Pen className="w-2.5 h-2.5" />
                   Disp
                 </button>
               )}
@@ -223,15 +206,15 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
                     setSelectedPenType('reusable');
                   }}
                   className={`
-                    px-1.5 py-0.5 text-[8px] sm:text-[9px] font-medium rounded border transition-all relative z-20 flex items-center gap-1
+                    px-2 py-1 text-[9px] sm:text-[10px] font-medium rounded-lg border transition-all relative z-20 flex items-center gap-1
                     ${selectedPenType === 'reusable'
-                      ? 'bg-blush-50 border-blush-500 text-blush-900'
-                      : 'bg-white text-gray-500 border-gray-200 hover:border-blush-300 hover:text-blush-600'
+                      ? 'bg-brand-50 border-brand-400 text-brand-700'
+                      : 'bg-white text-charcoal-500 border-charcoal-200 hover:border-brand-300 hover:text-brand-600'
                     }
                   `}
                   title="Reusable Pen (includes cartridge & 3 needles)"
                 >
-                  <Pen className="w-2 h-2" />
+                  <Pen className="w-2.5 h-2.5" />
                   Reus
                 </button>
               )}
@@ -245,65 +228,31 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
         <div className="flex flex-col gap-2 sm:gap-3 mt-auto">
           {hasDiscount ? (
             <div className="flex items-baseline gap-1 sm:gap-2">
-              <span className="text-sm sm:text-lg font-bold text-blush-900">
+              <span className="text-base sm:text-lg font-semibold text-charcoal-900">
                 ₱{currentPrice.toLocaleString('en-PH', { minimumFractionDigits: 0 })}
               </span>
-              <span className="text-[10px] sm:text-xs text-gray-400 line-through">
+              <span className="text-[10px] sm:text-xs text-charcoal-400 line-through">
                 ₱{originalPrice.toLocaleString('en-PH', { minimumFractionDigits: 0 })}
               </span>
             </div>
           ) : (
             <div className="flex items-baseline">
-              <span className="text-sm sm:text-lg font-bold text-blush-900">
+              <span className="text-base sm:text-lg font-semibold text-charcoal-900">
                 ₱{currentPrice.toLocaleString('en-PH', { minimumFractionDigits: 0 })}
               </span>
             </div>
           )}
 
-          <div className="flex items-center gap-1.5 sm:gap-2 relative z-20">
-            {/* Quantity Controls */}
-            <div className="flex items-center bg-gray-50 border border-gray-200 rounded">
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  decrementQuantity();
-                }}
-                className="p-1 sm:p-1.5 hover:bg-gray-100 transition-colors rounded-l text-gray-600"
-                disabled={!hasAnyStock || !product.available}
-              >
-                <Minus className="w-3 h-3" />
-              </button>
-              <span className="w-6 sm:w-8 text-center text-[10px] sm:text-xs font-bold text-blush-900">
-                {quantity}
-              </span>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  incrementQuantity();
-                }}
-                className="p-1 sm:p-1.5 hover:bg-gray-100 transition-colors rounded-r text-gray-600"
-                disabled={quantity >= availableStock || !hasAnyStock || !product.available}
-              >
-                <Plus className="w-3 h-3" />
-              </button>
-            </div>
-
-            {/* Add to Cart Button */}
+          <div className="flex w-full pt-2">
+            {/* Add to Cart / View Product Button */}
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                if (quantity > availableStock) {
-                  alert(`Only ${availableStock} item(s) available in stock.`);
-                  setQuantity(availableStock);
-                  return;
-                }
-                handleAddToCart();
+                onProductClick?.(product);
               }}
-              disabled={!hasAnyStock || availableStock === 0 || !product.available}
-              className="flex-1 btn-primary py-1.5 sm:py-2 text-[10px] sm:text-xs flex items-center justify-center gap-1 sm:gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
+              className="w-full btn-secondary py-2.5 sm:py-3 text-[11px] sm:text-sm flex items-center justify-center gap-2"
             >
-              <ShoppingCart className="w-3 h-3" />
-              <span className="hidden sm:inline">Add</span>
+              <span className="font-semibold">View Product →</span>
             </button>
           </div>
 
