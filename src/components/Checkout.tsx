@@ -176,7 +176,7 @@ const Checkout: React.FC<CheckoutProps> = ({ cartItems, totalPrice, onBack }) =>
 
     const handlePlaceOrder = async () => {
         if (!contactMethod) {
-            alert('Please select your preferred contact method (Facebook or Viber).');
+            alert('Please select your preferred contact method (Viber or WhatsApp).');
             return;
         }
 
@@ -358,7 +358,7 @@ ${paymentMethod?.name || 'N/A'}
 ${paymentProofUrl ? 'Screenshot attached to order.' : 'Pending'}
 
 📱 CONTACT METHOD
-WhatsApp (+63 927 487 6549)
+${contactMethod === 'viber' ? 'Viber' : 'WhatsApp'} (+63 976 571 9350)
 
 📋 ORDER NUMBER: ${customOrderNumber}
 
@@ -378,10 +378,15 @@ Please confirm this order. Thank you!
             // Show confirmation
             setStep('confirmation');
 
-            // Auto-open WhatsApp with pre-filled order details
+            // Auto-open messaging app based on selected contact method
             setTimeout(() => {
-                const whatsappUrl = `https://wa.me/639274876549?text=${encodeURIComponent(orderDetails)}`;
-                window.open(whatsappUrl, '_blank');
+                if (contactMethod === 'viber') {
+                    const viberUrl = `viber://chat?number=%2B639765719350`;
+                    window.open(viberUrl, '_blank');
+                } else {
+                    const whatsappUrl = `https://wa.me/639765719350?text=${encodeURIComponent(orderDetails)}`;
+                    window.open(whatsappUrl, '_blank');
+                }
             }, 1500);
         } catch (error) {
             console.error('❌ Error placing order:', error);
@@ -402,8 +407,13 @@ Please confirm this order. Thank you!
     };
 
     const handleOpenContact = () => {
-        const contactUrl = `https://wa.me/639274876549?text=${encodeURIComponent(orderMessage)}`;
-        window.open(contactUrl, '_blank');
+        if (contactMethod === 'viber') {
+            const viberUrl = `viber://chat?number=%2B639765719350`;
+            window.open(viberUrl, '_blank');
+        } else {
+            const contactUrl = `https://wa.me/639765719350?text=${encodeURIComponent(orderMessage)}`;
+            window.open(contactUrl, '_blank');
+        }
     };
 
     if (step === 'confirmation') {
@@ -418,7 +428,7 @@ Please confirm this order. Thank you!
                             Order Confirmed
                         </h1>
                         <p className="text-gray-600 mb-4 text-base md:text-lg leading-relaxed">
-                            Your order details have been pre-filled on WhatsApp. Just hit send to finalize your order!
+                            Your order details have been pre-filled. Just hit send via {contactMethod === 'viber' ? 'Viber' : 'WhatsApp'} to finalize your order!
                         </p>
 
                         {/* Order ID Display */}
@@ -476,12 +486,28 @@ Please confirm this order. Thank you!
                                 className="w-full btn-primary py-4 text-base flex items-center justify-center gap-2 shadow-lg"
                             >
                                 <MessageCircle className="w-5 h-5" />
-                                Open WhatsApp & Send
+                                {contactMethod === 'viber' ? 'Open Viber & Send' : 'Open WhatsApp & Send'}
                             </button>
 
                             <p className="text-sm text-gray-500">
-                                If WhatsApp doesn't open automatically, please send the copied message to <span className="font-bold">+63 927 487 6549 on WhatsApp</span>
+                                If {contactMethod === 'viber' ? 'Viber' : 'WhatsApp'} doesn't open automatically, please send the copied message to <span className="font-bold">+63 976 571 9350 on {contactMethod === 'viber' ? 'Viber' : 'WhatsApp'}</span>
                             </p>
+                        </div>
+
+                        {/* Messaging Help */}
+                        <div className="bg-gray-50 rounded-lg p-4 mb-6 border border-gray-200 text-center">
+                            <p className="text-sm text-gray-600 mb-3">
+                                Reach out to us via Viber or WhatsApp for quick assistance if you have concerns about your order.
+                            </p>
+                            <a
+                                href="https://chat.whatsapp.com/FownLWzq5uz7CnBKdxmpwk"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 text-sm font-medium text-green-600 hover:text-green-700 transition-colors"
+                            >
+                                <MessageCircle className="w-4 h-4" />
+                                Join our WhatsApp Group for updates
+                            </a>
                         </div>
 
                         <div className="bg-brand-50/20 rounded-lg p-6 mb-8 text-left border border-brand-100">
@@ -888,7 +914,7 @@ Please confirm this order. Thank you!
                                 </svg>
                                 <div className="text-left">
                                     <p className="font-bold text-charcoal-900 text-sm">Viber</p>
-                                    <p className="text-xs text-gray-500">0949 613 3242</p>
+                                    <p className="text-xs text-gray-500">+63 976 571 9350</p>
                                 </div>
                             </button>
 
@@ -908,9 +934,12 @@ Please confirm this order. Thank you!
                                 </div>
                                 <div className="text-left">
                                     <p className="font-bold text-charcoal-900 text-sm">WhatsApp</p>
-                                    <p className="text-xs text-gray-500">0949 613 3242</p>
+                                    <p className="text-xs text-gray-500">+63 976 571 9350</p>
                                 </div>
                             </button>
+                            <p className="text-xs text-gray-500 mt-3 italic">
+                                Reach out to us via Viber or WhatsApp for quick assistance if you have concerns about your order.
+                            </p>
                         </div>
                     </div>
 

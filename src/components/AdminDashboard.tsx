@@ -179,8 +179,8 @@ const AdminDashboard: React.FC = () => {
   };
 
   const handleSaveProduct = async () => {
-    if (!formData.name || !formData.description || !formData.base_price) {
-      alert('Please fill in all required fields');
+    if (!formData.name || !formData.description || (formData.base_price === undefined || formData.base_price === null || formData.base_price === '')) {
+      alert('Please fill in all required fields (Name, Description, and Base Price)');
       return;
     }
 
