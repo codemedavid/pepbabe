@@ -95,7 +95,7 @@ export const useImageUpload = (folder: string = 'menu-images') => {
       const timeoutPromise = new Promise<never>((_, reject) => {
         uploadTimeout = setTimeout(() => {
           reject(new Error('Upload timeout - The storage bucket might not exist. Please run CREATE_STORAGE_BUCKET.sql in Supabase SQL Editor.'));
-        }, 30000); // 30 second timeout
+        }, 60000); // 60 second timeout
       });
 
       // Upload to Supabase Storage (using dynamic folder/bucket)
@@ -133,7 +133,7 @@ export const useImageUpload = (folder: string = 'menu-images') => {
       const uploadTimeoutPromise = new Promise<never>((_, reject) => {
         uploadTimeout = setTimeout(() => {
           reject(new Error('Upload timeout - The upload is taking too long. Please check your connection and try again.'));
-        }, 30000); // 30 second timeout
+        }, 90000); // 90 second timeout
       });
 
       // Now upload the file

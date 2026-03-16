@@ -162,8 +162,6 @@ const Checkout: React.FC<CheckoutProps> = ({ cartItems, totalPrice, onBack }) =>
         city.trim() !== '' &&
         state.trim() !== '' &&
         zipCode.trim() !== '' &&
-        state.trim() !== '' &&
-        zipCode.trim() !== '' &&
         selectedCourierId !== '' &&
         shippingLocation !== '';
 
@@ -212,7 +210,7 @@ const Checkout: React.FC<CheckoutProps> = ({ cartItems, totalPrice, onBack }) =>
                     ? (item.variation.discount_active && item.variation.discount_price !== null && item.variation.discount_price < basePrice)
                     : (item.product.discount_active && item.product.discount_price !== null && item.product.discount_price < item.product.base_price);
                 if (isDiscounted) {
-                    currentPrice = item.variation?.discount_price || item.product.discount_price || basePrice;
+                    currentPrice = item.variation?.discount_price ?? item.product.discount_price ?? basePrice;
                 }
 
                 return {
@@ -266,12 +264,8 @@ const Checkout: React.FC<CheckoutProps> = ({ cartItems, totalPrice, onBack }) =>
             if (orderError) {
                 console.error('❌ Error saving order:', orderError);
 
-                let errorMessage = orderError.message;
-                if (orderError.message?.includes('Could not find the table') ||
-                    orderError.message?.includes('relation "public.orders" does not exist') ||
-                    orderError.message?.includes('schema cache')) {
-                    errorMessage = `The orders table doesn't exist in the database. Please run the migration.`;
-                }
+                const errorMessage = orderError.message;
+                console.error('Order error details:', { code: orderError.code, details: orderError.details, hint: orderError.hint });
 
                 alert(`Failed to save order: ${errorMessage}\n\nPlease contact support if this issue persists.`);
                 return;
@@ -335,7 +329,7 @@ ${cartItems.map(item => {
                     ? (item.variation.discount_active && item.variation.discount_price !== null && item.variation.discount_price < basePrice)
                     : (item.product.discount_active && item.product.discount_price !== null && item.product.discount_price < item.product.base_price);
                 if (isDiscounted) {
-                    currentPrice = item.variation?.discount_price || item.product.discount_price || basePrice;
+                    currentPrice = item.variation?.discount_price ?? item.product.discount_price ?? basePrice;
                 }
 
                 line += ` x${item.quantity} - ₱${(currentPrice * item.quantity).toLocaleString('en-PH', { minimumFractionDigits: 0 })}`;
@@ -701,7 +695,7 @@ Please confirm this order. Thank you!
                                             ? (item.variation.discount_active && item.variation.discount_price !== null && item.variation.discount_price < basePrice)
                                             : (item.product.discount_active && item.product.discount_price !== null && item.product.discount_price < item.product.base_price);
                                         if (isDiscounted) {
-                                            currentPrice = item.variation?.discount_price || item.product.discount_price || basePrice;
+                                            currentPrice = item.variation?.discount_price ?? item.product.discount_price ?? basePrice;
                                         }
 
                                         return (
@@ -941,7 +935,6 @@ Please confirm this order. Thank you!
                                 Reach out to us via Viber or WhatsApp for quick assistance if you have concerns about your order.
                             </p>
                         </div>
-                    </div>
 
                     {/* Courier Selection */}
                     <div className="bg-white rounded shadow-clinical p-6 border border-gray-100">
@@ -1022,6 +1015,7 @@ Please confirm this order. Thank you!
                     >
                         Proceed to Payment
                     </button>
+                    </div>
                 </div>
 
                 {/* Order Summary Sidebar */}
@@ -1041,7 +1035,7 @@ Please confirm this order. Thank you!
                                     : (item.product.discount_active && item.product.discount_price !== null && item.product.discount_price < item.product.base_price);
 
                                 if (isDiscounted) {
-                                    currentPrice = item.variation?.discount_price || item.product.discount_price || basePrice;
+                                    currentPrice = item.variation?.discount_price ?? item.product.discount_price ?? basePrice;
                                 }
 
                                 return (
