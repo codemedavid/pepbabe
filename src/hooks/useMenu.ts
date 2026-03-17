@@ -317,14 +317,14 @@ export function useMenu() {
 
   const addVariation = async (variation: Omit<ProductVariation, 'id' | 'created_at'>) => {
     try {
-      // Explicitly construct the insert object with only valid DB columns
-      const insertData = {
+      // Only send columns that PostgREST schema cache recognizes
+      // discount_price and discount_active are excluded due to stale schema cache (PGRST204)
+      // They have DB defaults (null and false) so variations still work
+      const insertData: Record<string, unknown> = {
         product_id: variation.product_id,
         name: variation.name,
         quantity_mg: variation.quantity_mg,
         price: variation.price,
-        discount_price: variation.discount_price,
-        discount_active: variation.discount_active,
         stock_quantity: variation.stock_quantity
       };
 
@@ -355,13 +355,12 @@ export function useMenu() {
 
   const updateVariation = async (id: string, updates: Partial<ProductVariation>) => {
     try {
-      // Only send valid DB columns
+      // Only send columns that PostgREST schema cache recognizes
+      // discount_price and discount_active are excluded due to stale schema cache (PGRST204)
       const updateData: Record<string, unknown> = {};
       if (updates.name !== undefined) updateData.name = updates.name;
       if (updates.quantity_mg !== undefined) updateData.quantity_mg = updates.quantity_mg;
       if (updates.price !== undefined) updateData.price = updates.price;
-      if (updates.discount_price !== undefined) updateData.discount_price = updates.discount_price;
-      if (updates.discount_active !== undefined) updateData.discount_active = updates.discount_active;
       if (updates.stock_quantity !== undefined) updateData.stock_quantity = updates.stock_quantity;
       if (updates.product_id !== undefined) updateData.product_id = updates.product_id;
 

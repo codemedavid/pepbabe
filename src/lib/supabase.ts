@@ -7,7 +7,7 @@ if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error('Missing Supabase environment variables');
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
 
 export type Database = {
   public: {
@@ -122,6 +122,8 @@ export type Database = {
           name: string;
           quantity_mg: number;
           price: number;
+          discount_price: number | null;
+          discount_active: boolean;
           stock_quantity: number;
           created_at: string;
         };
@@ -131,6 +133,8 @@ export type Database = {
           name: string;
           quantity_mg: number;
           price: number;
+          discount_price?: number | null;
+          discount_active?: boolean;
           stock_quantity?: number;
           created_at?: string;
         };
@@ -140,6 +144,8 @@ export type Database = {
           name?: string;
           quantity_mg?: number;
           price?: number;
+          discount_price?: number | null;
+          discount_active?: boolean;
           stock_quantity?: number;
           created_at?: string;
         };
