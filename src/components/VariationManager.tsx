@@ -67,7 +67,8 @@ const VariationManager: React.FC<VariationManagerProps> = ({ product, onClose, o
         alert(result.error || 'Failed to add variation');
       }
     } catch (error) {
-      alert('Failed to add variation');
+      console.error('❌ handleAddVariation error:', error);
+      alert('Failed to add variation: ' + (error instanceof Error ? error.message : 'Unknown error'));
     } finally {
       setIsProcessing(false);
     }

@@ -62,8 +62,6 @@ vi.mock('../hooks/useMenu', () => ({
             name: '5mg',
             quantity_mg: 5,
             price: 1500,
-            disposable_pen_price: null,
-            reusable_pen_price: null,
             discount_price: null,
             discount_active: false,
             stock_quantity: 10,

@@ -490,18 +490,9 @@ Please confirm this order. Thank you!
 
                         {/* Messaging Help */}
                         <div className="bg-gray-50 rounded-lg p-4 mb-6 border border-gray-200 text-center">
-                            <p className="text-sm text-gray-600 mb-3">
+                            <p className="text-sm text-gray-600">
                                 Reach out to us via Viber or WhatsApp for quick assistance if you have concerns about your order.
                             </p>
-                            <a
-                                href="https://chat.whatsapp.com/FownLWzq5uz7CnBKdxmpwk"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-2 text-sm font-medium text-green-600 hover:text-green-700 transition-colors"
-                            >
-                                <MessageCircle className="w-4 h-4" />
-                                Join our WhatsApp Group for updates
-                            </a>
                         </div>
 
                         <div className="bg-brand-50/20 rounded-lg p-6 mb-8 text-left border border-brand-100">

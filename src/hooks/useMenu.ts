@@ -317,13 +317,32 @@ export function useMenu() {
 
   const addVariation = async (variation: Omit<ProductVariation, 'id' | 'created_at'>) => {
     try {
+      // Explicitly construct the insert object with only valid DB columns
+      const insertData = {
+        product_id: variation.product_id,
+        name: variation.name,
+        quantity_mg: variation.quantity_mg,
+        price: variation.price,
+        discount_price: variation.discount_price,
+        discount_active: variation.discount_active,
+        stock_quantity: variation.stock_quantity
+      };
+
+      console.log('📤 Adding variation:', insertData);
+
       const { data, error } = await supabase
         .from('product_variations')
-        .insert([variation])
+        .insert([insertData])
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('❌ Supabase variation insert error:', error);
+        console.error('❌ Error code:', error.code, 'Message:', error.message, 'Details:', error.details, 'Hint:', error.hint);
+        throw new Error(error.message || 'Database error');
+      }
+
+      console.log('✅ Variation added:', data);
 
       // Refresh products to include new variation
       await fetchProducts();
@@ -336,14 +355,27 @@ export function useMenu() {
 
   const updateVariation = async (id: string, updates: Partial<ProductVariation>) => {
     try {
+      // Only send valid DB columns
+      const updateData: Record<string, unknown> = {};
+      if (updates.name !== undefined) updateData.name = updates.name;
+      if (updates.quantity_mg !== undefined) updateData.quantity_mg = updates.quantity_mg;
+      if (updates.price !== undefined) updateData.price = updates.price;
+      if (updates.discount_price !== undefined) updateData.discount_price = updates.discount_price;
+      if (updates.discount_active !== undefined) updateData.discount_active = updates.discount_active;
+      if (updates.stock_quantity !== undefined) updateData.stock_quantity = updates.stock_quantity;
+      if (updates.product_id !== undefined) updateData.product_id = updates.product_id;
+
       const { data, error } = await supabase
         .from('product_variations')
-        .update(updates)
+        .update(updateData)
         .eq('id', id)
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('❌ Supabase variation update error:', error);
+        throw new Error(error.message || 'Database error');
+      }
 
       // Refresh products to include updated variation
       await fetchProducts();
