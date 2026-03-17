@@ -488,13 +488,6 @@ Please confirm this order. Thank you!
                             </p>
                         </div>
 
-                        {/* Messaging Help */}
-                        <div className="bg-gray-50 rounded-lg p-4 mb-6 border border-gray-200 text-center">
-                            <p className="text-sm text-gray-600">
-                                Reach out to us via Viber or WhatsApp for quick assistance if you have concerns about your order.
-                            </p>
-                        </div>
-
                         <div className="bg-brand-50/20 rounded-lg p-6 mb-8 text-left border border-brand-100">
                             <h3 className="font-bold text-charcoal-900 mb-4 flex items-center gap-2">
                                 <Activity className="w-5 h-5 text-brand-600" />
@@ -922,9 +915,6 @@ Please confirm this order. Thank you!
                                     <p className="text-xs text-gray-500">+63 976 571 9350</p>
                                 </div>
                             </button>
-                            <p className="text-xs text-gray-500 mt-3 italic">
-                                Reach out to us via Viber or WhatsApp for quick assistance if you have concerns about your order.
-                            </p>
                         </div>
 
                     {/* Courier Selection */}

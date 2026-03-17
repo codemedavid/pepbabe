@@ -22,7 +22,7 @@ const Header: React.FC<HeaderProps> = ({ cartItemsCount, onCartClick, onMenuClic
             >
               <img
                 src="/logo.png"
-                alt="BIORICH"
+                alt="BIORICH Science"
                 className="h-10 sm:h-12 w-auto object-contain rounded-lg"
               />
             </button>
@@ -117,7 +117,7 @@ const Header: React.FC<HeaderProps> = ({ cartItemsCount, onCartClick, onMenuClic
               <div className="flex items-center gap-3">
                 <img
                   src="/logo.png"
-                  alt="BIORICH"
+                  alt="BIORICH Science"
                   className="h-8 w-auto object-contain rounded-md"
                 />
               </div>

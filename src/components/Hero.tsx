@@ -136,7 +136,7 @@ const Hero: React.FC<HeroProps> = ({ onShopAll }) => {
         <div className="mb-6">
           <img
             src="/logo.png"
-            alt="BIORICH"
+            alt="BIORICH Science"
             className="h-24 sm:h-28 md:h-32 w-auto object-contain rounded-2xl shadow-lg"
           />
         </div>

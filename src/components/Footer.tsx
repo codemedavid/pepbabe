@@ -13,7 +13,7 @@ const Footer: React.FC = () => {
           <div className="flex flex-col items-center md:items-start gap-4">
             <img
               src="/logo.png"
-              alt="BIORICH"
+              alt="BIORICH Science"
               className="h-14 w-auto object-contain bg-white/10 rounded-lg p-2"
             />
             <p className="text-charcoal-400 text-sm max-w-xs text-center md:text-left">
