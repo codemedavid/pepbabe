@@ -1,5 +1,5 @@
 import React from 'react';
-import { Truck, FlaskConical, Mail, MapPin, Instagram, HelpCircle, FileText, BookOpen, Tag, Phone, MessageCircle, Globe } from 'lucide-react';
+import { Truck, FlaskConical, Mail, Instagram, HelpCircle, FileText, BookOpen, Tag, Phone, MessageCircle, Globe } from 'lucide-react';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
