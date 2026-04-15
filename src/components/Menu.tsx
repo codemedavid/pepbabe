@@ -3,7 +3,7 @@ import MenuItemCard from './MenuItemCard';
 import Hero from './Hero';
 import ProductDetailModal from './ProductDetailModal';
 import type { Product, ProductVariation, CartItem } from '../types';
-import { Search, Filter, Package } from 'lucide-react';
+import { Search, SlidersHorizontal, Package, FlaskConical, ShieldCheck, Truck, BadgeCheck, Microscope, ArrowRight } from 'lucide-react';
 
 interface MenuProps {
   menuItems: Product[];
@@ -12,49 +12,88 @@ interface MenuProps {
   updateQuantity: (index: number, quantity: number) => void;
 }
 
+const WHY_ITEMS = [
+  {
+    icon: FlaskConical,
+    title: 'Pharmaceutical Grade',
+    desc: 'Every peptide is synthesized to pharmaceutical-grade standards with verified purity certificates from accredited labs.',
+    iconColor: '#4BB88A',
+    iconBg: '#F0FAF5',
+    accent: '#4BB88A',
+  },
+  {
+    icon: ShieldCheck,
+    title: 'Third-Party Tested',
+    desc: 'Independent COA testing on every batch ensures what is on the label is exactly what you receive — nothing more, nothing less.',
+    iconColor: '#E87898',
+    iconBg: '#FFF0F5',
+    accent: '#E87898',
+  },
+  {
+    icon: Truck,
+    title: 'Nationwide Delivery',
+    desc: 'Fast, discreet delivery across all regions of the Philippines with real-time order tracking from dispatch to your door.',
+    iconColor: '#4BB88A',
+    iconBg: '#F0FAF5',
+    accent: '#4BB88A',
+  },
+  {
+    icon: BadgeCheck,
+    title: 'Expert Protocols',
+    desc: 'Access evidence-based dosing guides, reconstitution protocols, and storage best practices developed with medical professionals.',
+    iconColor: '#E87898',
+    iconBg: '#FFF0F5',
+    accent: '#E87898',
+  },
+  {
+    icon: Microscope,
+    title: 'Research-Backed',
+    desc: 'Our catalog features only peptides with established research profiles, ensuring your wellness journey is built on science.',
+    iconColor: '#4BB88A',
+    iconBg: '#F0FAF5',
+    accent: '#4BB88A',
+  },
+  {
+    icon: Package,
+    title: 'Secure Packaging',
+    desc: 'Temperature-controlled packaging and cold-chain logistics protect peptide integrity from our facility to your hands.',
+    iconColor: '#E87898',
+    iconBg: '#FFF0F5',
+    accent: '#E87898',
+  },
+];
+
 const Menu: React.FC<MenuProps> = ({ menuItems, addToCart, cartItems }) => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [sortBy, setSortBy] = useState<'name' | 'price' | 'purity'>('name');
+  const [searchQuery, setSearchQuery]   = useState('');
+  const [sortBy, setSortBy]             = useState<'name' | 'price' | 'purity'>('name');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const productsRef = useRef<HTMLDivElement | null>(null);
 
-  // Filter products based on search
   const filteredProducts = menuItems.filter(product =>
     product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     product.description.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Sort products - Featured first (Tirzepatide first among featured), then by selected sort
   const sortedProducts = [...filteredProducts].sort((a, b) => {
-    // Tirzepatide always first
     if (a.name === 'Tirzepatide') return -1;
     if (b.name === 'Tirzepatide') return 1;
-
-    // Featured products come before non-featured
     if (a.featured && !b.featured) return -1;
     if (!a.featured && b.featured) return 1;
-
-    // Then apply selected sort
     switch (sortBy) {
-      case 'name':
-        return a.name.localeCompare(b.name);
-      case 'price':
-        return a.base_price - b.base_price;
-      case 'purity':
-        return b.purity_percentage - a.purity_percentage;
-      default:
-        return 0;
+      case 'name':  return a.name.localeCompare(b.name);
+      case 'price': return a.base_price - b.base_price;
+      case 'purity':return b.purity_percentage - a.purity_percentage;
+      default:      return 0;
     }
   });
 
-  const getCartQuantity = (productId: string, variationId?: string) => {
-    return cartItems
+  const getCartQuantity = (productId: string, variationId?: string) =>
+    cartItems
       .filter(item =>
         item.product.id === productId &&
         (variationId ? item.variation?.id === variationId : !item.variation)
       )
       .reduce((sum, item) => sum + item.quantity, 0);
-  };
 
   return (
     <>
@@ -62,94 +101,198 @@ const Menu: React.FC<MenuProps> = ({ menuItems, addToCart, cartItems }) => {
         <ProductDetailModal
           product={selectedProduct}
           onClose={() => setSelectedProduct(null)}
-          onAddToCart={(product, variation, quantity) => {
-            addToCart(product, variation, quantity);
-          }}
+          onAddToCart={(product, variation, quantity) => addToCart(product, variation, quantity)}
         />
       )}
 
-      <div className="min-h-screen bg-theme-bg">
-        <Hero
-          onShopAll={() => {
-            productsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }}
-        />
+      <div className="min-h-screen" style={{ background: '#FFFBFD' }}>
 
-        <div className="container mx-auto px-4 py-12" ref={productsRef}>
-          {/* Search and Filter Controls */}
-          <div className="mb-10 flex flex-col sm:flex-row gap-4">
-            {/* Search Bar */}
-            <div className="flex-1 relative">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <input
-                type="text"
-                placeholder="Search catalog..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="input-field pl-12"
-              />
-            </div>
+        {/* ── Hero ── */}
+        <Hero onShopAll={() => productsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })} />
 
-            {/* Sort Dropdown */}
-            <div className="flex items-center gap-3 sm:w-auto bg-white rounded-lg px-4 py-3 border border-gray-200">
-              <Filter className="text-gray-400 w-5 h-5" />
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as 'name' | 'price' | 'purity')}
-                className="focus:outline-none bg-transparent font-medium text-gray-700 text-sm"
-              >
-                <option value="name">Sort by Name</option>
-                <option value="price">Sort by Price</option>
-                <option value="purity">Sort by Purity</option>
-              </select>
-            </div>
-          </div>
+        {/* ── Why Peptherapy PH ── */}
+        <section className="py-20 md:py-24" style={{ background: '#FFFBFD' }}>
+          <div className="container mx-auto px-5 md:px-8">
 
-          {/* Results Count */}
-          <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <h2 className="text-3xl font-heading font-semibold text-charcoal-900 tracking-tight">Our Peptide Collection</h2>
-            <span className="text-sm font-medium text-gray-500 bg-gray-50 px-3 py-1 rounded-full border border-gray-100">
-              {sortedProducts.length} Results
-            </span>
-          </div>
+            {/* Section header */}
+       
 
-          {/* Products Grid */}
-          {sortedProducts.length === 0 ? (
-            <div className="text-center py-20">
-              <div className="bg-white rounded-lg shadow-sm p-12 max-w-md mx-auto border border-gray-100">
-                <div className="bg-gray-50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Package className="w-10 h-10 text-gray-300" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">No products found</h3>
-                <p className="text-gray-500 mb-6">
-                  {searchQuery
-                    ? `No products match "${searchQuery}".`
-                    : 'No products available.'}
-                </p>
-                {searchQuery && (
-                  <button
-                    onClick={() => setSearchQuery('')}
-                    className="text-charcoal-600 font-semibold hover:underline"
+            {/* Features grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {WHY_ITEMS.map(({ icon: Icon, title, desc, iconColor, iconBg }) => (
+                <div
+                  key={title}
+                  className="group p-7 rounded-2xl bg-white transition-all duration-300 hover:-translate-y-2"
+                  style={{ border: '1px solid rgba(44,27,46,0.07)', boxShadow: '0 1px 4px rgba(44,27,46,0.04)' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.boxShadow = '0 10px 40px rgba(242,160,184,0.15), 0 2px 8px rgba(44,27,46,0.06)'; (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(242,160,184,0.35)'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.boxShadow = '0 1px 4px rgba(44,27,46,0.04)'; (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(44,27,46,0.07)'; }}
+                >
+                  <div
+                    className="w-11 h-11 rounded-xl flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110"
+                    style={{ background: iconBg }}
                   >
-                    Clear Search
-                  </button>
-                )}
-              </div>
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
-              {sortedProducts.map((product) => (
-                <MenuItemCard
-                  key={product.id}
-                  product={product}
-                  cartQuantity={getCartQuantity(product.id)}
-                  onProductClick={setSelectedProduct}
-                  onAddToCart={addToCart}
-                />
+                    <Icon className="w-5 h-5" style={{ color: iconColor }} />
+                  </div>
+                  <h3 className="font-heading font-semibold text-base mb-2" style={{ color: '#2C1B2E' }}>{title}</h3>
+                  <p className="font-sans text-sm leading-relaxed" style={{ color: '#75607C' }}>{desc}</p>
+                </div>
               ))}
             </div>
-          )}
-        </div>
+          </div>
+        </section>
+
+        {/* ── Products Section ── */}
+        <section
+          className="py-20 md:py-24"
+          ref={productsRef}
+          style={{ background: '#FFF8FB' }}
+        >
+          <div className="container mx-auto px-5 md:px-8">
+
+            {/* Section header */}
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+              <div>
+                <p className="section-label mb-2">Catalog</p>
+                <div className="divider mb-4" style={{ margin: '0 0 1rem 0' }} />
+                <h2
+                  className="font-heading font-light"
+                  style={{ fontSize: 'clamp(1.9rem, 3.5vw, 2.75rem)', color: '#2C1B2E' }}
+                >
+                  Our Peptide Collection
+                </h2>
+              </div>
+
+              {/* Search + Sort */}
+              <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto md:max-w-[400px]">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: '#BFB3C3' }} />
+                  <input
+                    type="text"
+                    placeholder="Search peptides..."
+                    value={searchQuery}
+                    onChange={e => setSearchQuery(e.target.value)}
+                    className="input-field pl-10 h-11 text-sm"
+                  />
+                </div>
+                <div
+                  className="flex items-center gap-2 bg-white px-4 h-11 min-w-[156px] rounded-xl"
+                  style={{ border: '1px solid rgba(44,27,46,0.09)' }}
+                >
+                  <SlidersHorizontal className="w-3.5 h-3.5 flex-shrink-0" style={{ color: '#BFB3C3' }} />
+                  <select
+                    value={sortBy}
+                    onChange={e => setSortBy(e.target.value as 'name' | 'price' | 'purity')}
+                    className="flex-1 bg-transparent text-sm font-sans font-medium focus:outline-none"
+                    style={{ color: '#5A4760' }}
+                  >
+                    <option value="name">Sort: Name</option>
+                    <option value="price">Sort: Price</option>
+                    <option value="purity">Sort: Purity</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {/* Results count */}
+            <div className="mb-7 flex items-center gap-2 flex-wrap">
+              <span className="font-sans text-xs font-medium uppercase tracking-wider" style={{ color: '#BFB3C3' }}>
+                {sortedProducts.length} {sortedProducts.length === 1 ? 'product' : 'products'}
+              </span>
+              {searchQuery && (
+                <>
+                  <span style={{ color: '#DDD5E0' }}>·</span>
+                  <span className="font-sans text-xs" style={{ color: '#75607C' }}>
+                    Results for <strong style={{ color: '#2C1B2E' }}>"{searchQuery}"</strong>
+                  </span>
+                  <button
+                    onClick={() => setSearchQuery('')}
+                    className="font-sans text-xs font-medium hover:underline"
+                    style={{ color: '#4BB88A' }}
+                  >
+                    Clear
+                  </button>
+                </>
+              )}
+            </div>
+
+            {/* Grid */}
+            {sortedProducts.length === 0 ? (
+              <div className="text-center py-24">
+                <div className="bg-white rounded-2xl p-14 max-w-sm mx-auto"
+                  style={{ border: '1px solid rgba(44,27,46,0.07)' }}>
+                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5"
+                    style={{ background: '#FFF0F5' }}>
+                    <Package className="w-8 h-8" style={{ color: '#F9C4D8' }} />
+                  </div>
+                  <h3 className="font-heading font-semibold text-lg mb-2" style={{ color: '#2C1B2E' }}>No products found</h3>
+                  <p className="font-sans text-sm mb-6" style={{ color: '#75607C' }}>
+                    {searchQuery ? `No results for "${searchQuery}".` : 'No products available right now.'}
+                  </p>
+                  {searchQuery && (
+                    <button onClick={() => setSearchQuery('')} className="btn-mint text-sm py-2.5 px-6">
+                      Clear Search
+                    </button>
+                  )}
+                </div>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5">
+                {sortedProducts.map(product => (
+                  <MenuItemCard
+                    key={product.id}
+                    product={product}
+                    cartQuantity={getCartQuantity(product.id)}
+                    onProductClick={setSelectedProduct}
+                    onAddToCart={addToCart}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* ── CTA Banner — soft luxury gradient ── */}
+        <section className="py-20 md:py-24 relative overflow-hidden">
+          {/* Gradient background — pink to mint */}
+          <div
+            className="absolute inset-0"
+            style={{ background: 'linear-gradient(135deg, #FFF0F5 0%, #FDDAEA 35%, #D5F2E5 75%, #F0FAF5 100%)' }}
+          />
+
+          {/* Decorative blobs */}
+          <div className="absolute -top-20 -left-20 w-80 h-80 rounded-full pointer-events-none"
+            style={{ background: 'radial-gradient(circle, #F9C4D8, transparent 65%)', opacity: 0.5, filter: 'blur(40px)' }} />
+          <div className="absolute -bottom-20 -right-20 w-80 h-80 rounded-full pointer-events-none"
+            style={{ background: 'radial-gradient(circle, #AAE5CC, transparent 65%)', opacity: 0.45, filter: 'blur(40px)' }} />
+
+          <div className="relative z-10 container mx-auto px-5 md:px-8 text-center max-w-2xl">
+            <p className="section-label mb-4">Get Started</p>
+            <div className="divider mb-6" />
+            <h2
+              className="font-heading font-light mb-5"
+              style={{ fontSize: 'clamp(1.9rem, 4vw, 3rem)', color: '#2C1B2E' }}
+            >
+              Ready to start your<br />
+              <em className="italic" style={{ color: '#E87898' }}>peptide journey?</em>
+            </h2>
+            <p className="font-sans text-sm leading-relaxed mb-9" style={{ color: '#75607C' }}>
+              Browse our full catalog of pharmaceutical-grade peptides, read dosing protocols, and order with confidence — shipped fast, anywhere in the Philippines.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <button
+                onClick={() => productsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+                className="btn-mint px-9 py-4"
+              >
+                Shop All Products
+                <ArrowRight className="w-4 h-4" />
+              </button>
+              <a href="/protocols" className="btn-outline px-9 py-4">
+                View Protocols
+              </a>
+            </div>
+          </div>
+        </section>
+
       </div>
     </>
   );

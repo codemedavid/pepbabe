@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { X, Package, Beaker, ShoppingCart, Plus, Minus, Sparkles, ArrowLeft } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { X, Package, ShoppingCart, Plus, Minus, FlaskConical, Thermometer, Weight, Hash } from 'lucide-react';
 import type { Product, ProductVariation } from '../types';
 
 interface ProductDetailModalProps {
@@ -9,314 +9,563 @@ interface ProductDetailModalProps {
 }
 
 const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClose, onAddToCart }) => {
-  // Select first available variation, or first variation if all are out of stock
-  const getFirstAvailableVariation = () => {
-    if (!product.variations || product.variations.length === 0) return undefined;
-    const available = product.variations.find(v => v.stock_quantity > 0);
-    return available || product.variations[0];
-  };
-
   const [imageError, setImageError] = useState(false);
   const [selectedVariation, setSelectedVariation] = useState<ProductVariation | undefined>(
-    getFirstAvailableVariation()
+    product.variations?.find(v => v.stock_quantity > 0) ?? product.variations?.[0]
   );
   const [quantity, setQuantity] = useState(1);
+  const [visible, setVisible] = useState(false);
+  const [added, setAdded] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
-  const hasDiscount = product.discount_active && product.discount_price;
+  // Slide in on mount
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setVisible(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
 
-  // Calculate price based on selected variation
-  const calculatePrice = () => {
-    if (!selectedVariation) return product.base_price;
-    return selectedVariation.price;
-  }
+  // Lock body scroll
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = prev; };
+  }, []);
 
-  const currentPrice = calculatePrice();
-  const showPurity = Boolean(product.purity_percentage);
+  const handleClose = () => {
+    setVisible(false);
+    setTimeout(onClose, 380);
+  };
 
-  // Check if product has any available stock
+  // ── Price logic ──────────────────────────────────────────
+  const currentPrice = selectedVariation
+    ? (selectedVariation.discount_active && selectedVariation.discount_price != null
+        ? selectedVariation.discount_price
+        : selectedVariation.price)
+    : (product.discount_active && product.discount_price != null
+        ? product.discount_price
+        : product.base_price);
+
+  const originalPrice = selectedVariation ? selectedVariation.price : product.base_price;
+
+  const hasDiscount = selectedVariation
+    ? (selectedVariation.discount_active && selectedVariation.discount_price != null)
+    : (product.discount_active && product.discount_price != null);
+
+  const discountPct = hasDiscount ? Math.round((1 - currentPrice / originalPrice) * 100) : 0;
+
   const hasAnyStock = product.variations && product.variations.length > 0
     ? product.variations.some(v => v.stock_quantity > 0)
     : product.stock_quantity > 0;
 
-  const incrementQuantity = () => setQuantity(prev => prev + 1);
-  const decrementQuantity = () => setQuantity(prev => prev > 1 ? prev - 1 : 1);
+  const selectedOos = selectedVariation ? selectedVariation.stock_quantity === 0 : false;
+  const isAvailable = product.available && hasAnyStock && !selectedOos;
 
   const handleAddToCart = () => {
+    if (!isAvailable) return;
     onAddToCart(product, selectedVariation, quantity);
-    onClose();
+    setAdded(true);
+    setTimeout(() => {
+      handleClose();
+    }, 600);
   };
 
+  const fmt = (n: number) => n.toLocaleString('en-PH', { minimumFractionDigits: 0 });
+
   return (
-    <div className="fixed inset-0 bg-charcoal-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-2 sm:p-4 overflow-y-auto">
-      <div className="bg-white rounded sm:rounded shadow-2xl max-w-4xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden my-2 sm:my-8 border border-gray-100">
-        {/* Header */}
-        <div className="bg-white text-charcoal-900 p-3 sm:p-4 md:p-6 relative border-b border-gray-100">
-          <button
-            onClick={onClose}
-            className="absolute top-2 right-2 sm:top-3 sm:right-3 md:top-4 md:right-4 p-1.5 sm:p-2 hover:bg-gray-100 rounded transition-colors text-gray-400 hover:text-gray-600"
-          >
-            <X className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
-          </button>
-          <div className="pr-10 sm:pr-12">
-            <h2 className="font-heading text-base sm:text-xl md:text-2xl lg:text-3xl font-bold mb-1.5 sm:mb-2 text-charcoal-900 tracking-tight">{product.name}</h2>
-            <div className="flex items-center gap-1.5 sm:gap-2 md:gap-3 flex-wrap">
-              {showPurity && (
-                <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] sm:text-xs font-semibold bg-emerald-600/20 border border-emerald-600/30 text-emerald-600">
-                  <Sparkles className="w-3 h-3 mr-1" />
-                  {product.purity_percentage}% Pure
-                </span>
-              )}
-              {product.featured && (
-                <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] sm:text-xs font-semibold bg-brand-600 border border-brand-500 text-white">
-                  Featured
-                </span>
-              )}
-              {hasDiscount && (
-                <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] sm:text-xs font-semibold bg-emerald-600/20 border border-emerald-600/30 text-emerald-100">
-                  Sale
-                </span>
-              )}
-            </div>
+    <>
+      {/* ── Backdrop ─────────────────────────────────────── */}
+      <div
+        className="fixed inset-0 z-50 transition-opacity duration-[380ms]"
+        style={{
+          background: 'rgba(20,10,22,0.6)',
+          backdropFilter: 'blur(6px)',
+          WebkitBackdropFilter: 'blur(6px)',
+          opacity: visible ? 1 : 0,
+        }}
+        onClick={handleClose}
+        aria-hidden="true"
+      />
+
+      {/* ── Sheet ────────────────────────────────────────── */}
+      <div
+        className="fixed inset-x-0 bottom-0 z-50 flex justify-center pointer-events-none"
+        aria-modal="true"
+        role="dialog"
+        aria-label={product.name}
+      >
+        <div
+          className="pointer-events-auto w-full transition-transform duration-[380ms]"
+          style={{
+            maxWidth: '680px',
+            transform: visible ? 'translateY(0)' : 'translateY(100%)',
+            transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)',
+            borderRadius: '28px 28px 0 0',
+            background: '#FFFBFD',
+            boxShadow: '0 -12px 60px rgba(44,27,46,0.18), 0 -2px 8px rgba(44,27,46,0.06)',
+            maxHeight: '92dvh',
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          {/* Drag handle */}
+          <div className="flex-shrink-0 flex justify-center pt-3.5 pb-2">
+            <div
+              className="w-9 h-1"
+              style={{ background: 'rgba(44,27,46,0.12)', borderRadius: '999px' }}
+            />
           </div>
-        </div>
-        {/* Content */}
-        <div className="p-3 sm:p-4 md:p-6 overflow-y-auto max-h-[calc(95vh-180px)] sm:max-h-[calc(90vh-280px)]">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
-            {/* Left Column */}
-            <div className="space-y-3 sm:space-y-4 md:space-y-6">
-              {/* Product Image */}
-              <div className="relative h-40 sm:h-48 md:h-56 lg:h-64 bg-gray-50 rounded overflow-hidden border border-gray-100 shadow-inner">
-                {product.image_url && !imageError ? (
-                  <img
-                    src={product.image_url}
-                    alt={product.name}
-                    className="w-full h-full object-cover"
-                    onError={() => setImageError(true)}
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-gray-300 bg-brand-50/50">
-                    <Package className="w-16 h-16 sm:w-20 sm:h-20 opacity-50" />
-                  </div>
+
+          {/* Scrollable body */}
+          <div ref={scrollRef} className="overflow-y-auto flex-1 overscroll-contain" style={{ WebkitOverflowScrolling: 'touch' }}>
+
+            {/* ── Hero Image ─────────────────────────────── */}
+            <div
+              className="relative flex-shrink-0 overflow-hidden"
+              style={{ height: '240px', background: '#FFF0F5' }}
+            >
+              {product.image_url && !imageError ? (
+                <img
+                  src={product.image_url}
+                  alt={product.name}
+                  className="w-full h-full object-cover"
+                  onError={() => setImageError(true)}
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <Package className="w-20 h-20" style={{ color: '#F9C4D8' }} />
+                </div>
+              )}
+
+              {/* Gradient fade bottom */}
+              <div
+                className="absolute bottom-0 left-0 right-0 h-20 pointer-events-none"
+                style={{ background: 'linear-gradient(to top, rgba(255,251,253,0.95), transparent)' }}
+              />
+
+              {/* Close button */}
+              <button
+                onClick={handleClose}
+                className="absolute top-3.5 right-3.5 w-9 h-9 flex items-center justify-center transition-transform active:scale-90"
+                style={{
+                  background: 'rgba(255,255,255,0.92)',
+                  backdropFilter: 'blur(10px)',
+                  WebkitBackdropFilter: 'blur(10px)',
+                  borderRadius: '50%',
+                  boxShadow: '0 2px 12px rgba(44,27,46,0.14)',
+                  border: '1px solid rgba(44,27,46,0.06)',
+                }}
+                aria-label="Close"
+              >
+                <X className="w-4 h-4" style={{ color: '#2C1B2E' }} />
+              </button>
+
+              {/* Badges */}
+              <div className="absolute top-3.5 left-3.5 flex flex-col gap-1.5">
+                {product.featured && (
+                  <span
+                    className="px-2.5 py-0.5 text-[10px] font-sans font-semibold uppercase tracking-wider rounded-full text-white"
+                    style={{ background: '#4BB88A', boxShadow: '0 2px 8px rgba(75,184,138,0.35)' }}
+                  >
+                    Featured
+                  </span>
+                )}
+                {hasDiscount && (
+                  <span
+                    className="px-2.5 py-0.5 text-[10px] font-sans font-semibold rounded-full text-white"
+                    style={{ background: '#E87898', boxShadow: '0 2px 8px rgba(232,120,152,0.35)' }}
+                  >
+                    {discountPct}% off
+                  </span>
+                )}
+                {!product.available && (
+                  <span
+                    className="px-2.5 py-0.5 text-[10px] font-sans font-semibold rounded-full uppercase tracking-wide"
+                    style={{ background: 'rgba(255,255,255,0.92)', color: '#9A8AA0', border: '1px solid rgba(44,27,46,0.1)' }}
+                  >
+                    Unavailable
+                  </span>
                 )}
               </div>
 
-              {/* Description */}
-              <div>
-                <h3 className="font-heading text-sm sm:text-base md:text-lg font-bold text-charcoal-900 mb-1.5 sm:mb-2 flex items-center gap-1.5 sm:gap-2">
-                  <Beaker className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 text-brand-600" />
-                  Product Description
-                </h3>
-                <p className="text-xs sm:text-sm md:text-base text-gray-600 leading-relaxed font-sans">{product.description}</p>
+              {/* Cart quantity badge if in cart */}
+            </div>
+
+            {/* ── Main Content ───────────────────────────── */}
+            <div className="px-5 sm:px-6 pt-4 pb-10">
+
+              {/* Name + Purity */}
+              <div className="mb-4">
+                <h2
+                  className="font-heading font-semibold leading-tight mb-2"
+                  style={{ fontSize: 'clamp(1.3rem, 5vw, 1.7rem)', color: '#2C1B2E' }}
+                >
+                  {product.name}
+                </h2>
+                <div className="flex items-center gap-2 flex-wrap">
+                  {product.purity_percentage > 0 && (
+                    <span
+                      className="inline-flex items-center gap-1 text-[11px] font-sans font-semibold px-2.5 py-1 rounded-full"
+                      style={{ background: '#F0FAF5', color: '#349E72', border: '1px solid rgba(75,184,138,0.2)' }}
+                    >
+                      <FlaskConical className="w-2.5 h-2.5" />
+                      {product.purity_percentage}% Purity
+                    </span>
+                  )}
+                  {product.cas_number && (
+                    <span
+                      className="inline-flex items-center gap-1 text-[11px] font-sans px-2.5 py-1 rounded-full"
+                      style={{ background: '#FAF7FB', color: '#9A8AA0', border: '1px solid rgba(44,27,46,0.08)' }}
+                    >
+                      CAS {product.cas_number}
+                    </span>
+                  )}
+                </div>
               </div>
 
-              {/* Complete Set Inclusions */}
+              {/* ── Price ────────────────────────────────── */}
+              <div
+                className="flex items-center gap-3 mb-5 pb-5"
+                style={{ borderBottom: '1px solid rgba(44,27,46,0.07)' }}
+              >
+                <span
+                  className="font-heading font-semibold"
+                  style={{ fontSize: 'clamp(1.6rem, 6vw, 2.1rem)', color: '#2C1B2E', lineHeight: 1 }}
+                >
+                  ₱{fmt(currentPrice)}
+                </span>
+                {hasDiscount && (
+                  <>
+                    <span
+                      className="font-sans text-sm line-through"
+                      style={{ color: '#BFB3C3' }}
+                    >
+                      ₱{fmt(originalPrice)}
+                    </span>
+                    <span
+                      className="font-sans text-[11px] font-semibold px-2 py-0.5 rounded-full"
+                      style={{ background: '#FFF0F5', color: '#E87898', border: '1px solid rgba(232,120,152,0.2)' }}
+                    >
+                      Save {discountPct}%
+                    </span>
+                  </>
+                )}
+              </div>
+
+              {/* ── Variations ───────────────────────────── */}
+              {product.variations && product.variations.length > 0 && (
+                <div className="mb-5">
+                  <p
+                    className="font-sans text-[11px] font-semibold uppercase tracking-widest mb-3"
+                    style={{ color: '#9A8AA0' }}
+                  >
+                    Select Format
+                  </p>
+                  <div className="grid grid-cols-2 gap-2.5">
+                    {product.variations.map(variation => {
+                      const oos = variation.stock_quantity === 0;
+                      const isSelected = selectedVariation?.id === variation.id;
+                      const varHasDiscount = variation.discount_active && variation.discount_price != null;
+                      const varPrice = varHasDiscount ? variation.discount_price! : variation.price;
+
+                      return (
+                        <button
+                          key={variation.id}
+                          onClick={() => !oos && setSelectedVariation(variation)}
+                          disabled={oos}
+                          className="relative p-3.5 text-left transition-all duration-150 active:scale-[0.98]"
+                          style={{
+                            borderRadius: '14px',
+                            border: `1.5px solid ${isSelected && !oos ? '#4BB88A' : oos ? 'rgba(44,27,46,0.07)' : 'rgba(44,27,46,0.1)'}`,
+                            background: isSelected && !oos ? '#F0FAF5' : oos ? '#FAF7FB' : 'white',
+                            cursor: oos ? 'not-allowed' : 'pointer',
+                            boxShadow: isSelected && !oos ? '0 0 0 3px rgba(75,184,138,0.12)' : 'none',
+                          }}
+                        >
+                          {/* Selected indicator */}
+                          {isSelected && !oos && (
+                            <span
+                              className="absolute top-2.5 right-2.5 w-4 h-4 flex items-center justify-center rounded-full"
+                              style={{ background: '#4BB88A' }}
+                            >
+                              <svg width="8" height="6" viewBox="0 0 8 6" fill="none">
+                                <path d="M1 3L3 5L7 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                              </svg>
+                            </span>
+                          )}
+
+                          <div
+                            className="font-sans font-semibold text-sm mb-0.5 pr-5"
+                            style={{ color: oos ? '#BFB3C3' : isSelected ? '#349E72' : '#2C1B2E' }}
+                          >
+                            {variation.name}
+                          </div>
+                          <div className="flex items-baseline gap-1.5">
+                            <span
+                              className="font-sans text-xs font-medium"
+                              style={{ color: oos ? '#BFB3C3' : isSelected ? '#4BB88A' : '#9A8AA0' }}
+                            >
+                              ₱{fmt(varPrice)}
+                            </span>
+                            {varHasDiscount && (
+                              <span
+                                className="font-sans text-[10px] line-through"
+                                style={{ color: '#DDD5E0' }}
+                              >
+                                ₱{fmt(variation.price)}
+                              </span>
+                            )}
+                          </div>
+                          {oos && (
+                            <div
+                              className="font-sans text-[10px] font-semibold mt-1"
+                              style={{ color: '#E87898' }}
+                            >
+                              Out of stock
+                            </div>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* ── Quantity + Total ─────────────────────── */}
+              <div
+                className="flex items-center gap-4 mb-5 p-4 rounded-2xl"
+                style={{ background: '#FAF7FB', border: '1px solid rgba(44,27,46,0.06)' }}
+              >
+                {/* Stepper */}
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => setQuantity(q => Math.max(1, q - 1))}
+                    className="w-9 h-9 flex items-center justify-center rounded-xl transition-all active:scale-90"
+                    style={{
+                      background: 'white',
+                      border: '1.5px solid rgba(44,27,46,0.1)',
+                      color: quantity <= 1 ? '#DDD5E0' : '#5A4760',
+                    }}
+                    aria-label="Decrease quantity"
+                  >
+                    <Minus className="w-3.5 h-3.5" />
+                  </button>
+                  <span
+                    className="font-heading font-semibold text-xl min-w-[1.75rem] text-center"
+                    style={{ color: '#2C1B2E' }}
+                  >
+                    {quantity}
+                  </span>
+                  <button
+                    onClick={() => setQuantity(q => q + 1)}
+                    className="w-9 h-9 flex items-center justify-center rounded-xl transition-all active:scale-90"
+                    style={{
+                      background: 'white',
+                      border: '1.5px solid rgba(44,27,46,0.1)',
+                      color: '#5A4760',
+                    }}
+                    aria-label="Increase quantity"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+
+                <div className="w-px self-stretch" style={{ background: 'rgba(44,27,46,0.08)' }} />
+
+                {/* Total */}
+                <div className="flex-1">
+                  <div className="font-sans text-[11px] uppercase tracking-wider mb-0.5" style={{ color: '#9A8AA0' }}>
+                    Total
+                  </div>
+                  <div
+                    className="font-heading font-semibold"
+                    style={{ fontSize: '1.25rem', color: '#2C1B2E', lineHeight: 1.1 }}
+                  >
+                    ₱{fmt(currentPrice * quantity)}
+                  </div>
+                </div>
+              </div>
+
+              {/* ── Add to Cart CTA ──────────────────────── */}
+              <button
+                onClick={handleAddToCart}
+                disabled={!isAvailable}
+                className="w-full flex items-center justify-center gap-2.5 font-sans font-semibold text-sm transition-all duration-200 active:scale-[0.98] mb-3"
+                style={{
+                  height: '54px',
+                  borderRadius: '16px',
+                  ...(isAvailable
+                    ? {
+                        background: added
+                          ? '#349E72'
+                          : 'linear-gradient(135deg, #4BB88A 0%, #3AAD7E 100%)',
+                        color: 'white',
+                        boxShadow: added
+                          ? '0 4px 16px rgba(52,158,114,0.4)'
+                          : '0 4px 20px rgba(75,184,138,0.38)',
+                      }
+                    : {
+                        background: '#F0ECF2',
+                        color: '#BFB3C3',
+                        cursor: 'not-allowed',
+                      }),
+                }}
+              >
+                {added ? (
+                  <>
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                      <path d="M3.5 9L7.5 13L14.5 5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                    Added!
+                  </>
+                ) : (
+                  <>
+                    <ShoppingCart className="w-4 h-4" />
+                    {!product.available
+                      ? 'Unavailable'
+                      : !hasAnyStock
+                        ? 'Out of Stock'
+                        : selectedOos
+                          ? 'Variant Unavailable'
+                          : `Add to Cart`}
+                  </>
+                )}
+              </button>
+
+              {/* Low stock nudge */}
+              {isAvailable && (() => {
+                const stockLeft = selectedVariation
+                  ? selectedVariation.stock_quantity
+                  : product.stock_quantity;
+                return stockLeft > 0 && stockLeft <= 10 ? (
+                  <p
+                    className="text-center font-sans text-[11px] font-medium mb-4"
+                    style={{ color: '#E87898' }}
+                  >
+                    Only {stockLeft} left in stock — order soon
+                  </p>
+                ) : null;
+              })()}
+
+              {/* ── Description ──────────────────────────── */}
+              <div
+                className="pt-5 mt-2"
+                style={{ borderTop: '1px solid rgba(44,27,46,0.07)' }}
+              >
+                <p
+                  className="font-sans text-sm leading-relaxed"
+                  style={{ color: '#75607C' }}
+                >
+                  {product.description}
+                </p>
+              </div>
+
+              {/* ── Kit Inclusions ───────────────────────── */}
               {product.inclusions && product.inclusions.length > 0 && (
-                <div className="bg-brand-50 rounded p-3 sm:p-4 border border-brand-100">
-                  <h3 className="font-heading text-sm sm:text-base md:text-lg font-bold text-charcoal-900 mb-2 sm:mb-3 flex items-center gap-1.5 sm:gap-2">
-                    <Package className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 text-brand-600" />
+                <div
+                  className="mt-4 p-4 rounded-2xl"
+                  style={{
+                    background: 'linear-gradient(135deg, #F0FAF5 0%, #E8F7F0 100%)',
+                    border: '1px solid rgba(75,184,138,0.18)',
+                  }}
+                >
+                  <p
+                    className="font-sans text-[11px] font-semibold uppercase tracking-widest mb-3"
+                    style={{ color: '#349E72' }}
+                  >
                     Kit Inclusions
-                  </h3>
-                  <ul className="space-y-1.5 sm:space-y-2">
-                    {product.inclusions.map((inclusion, idx) => (
-                      <li key={idx} className="text-[11px] sm:text-xs md:text-sm text-gray-700 flex items-start gap-2">
-                        <span className="text-emerald-600 font-bold mt-0.5">✓</span>
-                        <span className="flex-1">{inclusion}</span>
+                  </p>
+                  <ul className="space-y-2">
+                    {product.inclusions.map((item, i) => (
+                      <li
+                        key={i}
+                        className="flex items-start gap-2.5 font-sans text-sm"
+                        style={{ color: '#5A4760' }}
+                      >
+                        <span
+                          className="flex-shrink-0 w-4 h-4 rounded-full flex items-center justify-center mt-0.5"
+                          style={{ background: '#4BB88A' }}
+                        >
+                          <svg width="8" height="6" viewBox="0 0 8 6" fill="none">
+                            <path d="M1 3L3 5L7 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        </span>
+                        {item}
                       </li>
                     ))}
                   </ul>
                 </div>
               )}
 
-              {/* Scientific Details */}
-              <div className="bg-gray-50 rounded p-3 sm:p-4 border border-gray-200">
-                <h3 className="font-heading text-sm sm:text-base md:text-lg font-bold text-charcoal-900 mb-2 sm:mb-3 flex items-center gap-1.5 sm:gap-2">
-                  <Beaker className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 text-brand-600" />
-                  Technical Specifications
-                </h3>
-                <div className="space-y-1.5 sm:space-y-2">
-                  {showPurity && (
-                    <div className="flex justify-between">
-                      <span className="text-gray-500 text-[11px] sm:text-xs md:text-sm">Purity Analysis:</span>
-                      <span className="font-semibold text-brand-700 text-[11px] sm:text-xs md:text-sm">{product.purity_percentage}% (HPLC Verified)</span>
+              {/* ── Technical Details ─────────────────────── */}
+              <div
+                className="mt-4 rounded-2xl overflow-hidden"
+                style={{ border: '1px solid rgba(44,27,46,0.07)' }}
+              >
+                <div
+                  className="px-4 py-3"
+                  style={{ background: '#FAF7FB', borderBottom: '1px solid rgba(44,27,46,0.07)' }}
+                >
+                  <p
+                    className="font-sans text-[11px] font-semibold uppercase tracking-widest"
+                    style={{ color: '#9A8AA0' }}
+                  >
+                    Technical Details
+                  </p>
+                </div>
+                <div className="divide-y" style={{ background: 'white', '--tw-divide-opacity': 1 } as React.CSSProperties}>
+                  {product.purity_percentage > 0 && (
+                    <div className="flex items-center justify-between px-4 py-3">
+                      <span className="flex items-center gap-2 font-sans text-xs" style={{ color: '#9A8AA0' }}>
+                        <FlaskConical className="w-3.5 h-3.5" />
+                        Purity (HPLC)
+                      </span>
+                      <span className="font-sans text-xs font-semibold" style={{ color: '#349E72' }}>
+                        {product.purity_percentage}%
+                      </span>
                     </div>
                   )}
-                  <div className="flex justify-between">
-                    <span className="text-gray-500 text-[11px] sm:text-xs md:text-sm">Storage:</span>
-                    <span className="font-medium text-gray-700 text-[11px] sm:text-xs md:text-sm">{product.storage_conditions}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-500 text-[11px] sm:text-xs md:text-sm">Availability:</span>
-                    <span className={`font-medium text-[11px] sm:text-xs md:text-sm ${(product.variations && product.variations.length > 0
-                      ? product.variations.some(v => v.stock_quantity > 0)
-                      : product.stock_quantity > 0)
-                      ? 'text-emerald-600'
-                      : 'text-red-500'
-                      }`}>
-                      {product.variations && product.variations.length > 0
-                        ? product.variations.reduce((sum, v) => sum + v.stock_quantity, 0)
-                        : product.stock_quantity} units
+                  <div className="flex items-center justify-between px-4 py-3">
+                    <span className="flex items-center gap-2 font-sans text-xs" style={{ color: '#9A8AA0' }}>
+                      <Thermometer className="w-3.5 h-3.5" />
+                      Storage
+                    </span>
+                    <span className="font-sans text-xs font-medium" style={{ color: '#5A4760' }}>
+                      {product.storage_conditions}
                     </span>
                   </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Column - Purchase Section */}
-            <div className="space-y-3 sm:space-y-4 md:space-y-6">
-              {/* Price */}
-              <div className="bg-white rounded p-3 sm:p-4 md:p-6 border border-gray-100 shadow-clinical">
-                <div className="text-center mb-3 sm:mb-4">
-                  {hasDiscount ? (
-                    <>
-                      {/* Original Price - Strikethrough */}
-                      <div className="flex items-center justify-center gap-2 mb-1">
-                        <span className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-400 line-through font-medium">
-                          ₱{product.base_price.toLocaleString('en-PH', { minimumFractionDigits: 0 })}
-                        </span>
-                        <span className="text-xs sm:text-sm font-bold text-emerald-600 bg-emerald-100/30 px-2 py-1 rounded">
-                          {Math.round((1 - product.discount_price! / product.base_price) * 100)}% OFF
-                        </span>
-                      </div>
-                      {/* Sale Price */}
-                      <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal-900 mb-2">
-                        ₱{currentPrice.toLocaleString('en-PH', { minimumFractionDigits: 0 })}
-                      </div>
-                      <div className="inline-block bg-emerald-100 text-emerald-700 px-2 py-0.5 sm:px-2.5 sm:py-1 md:px-3 md:py-1 rounded text-[10px] sm:text-xs md:text-sm font-bold border border-emerald-200">
-                        Savings: ₱{(product.base_price - product.discount_price!).toLocaleString('en-PH', { minimumFractionDigits: 0 })}
-                      </div>
-                    </>
-                  ) : (
-                    <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-charcoal-900">
-                      ₱{currentPrice.toLocaleString('en-PH', { minimumFractionDigits: 0 })}
+                  {product.molecular_weight && (
+                    <div className="flex items-center justify-between px-4 py-3">
+                      <span className="flex items-center gap-2 font-sans text-xs" style={{ color: '#9A8AA0' }}>
+                        <Weight className="w-3.5 h-3.5" />
+                        Molecular Weight
+                      </span>
+                      <span className="font-sans text-xs font-medium" style={{ color: '#5A4760' }}>
+                        {product.molecular_weight}
+                      </span>
+                    </div>
+                  )}
+                  {product.cas_number && (
+                    <div className="flex items-center justify-between px-4 py-3">
+                      <span className="flex items-center gap-2 font-sans text-xs" style={{ color: '#9A8AA0' }}>
+                        <Hash className="w-3.5 h-3.5" />
+                        CAS Number
+                      </span>
+                      <span className="font-sans text-xs font-medium" style={{ color: '#5A4760' }}>
+                        {product.cas_number}
+                      </span>
                     </div>
                   )}
                 </div>
-
-                {/* Size Selection */}
-                {product.variations && product.variations.length > 0 && (
-                  <div className="mb-3 sm:mb-4">
-                    <label className="block text-xs sm:text-sm font-bold text-gray-700 mb-1.5 sm:mb-2 uppercase tracking-wide">
-                      Select Format
-                    </label>
-                    <div className="grid grid-cols-2 gap-2">
-                      {product.variations.map((variation) => {
-                        const isOutOfStock = variation.stock_quantity === 0;
-                        const isSelected = selectedVariation?.id === variation.id;
-                        return (
-                          <button
-                            key={variation.id}
-                            onClick={() => {
-                              if (variation.stock_quantity > 0) {
-                                setSelectedVariation(variation);
-                              }
-                            }}
-                            disabled={isOutOfStock}
-                            className={`
-                                p-3 rounded border text-sm text-left transition-all
-                                ${isSelected
-                                ? 'border-brand-500 bg-brand-50 text-charcoal-900 ring-1 ring-brand-500'
-                                : 'border-gray-200 hover:border-brand-300 text-gray-700 bg-white'
-                              }
-                                ${isOutOfStock ? 'opacity-50 cursor-not-allowed bg-gray-50' : ''}
-                              `}
-                          >
-                            <div className="font-bold">{variation.name}</div>
-                            <div className="text-xs opacity-80">₱{variation.price.toLocaleString('en-PH')}</div>
-                            {isOutOfStock && <div className="text-xs text-red-500 font-bold mt-1">Out of Stock</div>}
-                          </button>
-                        )
-                      })}
-                    </div>
-                    {selectedVariation && selectedVariation.stock_quantity === 0 && (
-                      <p className="text-xs text-red-600 mt-1.5 font-semibold">
-                        This format is currently unavailable.
-                      </p>
-                    )}
-                  </div>
-                )}
-
-
-
-                {/* Quantity */}
-                <div className="mb-3 sm:mb-4">
-                  <label className="block text-xs sm:text-sm font-bold text-gray-700 mb-1.5 sm:mb-2 uppercase tracking-wide">
-                    Quantity
-                  </label>
-                  <div className="flex items-center justify-center gap-3 sm:gap-4 md:gap-5">
-                    <button
-                      onClick={decrementQuantity}
-                      className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-gray-50 border border-gray-200 hover:bg-gray-100 hover:border-gray-300 rounded transition-all active:scale-95 text-gray-600"
-                      disabled={!product.available}
-                    >
-                      <Minus className="w-5 h-5" />
-                    </button>
-                    <span className="text-xl sm:text-2xl font-bold text-charcoal-900 min-w-[50px] text-center">
-                      {quantity}
-                    </span>
-                    <button
-                      onClick={incrementQuantity}
-                      className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-gray-50 border border-gray-200 hover:bg-gray-100 hover:border-gray-300 rounded transition-all active:scale-95 text-gray-600"
-                      disabled={!product.available}
-                    >
-                      <Plus className="w-5 h-5" />
-                    </button>
-                  </div>
-                </div>
-
-                {/* Total */}
-                <div className="bg-gray-50 rounded p-3 mb-4 border border-gray-100">
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-500 font-medium text-sm">Total Estimate:</span>
-                    <span className="text-xl font-bold text-charcoal-900">
-                      ₱{(currentPrice * quantity).toLocaleString('en-PH', { minimumFractionDigits: 0 })}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Add to Cart Button */}
-                <button
-                  onClick={handleAddToCart}
-                  disabled={!product.available || !hasAnyStock || (selectedVariation && selectedVariation.stock_quantity === 0) || (!selectedVariation && product.stock_quantity === 0)}
-                  className="w-full btn-primary py-3 md:py-4 text-sm md:text-base flex items-center justify-center gap-2"
-                >
-                  <ShoppingCart className="w-5 h-5" />
-                  {!product.available
-                    ? 'Unavailable'
-                    : (!hasAnyStock || (selectedVariation && selectedVariation.stock_quantity === 0) || (!selectedVariation && product.stock_quantity === 0)
-                      ? 'Out of Stock'
-                      : 'Add to Cart')}
-                </button>
-
-                {/* Return to Shop Button */}
-                <button
-                  onClick={onClose}
-                  className="w-full mt-3 py-3 text-sm md:text-base font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded transition-colors flex items-center justify-center gap-2"
-                >
-                  <ArrowLeft className="w-4 h-4" />
-                  Return to Shop
-                </button>
               </div>
 
-              {/* Stock Alert */}
-              {product.available && (product.variations && product.variations.length > 0
-                ? product.variations.some(v => v.stock_quantity > 0 && v.stock_quantity < 10)
-                : product.stock_quantity < 10 && product.stock_quantity > 0) && (
-                  <div className="bg-orange-50 border border-orange-100 rounded p-3">
-                    <p className="text-xs text-orange-700 font-medium flex items-center gap-2">
-                      <span className="font-bold">！</span>
-                      Low stock: Only {product.variations && product.variations.length > 0
-                        ? product.variations.reduce((sum, v) => sum + v.stock_quantity, 0)
-                        : product.stock_quantity} units remaining
-                    </p>
-                  </div>
-                )}
+              {/* Bottom safe area spacer */}
+              <div className="h-4" />
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
 export default ProductDetailModal;
-

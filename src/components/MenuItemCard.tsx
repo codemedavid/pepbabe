@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Package } from 'lucide-react';
+import { ShoppingCart, Package } from 'lucide-react';
 import type { Product, ProductVariation } from '../types';
 
 interface MenuItemCardProps {
@@ -17,46 +17,42 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
   onProductClick,
 }) => {
   const [imageError, setImageError] = useState(false);
-  const [selectedVariation, setSelectedVariation] = useState<ProductVariation | undefined>(
-    product.variations && product.variations.length > 0 ? product.variations[0] : undefined
-  );
 
-  // Calculate current price considering both product and variation discounts
-  const currentPrice = (() => {
-    // Falls back to variation or product price
-    return selectedVariation
-      ? (selectedVariation.discount_active && selectedVariation.discount_price)
-        ? selectedVariation.discount_price
-        : selectedVariation.price
-      : (product.discount_active && product.discount_price)
-        ? product.discount_price
-        : product.base_price;
-  })();
+  const currentPrice = (product.discount_active && product.discount_price)
+    ? product.discount_price
+    : product.base_price;
 
-  // Check if there's an active discount
-  const hasDiscount = selectedVariation
-    ? (selectedVariation.discount_active && selectedVariation.discount_price !== null)
-    : (product.discount_active && product.discount_price !== null);
+  const hasDiscount = product.discount_active && product.discount_price !== null;
+  const originalPrice = product.base_price;
+  const discountPct = hasDiscount ? Math.round((1 - currentPrice / originalPrice) * 100) : 0;
 
-  // Get original price for strikethrough
-  const originalPrice = selectedVariation ? selectedVariation.price : product.base_price;
-
-  // Check if product has any available stock (either in variations or product itself)
   const hasAnyStock = product.variations && product.variations.length > 0
     ? product.variations.some(v => v.stock_quantity > 0)
     : product.stock_quantity > 0;
 
-  return (
-    <div className="card h-full flex flex-col group relative">
-      {/* Click overlay for product details */}
-      <div
-        onClick={() => onProductClick?.(product)}
-        className="absolute inset-x-0 top-0 h-28 sm:h-44 z-10 cursor-pointer"
-        title="View details"
-      />
+  const isAvailable = product.available && hasAnyStock;
 
-      {/* Product Image */}
-      <div className="relative h-28 sm:h-44 bg-secondary-50 overflow-hidden border-b border-gray-50">
+  return (
+    <div
+      className="group h-full flex flex-col bg-white overflow-hidden transition-all duration-300 rounded-2xl cursor-pointer"
+      style={{ border: '1px solid rgba(44,27,46,0.07)', boxShadow: '0 1px 4px rgba(44,27,46,0.04)' }}
+      onMouseEnter={e => {
+        (e.currentTarget as HTMLDivElement).style.boxShadow = '0 10px 40px rgba(242,160,184,0.16), 0 2px 8px rgba(44,27,46,0.06)';
+        (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(242,160,184,0.40)';
+        (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-3px)';
+      }}
+      onMouseLeave={e => {
+        (e.currentTarget as HTMLDivElement).style.boxShadow = '0 1px 4px rgba(44,27,46,0.04)';
+        (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(44,27,46,0.07)';
+        (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)';
+      }}
+    >
+      {/* ── Image ── */}
+      <div
+        className="relative overflow-hidden flex-shrink-0"
+        style={{ height: '144px', background: '#FFF8FB' }}
+        onClick={() => onProductClick?.(product)}
+      >
         {product.image_url && !imageError ? (
           <img
             src={product.image_url}
@@ -65,139 +61,140 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
             onError={() => setImageError(true)}
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-charcoal-200 bg-charcoal-50">
-            <Package className="w-16 h-16 opacity-50" />
+          <div className="w-full h-full flex items-center justify-center">
+            <Package className="w-10 h-10" style={{ color: '#F9C4D8' }} />
           </div>
         )}
 
         {/* Badges */}
-        <div className="absolute top-3 left-3 flex flex-col gap-2 pointer-events-none z-20">
+        <div className="absolute top-2.5 left-2.5 flex flex-col gap-1.5 z-10">
           {product.featured && (
-            <span className="px-2 py-1 bg-brand-600 text-white text-[10px] font-bold uppercase tracking-wider rounded shadow-sm">
+            <span
+              className="px-2 py-0.5 text-[10px] font-sans font-semibold uppercase tracking-wider rounded-full text-white"
+              style={{ background: '#4BB88A' }}
+            >
               Featured
             </span>
           )}
           {hasDiscount && (
-            <span className="px-2 py-1 bg-brand-600 text-white text-[10px] font-bold rounded shadow-sm">
-              {Math.round((1 - currentPrice / originalPrice) * 100)}% OFF
+            <span
+              className="px-2 py-0.5 text-[10px] font-sans font-semibold rounded-full text-white"
+              style={{ background: '#E87898' }}
+            >
+              {discountPct}% off
             </span>
           )}
         </div>
 
-        {/* Stock Status Overlay */}
-        {(!product.available || !hasAnyStock) && (
-          <div className="absolute inset-0 bg-white/80 backdrop-blur-[1px] flex items-center justify-center z-20">
-            <span className="bg-gray-100 text-gray-500 px-3 py-1 text-xs font-bold rounded border border-gray-200 uppercase tracking-wide">
+        {/* Cart quantity dot */}
+        {cartQuantity > 0 && (
+          <div className="absolute top-2.5 right-2.5 z-10">
+            <span
+              className="w-6 h-6 flex items-center justify-center rounded-full text-[11px] font-sans font-bold text-white"
+              style={{ background: '#4BB88A', boxShadow: '0 2px 8px rgba(75,184,138,0.4)' }}
+            >
+              {cartQuantity}
+            </span>
+          </div>
+        )}
+
+        {/* Out of stock */}
+        {!isAvailable && (
+          <div
+            className="absolute inset-0 flex items-center justify-center z-20"
+            style={{ background: 'rgba(255,255,255,0.82)', backdropFilter: 'blur(2px)' }}
+          >
+            <span
+              className="text-xs font-sans font-semibold px-3 py-1.5 rounded-full uppercase tracking-wide"
+              style={{ background: '#F0ECF2', color: '#9A8AA0', border: '1px solid rgba(44,27,46,0.1)' }}
+            >
               {!product.available ? 'Unavailable' : 'Out of Stock'}
             </span>
           </div>
         )}
       </div>
 
-      {/* Product Details */}
+      {/* ── Details ── */}
       <div className="p-4 sm:p-5 flex-1 flex flex-col">
-        <h3 className="font-heading font-semibold text-charcoal-900 text-sm sm:text-base mb-1 line-clamp-2 tracking-tight">
+
+        {/* Name */}
+        <h3
+          className="font-heading font-semibold text-sm sm:text-base mb-1 line-clamp-2 leading-snug transition-colors"
+          style={{ color: '#2C1B2E' }}
+          onClick={() => onProductClick?.(product)}
+          onMouseEnter={e => { (e.currentTarget as HTMLHeadingElement).style.color = '#4BB88A'; }}
+          onMouseLeave={e => { (e.currentTarget as HTMLHeadingElement).style.color = '#2C1B2E'; }}
+        >
           {product.name}
         </h3>
-        <p className="text-[10px] sm:text-xs text-gray-500 mb-2 sm:mb-3 line-clamp-2 min-h-[1.5rem] sm:min-h-[2.5rem] leading-relaxed">
+
+        {/* Description */}
+        <p className="font-sans text-[11px] sm:text-xs leading-relaxed mb-3 line-clamp-2" style={{ color: '#9A8AA0' }}>
           {product.description}
         </p>
 
-        {/* Variations (Sizes) */}
-        <div className="mb-2 sm:mb-4 min-h-[1.5rem] sm:min-h-[2rem]">
-          {product.variations && product.variations.length > 0 && (
-            <div className="flex flex-wrap gap-1 sm:gap-2">
-              {product.variations.slice(0, 2).map((variation) => {
-                const isOutOfStock = variation.stock_quantity === 0;
-                return (
-                  <button
-                    key={variation.id}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (!isOutOfStock) {
-                        setSelectedVariation(variation);
-                      }
-                    }}
-                    disabled={isOutOfStock}
-                    className={`
-                      px-2 sm:px-2.5 py-1 text-[10px] sm:text-xs font-medium rounded-lg border transition-all duration-200 relative z-20
-                      ${selectedVariation?.id === variation.id && !isOutOfStock
-                        ? 'bg-brand-50 border-brand-400 text-brand-700'
-                        : isOutOfStock
-                          ? 'bg-charcoal-50 text-charcoal-300 border-charcoal-100 cursor-not-allowed'
-                          : 'bg-white text-charcoal-600 border-charcoal-200 hover:border-brand-300 hover:text-brand-600'
-                      }
-                    `}
-                  >
-                    {variation.name}
-                  </button>
-                );
-              })}
-              {product.variations.length > 2 && (
-                <span className="text-[9px] sm:text-[10px] text-gray-400 self-center">
-                  +{product.variations.length - 2}
-                </span>
-              )}
-            </div>
-          )}
-        </div>
+        {/* Purity */}
+        {product.purity_percentage > 0 && (
+          <div className="mb-3">
+            <span
+              className="inline-flex items-center text-[10px] font-sans font-semibold px-2.5 py-0.5 rounded-full"
+              style={{ background: '#F0FAF5', color: '#349E72' }}
+            >
+              {product.purity_percentage}% Purity
+            </span>
+          </div>
+        )}
 
-
+        {/* Variations hint */}
+        {product.variations && product.variations.length > 0 && (
+          <div className="mb-3">
+            <span
+              className="inline-flex items-center gap-1 text-[10px] font-sans px-2 py-0.5 rounded-full"
+              style={{ background: '#F0FAF5', color: '#4BB88A', border: '1px solid rgba(75,184,138,0.18)' }}
+            >
+              {product.variations.length} option{product.variations.length > 1 ? 's' : ''} available
+            </span>
+          </div>
+        )}
 
         <div className="flex-1" />
 
-        {/* Price and Cart Actions */}
-        <div className="flex flex-col gap-2 sm:gap-3 mt-auto">
-          {hasDiscount ? (
-            <div className="flex items-baseline gap-1 sm:gap-2">
-              <span className="text-base sm:text-lg font-semibold text-charcoal-900">
-                ₱{currentPrice.toLocaleString('en-PH', { minimumFractionDigits: 0 })}
-              </span>
-              <span className="text-[10px] sm:text-xs text-charcoal-400 line-through">
+        {/* Price + CTA */}
+        <div className="pt-3 mt-2" style={{ borderTop: '1px solid rgba(44,27,46,0.06)' }}>
+          <div className="flex items-baseline gap-1.5 mb-3">
+            <span className="font-heading font-semibold text-base sm:text-lg" style={{ color: '#2C1B2E' }}>
+              ₱{currentPrice.toLocaleString('en-PH', { minimumFractionDigits: 0 })}
+            </span>
+            {hasDiscount && (
+              <span className="font-sans text-[11px] line-through" style={{ color: '#BFB3C3' }}>
                 ₱{originalPrice.toLocaleString('en-PH', { minimumFractionDigits: 0 })}
               </span>
-            </div>
-          ) : (
-            <div className="flex items-baseline">
-              <span className="text-base sm:text-lg font-semibold text-charcoal-900">
-                ₱{currentPrice.toLocaleString('en-PH', { minimumFractionDigits: 0 })}
-              </span>
-            </div>
-          )}
-
-          <div className="flex w-full pt-2">
-            {/* Add to Cart Button */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                if (!product.available || !hasAnyStock) return;
-
-                // If it has variations, ensure one is selected
-                if (product.variations && product.variations.length > 0 && !selectedVariation) {
-                  onProductClick?.(product);
-                  return;
-                }
-
-                onAddToCart?.(product, selectedVariation, 1);
-              }}
-              disabled={!product.available || !hasAnyStock}
-              className={`w-full py-2.5 sm:py-3 text-[11px] sm:text-sm flex items-center justify-center gap-2 font-semibold transition-all
-                ${(!product.available || !hasAnyStock)
-                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed rounded'
-                  : 'btn-primary'}
-              `}
-            >
-              <Package className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              <span>Add to Cart</span>
-            </button>
+            )}
           </div>
 
-          {/* Cart Status */}
-          {cartQuantity > 0 && (
-            <div className="text-center text-[10px] text-emerald-600 font-medium bg-emerald-100/50 rounded py-1">
-              {cartQuantity} in cart
-            </div>
-          )}
+          <button
+            onClick={e => {
+              e.stopPropagation();
+              if (!isAvailable) return;
+              if (product.variations && product.variations.length > 0) {
+                onProductClick?.(product);
+                return;
+              }
+              onAddToCart?.(product, undefined, 1);
+            }}
+            disabled={!isAvailable}
+            className="w-full flex items-center justify-center gap-2 py-2.5 rounded-full text-xs sm:text-sm font-sans font-medium transition-all duration-200"
+            style={
+              isAvailable
+                ? { background: '#4BB88A', color: 'white', boxShadow: '0 3px 14px rgba(75,184,138,0.28)' }
+                : { background: '#F0ECF2', color: '#BFB3C3', cursor: 'not-allowed' }
+            }
+            onMouseEnter={e => isAvailable && ((e.currentTarget as HTMLButtonElement).style.background = '#349E72')}
+            onMouseLeave={e => isAvailable && ((e.currentTarget as HTMLButtonElement).style.background = '#4BB88A')}
+          >
+            <ShoppingCart className="w-3.5 h-3.5" />
+            Add to Cart
+          </button>
         </div>
       </div>
     </div>

@@ -1,111 +1,189 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ─────────────────────────────────────────────
+   Peptherapy PH — Simple Luxury
+   Soft Pink × Mint Green
+───────────────────────────────────────────── */
 :root {
-  /* BIORICH - Soft Modern Biotech Theme */
-  --theme-bg: #FFFFFF;
-  --theme-text: #2B2B2B;
+  --pink:        #F2A0B8;
+  --pink-light:  #FDDAEA;
+  --pink-deep:   #E87898;
+  --pink-bg:     #FFF0F5;
 
-  /* Primary Palette */
-  --primary-pink: #F06292;
-  --soft-pink: #F8BBD0;
-  --light-lavender: #C9B6E4;
-  --pastel-lavender: #E6DAF4;
-  --gold-accent: #C8A46B;
+  --mint:        #4BB88A;
+  --mint-light:  #AAE5CC;
+  --mint-deep:   #349E72;
+  --mint-bg:     #F0FAF5;
 
-  /* Backgrounds */
-  --cream: #FFFFFF;
-  --soft-bg: #FAF7FF;
-  --warm-white: #FAF7FF;
+  --cream:       #FFFBFD;
+  --warm-white:  #FFF6F9;
+  --surface:     #FFF0F5;
 
-  /* Gradient */
-  --brand-gradient: linear-gradient(135deg, #F8BBD0, #C9B6E4);
+  --text:        #2C1B2E;
+  --text-mid:    #5A4760;
+  --text-soft:   #9A8AA0;
+
+  --border:      rgba(44,27,46,0.09);
+  --border-pink: rgba(242,160,184,0.35);
+  --border-mint: rgba(75,184,138,0.30);
 }
 
 @layer base {
+  html { scroll-behavior: smooth; }
+
   body {
-    @apply font-sans text-charcoal-800 bg-white antialiased leading-relaxed;
+    @apply font-sans antialiased leading-relaxed;
+    background: var(--cream);
+    color: var(--text);
+    font-feature-settings: "kern" 1, "liga" 1, "onum" 1;
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-heading font-semibold text-charcoal-900 tracking-tight;
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading font-medium tracking-tight;
+    color: var(--text);
+    line-height: 1.1;
   }
 }
 
 @layer components {
 
-  /* BIORICH Button Styles */
-  .btn-primary {
-    @apply text-white px-8 py-4 rounded-xl font-semibold text-sm tracking-wide transition-all duration-300 shadow-soft hover:shadow-luxury active:transform active:scale-[0.98];
-    background: linear-gradient(135deg, #F8BBD0, #C9B6E4);
+  /* ── Primary CTA — Mint ── */
+  .btn-mint {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-3.5
+           rounded-full font-sans font-medium text-sm text-white
+           transition-all duration-200 select-none tracking-wide;
+    background: var(--mint);
+    box-shadow: 0 4px 18px rgba(75,184,138,0.30);
+    letter-spacing: 0.02em;
   }
-  .btn-primary:hover {
-    background: linear-gradient(135deg, #F06292, #B39DDB);
+  .btn-mint:hover {
+    background: var(--mint-deep);
+    box-shadow: 0 6px 24px rgba(75,184,138,0.38);
+    transform: translateY(-1px);
+  }
+  .btn-mint:active { transform: translateY(0); }
+
+  /* ── Secondary — Pink ── */
+  .btn-pink {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-3.5
+           rounded-full font-sans font-medium text-sm
+           transition-all duration-200 select-none tracking-wide;
+    background: var(--pink-light);
+    color: var(--pink-deep);
+    letter-spacing: 0.02em;
+  }
+  .btn-pink:hover {
+    background: #F9C4D8;
+    transform: translateY(-1px);
   }
 
-  .btn-secondary {
-    @apply bg-transparent text-charcoal-800 border-2 border-charcoal-200 px-8 py-4 rounded-xl font-semibold text-sm transition-all duration-300 hover:bg-charcoal-50 hover:border-charcoal-800 active:transform active:scale-[0.98];
+  /* ── Ghost / Outline ── */
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-3.5
+           rounded-full font-sans font-medium text-sm border
+           transition-all duration-200 select-none tracking-wide;
+    border-color: var(--border-mint);
+    color: var(--mint-deep);
+    background: transparent;
+    letter-spacing: 0.02em;
+  }
+  .btn-outline:hover {
+    background: var(--mint-bg);
+    border-color: var(--mint);
   }
 
-  /* Luxury Card Styles */
+  .btn-outline-dark {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-3.5
+           rounded-full font-sans font-medium text-sm border border-white/25 text-white
+           transition-all duration-200 select-none tracking-wide;
+    background: rgba(255,255,255,0.07);
+    backdrop-filter: blur(8px);
+    letter-spacing: 0.02em;
+  }
+  .btn-outline-dark:hover {
+    background: rgba(255,255,255,0.14);
+    border-color: rgba(255,255,255,0.45);
+  }
+
+  /* ── Card ── */
   .card {
-    @apply bg-white rounded-2xl shadow-soft border border-brand-300 p-6 transition-all duration-300 hover:shadow-luxury hover:border-brand-500;
+    @apply bg-white rounded-2xl transition-all duration-300;
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 4px rgba(44,27,46,0.05);
+  }
+  .card:hover {
+    border-color: var(--border-pink);
+    box-shadow: 0 8px 32px rgba(242,160,184,0.14), 0 2px 8px rgba(44,27,46,0.06);
+    transform: translateY(-3px);
   }
 
+  /* ── Input ── */
   .input-field {
-    @apply w-full px-4 py-3 bg-white border border-charcoal-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-all placeholder-charcoal-400 text-charcoal-800;
+    @apply w-full px-4 py-3 bg-white font-sans text-sm
+           placeholder-charcoal-400 text-charcoal-800
+           focus:outline-none transition-all rounded-xl;
+    border: 1px solid var(--border);
+  }
+  .input-field:focus {
+    border-color: var(--mint);
+    box-shadow: 0 0 0 3px rgba(75,184,138,0.15);
   }
 
-  .badge {
-    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium;
+  /* ── Section label ── */
+  .section-label {
+    @apply font-sans font-medium text-xs tracking-[0.18em] uppercase;
+    color: var(--mint-deep);
   }
 
-  .badge-primary {
-    @apply bg-brand-50 text-brand-700;
+  /* ── Divider ── */
+  .divider {
+    @apply w-12 h-px mx-auto;
+    background: linear-gradient(90deg, var(--pink-light), var(--mint-light));
   }
 
-  .badge-accent {
-    @apply bg-charcoal-50 text-charcoal-800;
+  /* ── Tag / Pill ── */
+  .pill-pink {
+    @apply inline-flex items-center gap-1.5 text-xs font-sans font-medium px-3 py-1 rounded-full;
+    background: var(--pink-bg);
+    color: var(--pink-deep);
   }
+  .pill-mint {
+    @apply inline-flex items-center gap-1.5 text-xs font-sans font-medium px-3 py-1 rounded-full;
+    background: var(--mint-bg);
+    color: var(--mint-deep);
+  }
+
+  /* btn-primary alias → mint */
+  .btn-primary { @apply btn-mint; }
 }
 
-/* Animations */
+/* ── Keyframes ── */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-
 @keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(26px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(-13px); }
 }
 
-.animate-fadeIn {
-  animation: fadeIn 0.6s ease-out forwards;
-}
+.animate-fadeIn  { animation: fadeIn  0.8s ease-out forwards; }
+.animate-slideUp { animation: slideUp 0.7s ease-out forwards; }
+.animate-float   { animation: float   8s ease-in-out infinite; }
 
-.animate-slideUp {
-  animation: slideUp 0.5s ease-out forwards;
-}
+/* ── Scrollbar ── */
+::-webkit-scrollbar        { width: 5px; }
+::-webkit-scrollbar-track  { background: #FFF0F5; }
+::-webkit-scrollbar-thumb  { background: #F9C4D8; border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: #F2A0B8; }
+
+/* ── Selection ── */
+::selection { background: #FDDAEA; color: var(--text); }
