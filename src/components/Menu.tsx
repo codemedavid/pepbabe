@@ -110,36 +110,7 @@ const Menu: React.FC<MenuProps> = ({ menuItems, addToCart, cartItems }) => {
         {/* ── Hero ── */}
         <Hero onShopAll={() => productsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })} />
 
-        {/* ── Why Peptherapy PH ── */}
-        <section className="py-20 md:py-24" style={{ background: '#FFFBFD' }}>
-          <div className="container mx-auto px-5 md:px-8">
-
-            {/* Section header */}
-       
-
-            {/* Features grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {WHY_ITEMS.map(({ icon: Icon, title, desc, iconColor, iconBg }) => (
-                <div
-                  key={title}
-                  className="group p-7 rounded-2xl bg-white transition-all duration-300 hover:-translate-y-2"
-                  style={{ border: '1px solid rgba(44,27,46,0.07)', boxShadow: '0 1px 4px rgba(44,27,46,0.04)' }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.boxShadow = '0 10px 40px rgba(242,160,184,0.15), 0 2px 8px rgba(44,27,46,0.06)'; (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(242,160,184,0.35)'; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.boxShadow = '0 1px 4px rgba(44,27,46,0.04)'; (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(44,27,46,0.07)'; }}
-                >
-                  <div
-                    className="w-11 h-11 rounded-xl flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110"
-                    style={{ background: iconBg }}
-                  >
-                    <Icon className="w-5 h-5" style={{ color: iconColor }} />
-                  </div>
-                  <h3 className="font-heading font-semibold text-base mb-2" style={{ color: '#2C1B2E' }}>{title}</h3>
-                  <p className="font-sans text-sm leading-relaxed" style={{ color: '#75607C' }}>{desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+  
 
         {/* ── Products Section ── */}
         <section
