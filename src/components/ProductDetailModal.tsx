@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { X, Package, ShoppingCart, Plus, Minus, FlaskConical, Thermometer, Weight, Hash } from 'lucide-react';
 import type { Product, ProductVariation } from '../types';
+import { useReviews } from '../hooks/useReviews';
 
 interface ProductDetailModalProps {
   product: Product;
@@ -9,6 +11,16 @@ interface ProductDetailModalProps {
 }
 
 const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClose, onAddToCart }) => {
+  const { getReviewsForProduct } = useReviews();
+  const navigate = useNavigate();
+  const [productReviews, setProductReviews] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (product.id) {
+      getReviewsForProduct(product.id).then(setProductReviews).catch(console.error);
+    }
+  }, [product.id]);
+
   const [imageError, setImageError] = useState(false);
   const [selectedVariation, setSelectedVariation] = useState<ProductVariation | undefined>(
     product.variations?.find(v => v.stock_quantity > 0) ?? product.variations?.[0]
@@ -557,6 +569,69 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
                   )}
                 </div>
               </div>
+
+              {/* ── Customer Reviews ─────────────────────── */}
+              {productReviews.length > 0 && (
+                <div className="mt-4">
+                  <p
+                    className="font-sans text-[11px] font-semibold uppercase tracking-widest mb-3 px-1"
+                    style={{ color: '#9A8AA0' }}
+                  >
+                    Customer Reviews
+                  </p>
+                  <div className="space-y-2">
+                    {productReviews.slice(0, 3).map((review) => (
+                      <div
+                        key={review.id}
+                        className="flex items-center gap-3 rounded-xl p-3"
+                        style={{
+                          background: '#FAF7FB',
+                          border: '1px solid rgba(44,27,46,0.07)',
+                        }}
+                      >
+                        {review.image_url && (
+                          <img
+                            src={review.image_url}
+                            alt={review.title || 'Review'}
+                            className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                          />
+                        )}
+                        <div className="flex-1 min-w-0">
+                          {review.title && (
+                            <p
+                              className="text-xs font-semibold truncate"
+                              style={{ color: '#2C1B2E' }}
+                            >
+                              {review.title}
+                            </p>
+                          )}
+                          {review.content && (
+                            <p
+                              className="text-xs line-clamp-2"
+                              style={{ color: '#75607C' }}
+                            >
+                              {review.content}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <button
+                    onClick={() => {
+                      onClose();
+                      navigate('/reviews');
+                    }}
+                    className="w-full mt-3 py-2.5 rounded-xl text-xs font-semibold transition-colors"
+                    style={{
+                      background: '#FFF0F5',
+                      color: '#E87898',
+                    }}
+                  >
+                    See All Reviews
+                  </button>
+                </div>
+              )}
 
               {/* Bottom safe area spacer */}
               <div className="h-4" />
