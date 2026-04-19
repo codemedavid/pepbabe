@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ShoppingCart, Menu, X, FlaskConical, Truck, HelpCircle, FileText, BookOpen } from 'lucide-react';
+import { ShoppingCart, Menu, X, FlaskConical, Truck, HelpCircle, FileText, BookOpen, Star } from 'lucide-react';
 
 interface HeaderProps {
   cartItemsCount: number;
@@ -23,6 +23,7 @@ const Header: React.FC<HeaderProps> = ({ cartItemsCount, onCartClick, onMenuClic
     { label: 'FAQ',         href: '/faq',           isButton: false, icon: HelpCircle },
     { label: 'COA',         href: '/coa',           isButton: false, icon: FileText },
     { label: 'Protocols',   href: '/protocols',     isButton: false, icon: BookOpen },
+    { label: 'Reviews',     href: '/reviews',       isButton: false, icon: Star },
   ];
 
   return (

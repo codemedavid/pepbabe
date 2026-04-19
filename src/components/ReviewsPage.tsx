@@ -66,7 +66,7 @@ const ReviewsPage: React.FC = () => {
                   <img
                     src={review.image_url}
                     alt={review.title || 'Review'}
-                    className="w-full object-cover"
+                    className="w-full object-cover min-h-[220px]"
                     loading="lazy"
                   />
                 )}

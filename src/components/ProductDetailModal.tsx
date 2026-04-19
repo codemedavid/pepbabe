@@ -579,11 +579,11 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
                   >
                     Customer Reviews
                   </p>
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     {productReviews.slice(0, 3).map((review) => (
                       <div
                         key={review.id}
-                        className="flex items-center gap-3 rounded-xl p-3"
+                        className="rounded-2xl overflow-hidden"
                         style={{
                           background: '#FAF7FB',
                           border: '1px solid rgba(44,27,46,0.07)',
@@ -593,27 +593,30 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
                           <img
                             src={review.image_url}
                             alt={review.title || 'Review'}
-                            className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                            className="w-full object-cover"
+                            style={{ maxHeight: '320px', minHeight: '180px' }}
                           />
                         )}
-                        <div className="flex-1 min-w-0">
-                          {review.title && (
-                            <p
-                              className="text-xs font-semibold truncate"
-                              style={{ color: '#2C1B2E' }}
-                            >
-                              {review.title}
-                            </p>
-                          )}
-                          {review.content && (
-                            <p
-                              className="text-xs line-clamp-2"
-                              style={{ color: '#75607C' }}
-                            >
-                              {review.content}
-                            </p>
-                          )}
-                        </div>
+                        {(review.title || review.content) && (
+                          <div className="px-3 py-2.5">
+                            {review.title && (
+                              <p
+                                className="text-xs font-semibold"
+                                style={{ color: '#2C1B2E' }}
+                              >
+                                {review.title}
+                              </p>
+                            )}
+                            {review.content && (
+                              <p
+                                className="text-xs mt-0.5 line-clamp-3"
+                                style={{ color: '#75607C' }}
+                              >
+                                {review.content}
+                              </p>
+                            )}
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
