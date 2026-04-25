@@ -28,14 +28,6 @@ const Header: React.FC<HeaderProps> = ({ cartItemsCount, onCartClick, onMenuClic
 
   return (
     <>
-      {/* ── Announcement bar ── */}
-      <div
-        className="text-center py-2.5 px-4 text-xs font-sans font-medium tracking-wide"
-        style={{ background: 'linear-gradient(90deg, #FCD3E5, #C7E2FB, #FCD3E5)', color: '#5B2828' }}
-      >
-        ✨ Free shipping on orders over ₱5,000 &nbsp;·&nbsp; 99%+ purity certified on every batch ✨
-      </div>
-
       {/* ── Main header ── */}
       <header
         className="sticky top-0 z-50 bg-white/95 backdrop-blur-md transition-all duration-300"
