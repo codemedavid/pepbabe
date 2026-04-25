@@ -1,35 +1,40 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Quicksand:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* ─────────────────────────────────────────────
-   Peptherapy PH — Simple Luxury
-   Soft Pink × Mint Green
+   Pepbabe — Cute Holographic
+   Light Pink × Light Blue × Maroon
 ───────────────────────────────────────────── */
 :root {
-  --pink:        #F2A0B8;
-  --pink-light:  #FDDAEA;
-  --pink-deep:   #E87898;
-  --pink-bg:     #FFF0F5;
+  --pink:        #F5A0BE;
+  --pink-light:  #FCD3E5;
+  --pink-deep:   #E25C95;
+  --pink-bg:     #FFEAF3;
 
-  --mint:        #4BB88A;
-  --mint-light:  #AAE5CC;
-  --mint-deep:   #349E72;
-  --mint-bg:     #F0FAF5;
+  --blue:        #7CB6E8;
+  --blue-light:  #C7E2FB;
+  --blue-deep:   #5294D5;
+  --blue-bg:     #E3F1FE;
 
-  --cream:       #FFFBFD;
-  --warm-white:  #FFF6F9;
-  --surface:     #FFF0F5;
+  --maroon:        #5B2828;
+  --maroon-deep:   #421C1C;
+  --maroon-soft:   #8B3A3A;
+  --maroon-copper: #8B4423;
 
-  --text:        #2C1B2E;
-  --text-mid:    #5A4760;
-  --text-soft:   #9A8AA0;
+  --cream:       #FFF7FB;
+  --warm-white:  #FFF0F7;
+  --surface:     #FFEAF3;
 
-  --border:      rgba(44,27,46,0.09);
-  --border-pink: rgba(242,160,184,0.35);
-  --border-mint: rgba(75,184,138,0.30);
+  --text:        #5B2828;
+  --text-mid:    #7E3434;
+  --text-soft:   #B96A6A;
+
+  --border:      rgba(91,40,40,0.10);
+  --border-pink: rgba(245,160,190,0.40);
+  --border-blue: rgba(124,182,232,0.35);
 }
 
 @layer base {
@@ -44,80 +49,81 @@
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading font-medium tracking-tight;
-    color: var(--text);
+    color: var(--maroon);
     line-height: 1.1;
   }
 }
 
 @layer components {
 
-  /* ── Primary CTA — Mint ── */
+  /* ── Primary CTA — Pink (cute primary) ── */
   .btn-mint {
     @apply inline-flex items-center justify-center gap-2 px-8 py-3.5
            rounded-full font-sans font-medium text-sm text-white
            transition-all duration-200 select-none tracking-wide;
-    background: var(--mint);
-    box-shadow: 0 4px 18px rgba(75,184,138,0.30);
+    background: linear-gradient(135deg, #F593BC 0%, #F5A0BE 50%, #82BBF0 100%);
+    box-shadow: 0 4px 18px rgba(245,160,190,0.40);
     letter-spacing: 0.02em;
   }
   .btn-mint:hover {
-    background: var(--mint-deep);
-    box-shadow: 0 6px 24px rgba(75,184,138,0.38);
+    background: linear-gradient(135deg, #E25C95 0%, #F593BC 50%, #5294D5 100%);
+    box-shadow: 0 6px 24px rgba(245,160,190,0.50);
     transform: translateY(-1px);
   }
   .btn-mint:active { transform: translateY(0); }
 
-  /* ── Secondary — Pink ── */
+  /* ── Secondary — Light Blue ── */
   .btn-pink {
     @apply inline-flex items-center justify-center gap-2 px-8 py-3.5
            rounded-full font-sans font-medium text-sm
            transition-all duration-200 select-none tracking-wide;
-    background: var(--pink-light);
-    color: var(--pink-deep);
+    background: var(--blue-light);
+    color: var(--maroon);
     letter-spacing: 0.02em;
+    border: 1px solid rgba(124,182,232,0.5);
   }
   .btn-pink:hover {
-    background: #F9C4D8;
+    background: #A5CFF7;
     transform: translateY(-1px);
   }
 
-  /* ── Ghost / Outline ── */
+  /* ── Ghost / Outline (maroon) ── */
   .btn-outline {
     @apply inline-flex items-center justify-center gap-2 px-8 py-3.5
            rounded-full font-sans font-medium text-sm border
            transition-all duration-200 select-none tracking-wide;
-    border-color: var(--border-mint);
-    color: var(--mint-deep);
+    border-color: var(--border-pink);
+    color: var(--maroon);
     background: transparent;
     letter-spacing: 0.02em;
   }
   .btn-outline:hover {
-    background: var(--mint-bg);
-    border-color: var(--mint);
+    background: var(--pink-bg);
+    border-color: var(--pink);
   }
 
   .btn-outline-dark {
     @apply inline-flex items-center justify-center gap-2 px-8 py-3.5
-           rounded-full font-sans font-medium text-sm border border-white/25 text-white
+           rounded-full font-sans font-medium text-sm border border-white/30 text-white
            transition-all duration-200 select-none tracking-wide;
-    background: rgba(255,255,255,0.07);
+    background: rgba(255,255,255,0.08);
     backdrop-filter: blur(8px);
     letter-spacing: 0.02em;
   }
   .btn-outline-dark:hover {
-    background: rgba(255,255,255,0.14);
-    border-color: rgba(255,255,255,0.45);
+    background: rgba(255,255,255,0.16);
+    border-color: rgba(255,255,255,0.5);
   }
 
   /* ── Card ── */
   .card {
     @apply bg-white rounded-2xl transition-all duration-300;
     border: 1px solid var(--border);
-    box-shadow: 0 1px 4px rgba(44,27,46,0.05);
+    box-shadow: 0 1px 4px rgba(91,40,40,0.05);
   }
   .card:hover {
     border-color: var(--border-pink);
-    box-shadow: 0 8px 32px rgba(242,160,184,0.14), 0 2px 8px rgba(44,27,46,0.06);
+    box-shadow: 0 8px 32px rgba(245,160,190,0.18), 0 2px 8px rgba(124,182,232,0.10);
     transform: translateY(-3px);
   }
 
@@ -129,20 +135,20 @@
     border: 1px solid var(--border);
   }
   .input-field:focus {
-    border-color: var(--mint);
-    box-shadow: 0 0 0 3px rgba(75,184,138,0.15);
+    border-color: var(--pink);
+    box-shadow: 0 0 0 3px rgba(245,160,190,0.18);
   }
 
   /* ── Section label ── */
   .section-label {
     @apply font-sans font-medium text-xs tracking-[0.18em] uppercase;
-    color: var(--mint-deep);
+    color: var(--maroon-copper);
   }
 
   /* ── Divider ── */
   .divider {
     @apply w-12 h-px mx-auto;
-    background: linear-gradient(90deg, var(--pink-light), var(--mint-light));
+    background: linear-gradient(90deg, var(--pink-light), var(--blue-light));
   }
 
   /* ── Tag / Pill ── */
@@ -153,12 +159,28 @@
   }
   .pill-mint {
     @apply inline-flex items-center gap-1.5 text-xs font-sans font-medium px-3 py-1 rounded-full;
-    background: var(--mint-bg);
-    color: var(--mint-deep);
+    background: var(--blue-bg);
+    color: var(--blue-deep);
   }
 
-  /* btn-primary alias → mint */
+  /* btn-primary alias → pink-blue gradient */
   .btn-primary { @apply btn-mint; }
+
+  /* ── Holographic shimmer (matches logo) ── */
+  .holo-text {
+    background: linear-gradient(135deg, #F593BC 0%, #C7E2FB 35%, #F5A0BE 65%, #82BBF0 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 6s ease-in-out infinite;
+  }
+
+  .holo-bg {
+    background: linear-gradient(135deg, #FCD3E5 0%, #E3F1FE 50%, #FCD3E5 100%);
+    background-size: 200% 200%;
+    animation: shimmer 8s ease-in-out infinite;
+  }
 }
 
 /* ── Keyframes ── */
@@ -174,16 +196,20 @@
   0%,100% { transform: translateY(0); }
   50%     { transform: translateY(-13px); }
 }
+@keyframes shimmer {
+  0%,100% { background-position: 0% 50%; }
+  50%     { background-position: 100% 50%; }
+}
 
 .animate-fadeIn  { animation: fadeIn  0.8s ease-out forwards; }
 .animate-slideUp { animation: slideUp 0.7s ease-out forwards; }
 .animate-float   { animation: float   8s ease-in-out infinite; }
 
 /* ── Scrollbar ── */
-::-webkit-scrollbar        { width: 5px; }
-::-webkit-scrollbar-track  { background: #FFF0F5; }
-::-webkit-scrollbar-thumb  { background: #F9C4D8; border-radius: 8px; }
-::-webkit-scrollbar-thumb:hover { background: #F2A0B8; }
+::-webkit-scrollbar        { width: 6px; }
+::-webkit-scrollbar-track  { background: #FFEAF3; }
+::-webkit-scrollbar-thumb  { background: linear-gradient(180deg, #F9B7D2, #C7E2FB); border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #F593BC, #82BBF0); }
 
 /* ── Selection ── */
-::selection { background: #FDDAEA; color: var(--text); }
+::selection { background: #FCD3E5; color: var(--maroon); }

@@ -112,8 +112,8 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
             transform: visible ? 'translateY(0)' : 'translateY(100%)',
             transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)',
             borderRadius: '28px 28px 0 0',
-            background: '#FFFBFD',
-            boxShadow: '0 -12px 60px rgba(44,27,46,0.18), 0 -2px 8px rgba(44,27,46,0.06)',
+            background: '#FFF7FB',
+            boxShadow: '0 -12px 60px rgba(91,40,40,0.18), 0 -2px 8px rgba(91,40,40,0.06)',
             maxHeight: '92dvh',
             display: 'flex',
             flexDirection: 'column',
@@ -123,7 +123,7 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
           <div className="flex-shrink-0 flex justify-center pt-3.5 pb-2">
             <div
               className="w-9 h-1"
-              style={{ background: 'rgba(44,27,46,0.12)', borderRadius: '999px' }}
+              style={{ background: 'rgba(91,40,40,0.12)', borderRadius: '999px' }}
             />
           </div>
 
@@ -133,7 +133,7 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
             {/* ── Hero Image ─────────────────────────────── */}
             <div
               className="relative flex-shrink-0 overflow-hidden"
-              style={{ height: '240px', background: '#FFF0F5' }}
+              style={{ height: '240px', background: '#FFEAF3' }}
             >
               {product.image_url && !imageError ? (
                 <img
@@ -144,7 +144,7 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
-                  <Package className="w-20 h-20" style={{ color: '#F9C4D8' }} />
+                  <Package className="w-20 h-20" style={{ color: '#FCD3E5' }} />
                 </div>
               )}
 
@@ -163,12 +163,12 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
                   backdropFilter: 'blur(10px)',
                   WebkitBackdropFilter: 'blur(10px)',
                   borderRadius: '50%',
-                  boxShadow: '0 2px 12px rgba(44,27,46,0.14)',
-                  border: '1px solid rgba(44,27,46,0.06)',
+                  boxShadow: '0 2px 12px rgba(91,40,40,0.14)',
+                  border: '1px solid rgba(91,40,40,0.06)',
                 }}
                 aria-label="Close"
               >
-                <X className="w-4 h-4" style={{ color: '#2C1B2E' }} />
+                <X className="w-4 h-4" style={{ color: '#5B2828' }} />
               </button>
 
               {/* Badges */}
@@ -176,7 +176,7 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
                 {product.featured && (
                   <span
                     className="px-2.5 py-0.5 text-[10px] font-sans font-semibold uppercase tracking-wider rounded-full text-white"
-                    style={{ background: '#4BB88A', boxShadow: '0 2px 8px rgba(75,184,138,0.35)' }}
+                    style={{ background: '#E25C95', boxShadow: '0 2px 8px rgba(226,92,149,0.35)' }}
                   >
                     Featured
                   </span>
@@ -184,7 +184,7 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
                 {hasDiscount && (
                   <span
                     className="px-2.5 py-0.5 text-[10px] font-sans font-semibold rounded-full text-white"
-                    style={{ background: '#E87898', boxShadow: '0 2px 8px rgba(232,120,152,0.35)' }}
+                    style={{ background: '#E25C95', boxShadow: '0 2px 8px rgba(232,120,152,0.35)' }}
                   >
                     {discountPct}% off
                   </span>
@@ -192,7 +192,7 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
                 {!product.available && (
                   <span
                     className="px-2.5 py-0.5 text-[10px] font-sans font-semibold rounded-full uppercase tracking-wide"
-                    style={{ background: 'rgba(255,255,255,0.92)', color: '#9A8AA0', border: '1px solid rgba(44,27,46,0.1)' }}
+                    style={{ background: 'rgba(255,255,255,0.92)', color: '#B96A6A', border: '1px solid rgba(91,40,40,0.1)' }}
                   >
                     Unavailable
                   </span>
@@ -209,7 +209,7 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
               <div className="mb-4">
                 <h2
                   className="font-heading font-semibold leading-tight mb-2"
-                  style={{ fontSize: 'clamp(1.3rem, 5vw, 1.7rem)', color: '#2C1B2E' }}
+                  style={{ fontSize: 'clamp(1.3rem, 5vw, 1.7rem)', color: '#5B2828' }}
                 >
                   {product.name}
                 </h2>
@@ -217,7 +217,7 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
                   {product.purity_percentage > 0 && (
                     <span
                       className="inline-flex items-center gap-1 text-[11px] font-sans font-semibold px-2.5 py-1 rounded-full"
-                      style={{ background: '#F0FAF5', color: '#349E72', border: '1px solid rgba(75,184,138,0.2)' }}
+                      style={{ background: '#E3F1FE', color: '#C73D7A', border: '1px solid rgba(226,92,149,0.2)' }}
                     >
                       <FlaskConical className="w-2.5 h-2.5" />
                       {product.purity_percentage}% Purity
@@ -226,7 +226,7 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
                   {product.cas_number && (
                     <span
                       className="inline-flex items-center gap-1 text-[11px] font-sans px-2.5 py-1 rounded-full"
-                      style={{ background: '#FAF7FB', color: '#9A8AA0', border: '1px solid rgba(44,27,46,0.08)' }}
+                      style={{ background: '#FBF5F4', color: '#B96A6A', border: '1px solid rgba(91,40,40,0.08)' }}
                     >
                       CAS {product.cas_number}
                     </span>
@@ -237,11 +237,11 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
               {/* ── Price ────────────────────────────────── */}
               <div
                 className="flex items-center gap-3 mb-5 pb-5"
-                style={{ borderBottom: '1px solid rgba(44,27,46,0.07)' }}
+                style={{ borderBottom: '1px solid rgba(91,40,40,0.07)' }}
               >
                 <span
                   className="font-heading font-semibold"
-                  style={{ fontSize: 'clamp(1.6rem, 6vw, 2.1rem)', color: '#2C1B2E', lineHeight: 1 }}
+                  style={{ fontSize: 'clamp(1.6rem, 6vw, 2.1rem)', color: '#5B2828', lineHeight: 1 }}
                 >
                   ₱{fmt(currentPrice)}
                 </span>
@@ -249,13 +249,13 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
                   <>
                     <span
                       className="font-sans text-sm line-through"
-                      style={{ color: '#BFB3C3' }}
+                      style={{ color: '#D29797' }}
                     >
                       ₱{fmt(originalPrice)}
                     </span>
                     <span
                       className="font-sans text-[11px] font-semibold px-2 py-0.5 rounded-full"
-                      style={{ background: '#FFF0F5', color: '#E87898', border: '1px solid rgba(232,120,152,0.2)' }}
+                      style={{ background: '#FFEAF3', color: '#E25C95', border: '1px solid rgba(232,120,152,0.2)' }}
                     >
                       Save {discountPct}%
                     </span>
@@ -268,7 +268,7 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
                 <div className="mb-5">
                   <p
                     className="font-sans text-[11px] font-semibold uppercase tracking-widest mb-3"
-                    style={{ color: '#9A8AA0' }}
+                    style={{ color: '#B96A6A' }}
                   >
                     Select Format
                   </p>
@@ -287,17 +287,17 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
                           className="relative p-3.5 text-left transition-all duration-150 active:scale-[0.98]"
                           style={{
                             borderRadius: '14px',
-                            border: `1.5px solid ${isSelected && !oos ? '#4BB88A' : oos ? 'rgba(44,27,46,0.07)' : 'rgba(44,27,46,0.1)'}`,
-                            background: isSelected && !oos ? '#F0FAF5' : oos ? '#FAF7FB' : 'white',
+                            border: `1.5px solid ${isSelected && !oos ? '#E25C95' : oos ? 'rgba(91,40,40,0.07)' : 'rgba(91,40,40,0.1)'}`,
+                            background: isSelected && !oos ? '#E3F1FE' : oos ? '#FBF5F4' : 'white',
                             cursor: oos ? 'not-allowed' : 'pointer',
-                            boxShadow: isSelected && !oos ? '0 0 0 3px rgba(75,184,138,0.12)' : 'none',
+                            boxShadow: isSelected && !oos ? '0 0 0 3px rgba(226,92,149,0.12)' : 'none',
                           }}
                         >
                           {/* Selected indicator */}
                           {isSelected && !oos && (
                             <span
                               className="absolute top-2.5 right-2.5 w-4 h-4 flex items-center justify-center rounded-full"
-                              style={{ background: '#4BB88A' }}
+                              style={{ background: '#E25C95' }}
                             >
                               <svg width="8" height="6" viewBox="0 0 8 6" fill="none">
                                 <path d="M1 3L3 5L7 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -307,21 +307,21 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
 
                           <div
                             className="font-sans font-semibold text-sm mb-0.5 pr-5"
-                            style={{ color: oos ? '#BFB3C3' : isSelected ? '#349E72' : '#2C1B2E' }}
+                            style={{ color: oos ? '#D29797' : isSelected ? '#C73D7A' : '#5B2828' }}
                           >
                             {variation.name}
                           </div>
                           <div className="flex items-baseline gap-1.5">
                             <span
                               className="font-sans text-xs font-medium"
-                              style={{ color: oos ? '#BFB3C3' : isSelected ? '#4BB88A' : '#9A8AA0' }}
+                              style={{ color: oos ? '#D29797' : isSelected ? '#E25C95' : '#B96A6A' }}
                             >
                               ₱{fmt(varPrice)}
                             </span>
                             {varHasDiscount && (
                               <span
                                 className="font-sans text-[10px] line-through"
-                                style={{ color: '#DDD5E0' }}
+                                style={{ color: '#E5C0C0' }}
                               >
                                 ₱{fmt(variation.price)}
                               </span>
@@ -330,7 +330,7 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
                           {oos && (
                             <div
                               className="font-sans text-[10px] font-semibold mt-1"
-                              style={{ color: '#E87898' }}
+                              style={{ color: '#E25C95' }}
                             >
                               Out of stock
                             </div>
@@ -345,7 +345,7 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
               {/* ── Quantity + Total ─────────────────────── */}
               <div
                 className="flex items-center gap-4 mb-5 p-4 rounded-2xl"
-                style={{ background: '#FAF7FB', border: '1px solid rgba(44,27,46,0.06)' }}
+                style={{ background: '#FBF5F4', border: '1px solid rgba(91,40,40,0.06)' }}
               >
                 {/* Stepper */}
                 <div className="flex items-center gap-3">
@@ -354,8 +354,8 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
                     className="w-9 h-9 flex items-center justify-center rounded-xl transition-all active:scale-90"
                     style={{
                       background: 'white',
-                      border: '1.5px solid rgba(44,27,46,0.1)',
-                      color: quantity <= 1 ? '#DDD5E0' : '#5A4760',
+                      border: '1.5px solid rgba(91,40,40,0.1)',
+                      color: quantity <= 1 ? '#E5C0C0' : '#7E3434',
                     }}
                     aria-label="Decrease quantity"
                   >
@@ -363,7 +363,7 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
                   </button>
                   <span
                     className="font-heading font-semibold text-xl min-w-[1.75rem] text-center"
-                    style={{ color: '#2C1B2E' }}
+                    style={{ color: '#5B2828' }}
                   >
                     {quantity}
                   </span>
@@ -372,8 +372,8 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
                     className="w-9 h-9 flex items-center justify-center rounded-xl transition-all active:scale-90"
                     style={{
                       background: 'white',
-                      border: '1.5px solid rgba(44,27,46,0.1)',
-                      color: '#5A4760',
+                      border: '1.5px solid rgba(91,40,40,0.1)',
+                      color: '#7E3434',
                     }}
                     aria-label="Increase quantity"
                   >
@@ -381,16 +381,16 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
                   </button>
                 </div>
 
-                <div className="w-px self-stretch" style={{ background: 'rgba(44,27,46,0.08)' }} />
+                <div className="w-px self-stretch" style={{ background: 'rgba(91,40,40,0.08)' }} />
 
                 {/* Total */}
                 <div className="flex-1">
-                  <div className="font-sans text-[11px] uppercase tracking-wider mb-0.5" style={{ color: '#9A8AA0' }}>
+                  <div className="font-sans text-[11px] uppercase tracking-wider mb-0.5" style={{ color: '#B96A6A' }}>
                     Total
                   </div>
                   <div
                     className="font-heading font-semibold"
-                    style={{ fontSize: '1.25rem', color: '#2C1B2E', lineHeight: 1.1 }}
+                    style={{ fontSize: '1.25rem', color: '#5B2828', lineHeight: 1.1 }}
                   >
                     ₱{fmt(currentPrice * quantity)}
                   </div>
@@ -408,16 +408,16 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
                   ...(isAvailable
                     ? {
                         background: added
-                          ? '#349E72'
-                          : 'linear-gradient(135deg, #4BB88A 0%, #3AAD7E 100%)',
+                          ? '#C73D7A'
+                          : 'linear-gradient(135deg, #E25C95 0%, #D4509A 100%)',
                         color: 'white',
                         boxShadow: added
                           ? '0 4px 16px rgba(52,158,114,0.4)'
-                          : '0 4px 20px rgba(75,184,138,0.38)',
+                          : '0 4px 20px rgba(226,92,149,0.38)',
                       }
                     : {
-                        background: '#F0ECF2',
-                        color: '#BFB3C3',
+                        background: '#F4E4E4',
+                        color: '#D29797',
                         cursor: 'not-allowed',
                       }),
                 }}
@@ -451,7 +451,7 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
                 return stockLeft > 0 && stockLeft <= 10 ? (
                   <p
                     className="text-center font-sans text-[11px] font-medium mb-4"
-                    style={{ color: '#E87898' }}
+                    style={{ color: '#E25C95' }}
                   >
                     Only {stockLeft} left in stock — order soon
                   </p>
@@ -461,11 +461,11 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
               {/* ── Description ──────────────────────────── */}
               <div
                 className="pt-5 mt-2"
-                style={{ borderTop: '1px solid rgba(44,27,46,0.07)' }}
+                style={{ borderTop: '1px solid rgba(91,40,40,0.07)' }}
               >
                 <p
                   className="font-sans text-sm leading-relaxed"
-                  style={{ color: '#75607C' }}
+                  style={{ color: '#9C4848' }}
                 >
                   {product.description}
                 </p>
@@ -476,13 +476,13 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
                 <div
                   className="mt-4 p-4 rounded-2xl"
                   style={{
-                    background: 'linear-gradient(135deg, #F0FAF5 0%, #E8F7F0 100%)',
-                    border: '1px solid rgba(75,184,138,0.18)',
+                    background: 'linear-gradient(135deg, #E3F1FE 0%, #FCD3E5 100%)',
+                    border: '1px solid rgba(226,92,149,0.18)',
                   }}
                 >
                   <p
                     className="font-sans text-[11px] font-semibold uppercase tracking-widest mb-3"
-                    style={{ color: '#349E72' }}
+                    style={{ color: '#C73D7A' }}
                   >
                     Kit Inclusions
                   </p>
@@ -491,11 +491,11 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
                       <li
                         key={i}
                         className="flex items-start gap-2.5 font-sans text-sm"
-                        style={{ color: '#5A4760' }}
+                        style={{ color: '#7E3434' }}
                       >
                         <span
                           className="flex-shrink-0 w-4 h-4 rounded-full flex items-center justify-center mt-0.5"
-                          style={{ background: '#4BB88A' }}
+                          style={{ background: '#E25C95' }}
                         >
                           <svg width="8" height="6" viewBox="0 0 8 6" fill="none">
                             <path d="M1 3L3 5L7 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -511,15 +511,15 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
               {/* ── Technical Details ─────────────────────── */}
               <div
                 className="mt-4 rounded-2xl overflow-hidden"
-                style={{ border: '1px solid rgba(44,27,46,0.07)' }}
+                style={{ border: '1px solid rgba(91,40,40,0.07)' }}
               >
                 <div
                   className="px-4 py-3"
-                  style={{ background: '#FAF7FB', borderBottom: '1px solid rgba(44,27,46,0.07)' }}
+                  style={{ background: '#FBF5F4', borderBottom: '1px solid rgba(91,40,40,0.07)' }}
                 >
                   <p
                     className="font-sans text-[11px] font-semibold uppercase tracking-widest"
-                    style={{ color: '#9A8AA0' }}
+                    style={{ color: '#B96A6A' }}
                   >
                     Technical Details
                   </p>
@@ -527,42 +527,42 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
                 <div className="divide-y" style={{ background: 'white', '--tw-divide-opacity': 1 } as React.CSSProperties}>
                   {product.purity_percentage > 0 && (
                     <div className="flex items-center justify-between px-4 py-3">
-                      <span className="flex items-center gap-2 font-sans text-xs" style={{ color: '#9A8AA0' }}>
+                      <span className="flex items-center gap-2 font-sans text-xs" style={{ color: '#B96A6A' }}>
                         <FlaskConical className="w-3.5 h-3.5" />
                         Purity (HPLC)
                       </span>
-                      <span className="font-sans text-xs font-semibold" style={{ color: '#349E72' }}>
+                      <span className="font-sans text-xs font-semibold" style={{ color: '#C73D7A' }}>
                         {product.purity_percentage}%
                       </span>
                     </div>
                   )}
                   <div className="flex items-center justify-between px-4 py-3">
-                    <span className="flex items-center gap-2 font-sans text-xs" style={{ color: '#9A8AA0' }}>
+                    <span className="flex items-center gap-2 font-sans text-xs" style={{ color: '#B96A6A' }}>
                       <Thermometer className="w-3.5 h-3.5" />
                       Storage
                     </span>
-                    <span className="font-sans text-xs font-medium" style={{ color: '#5A4760' }}>
+                    <span className="font-sans text-xs font-medium" style={{ color: '#7E3434' }}>
                       {product.storage_conditions}
                     </span>
                   </div>
                   {product.molecular_weight && (
                     <div className="flex items-center justify-between px-4 py-3">
-                      <span className="flex items-center gap-2 font-sans text-xs" style={{ color: '#9A8AA0' }}>
+                      <span className="flex items-center gap-2 font-sans text-xs" style={{ color: '#B96A6A' }}>
                         <Weight className="w-3.5 h-3.5" />
                         Molecular Weight
                       </span>
-                      <span className="font-sans text-xs font-medium" style={{ color: '#5A4760' }}>
+                      <span className="font-sans text-xs font-medium" style={{ color: '#7E3434' }}>
                         {product.molecular_weight}
                       </span>
                     </div>
                   )}
                   {product.cas_number && (
                     <div className="flex items-center justify-between px-4 py-3">
-                      <span className="flex items-center gap-2 font-sans text-xs" style={{ color: '#9A8AA0' }}>
+                      <span className="flex items-center gap-2 font-sans text-xs" style={{ color: '#B96A6A' }}>
                         <Hash className="w-3.5 h-3.5" />
                         CAS Number
                       </span>
-                      <span className="font-sans text-xs font-medium" style={{ color: '#5A4760' }}>
+                      <span className="font-sans text-xs font-medium" style={{ color: '#7E3434' }}>
                         {product.cas_number}
                       </span>
                     </div>
@@ -575,7 +575,7 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
                 <div className="mt-4">
                   <p
                     className="font-sans text-[11px] font-semibold uppercase tracking-widest mb-3 px-1"
-                    style={{ color: '#9A8AA0' }}
+                    style={{ color: '#B96A6A' }}
                   >
                     Customer Reviews
                   </p>
@@ -585,8 +585,8 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
                         key={review.id}
                         className="rounded-2xl overflow-hidden"
                         style={{
-                          background: '#FAF7FB',
-                          border: '1px solid rgba(44,27,46,0.07)',
+                          background: '#FBF5F4',
+                          border: '1px solid rgba(91,40,40,0.07)',
                         }}
                       >
                         {review.image_url && (
@@ -602,7 +602,7 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
                             {review.title && (
                               <p
                                 className="text-xs font-semibold"
-                                style={{ color: '#2C1B2E' }}
+                                style={{ color: '#5B2828' }}
                               >
                                 {review.title}
                               </p>
@@ -610,7 +610,7 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
                             {review.content && (
                               <p
                                 className="text-xs mt-0.5 line-clamp-3"
-                                style={{ color: '#75607C' }}
+                                style={{ color: '#9C4848' }}
                               >
                                 {review.content}
                               </p>
@@ -627,8 +627,8 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
                     }}
                     className="w-full mt-3 py-2.5 rounded-xl text-xs font-semibold transition-colors"
                     style={{
-                      background: '#FFF0F5',
-                      color: '#E87898',
+                      background: '#FFEAF3',
+                      color: '#E25C95',
                     }}
                   >
                     See All Reviews

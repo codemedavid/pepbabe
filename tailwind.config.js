@@ -7,61 +7,69 @@ export default {
   theme: {
     extend: {
       colors: {
-        // ── Peptherapy PH — Simple Luxury ──
-        'theme-bg':   '#FFFBFD',
-        'theme-text': '#2C1B2E',
+        // ── Pepbabe — Cute Holographic ──
+        // Inspired by the iridescent vial logo: pastel pink × pastel blue × maroon
+        'theme-bg':   '#FFF7FB',
+        'theme-text': '#5B2828',
 
-        // Soft Pink (blush — decorative, warmth)
+        // Light Pink (primary brand — blush, sweet, cute)
         'pink': {
-          DEFAULT: '#F2A0B8',
-          50:  '#FFF8FB',
-          100: '#FFEEF5',
-          200: '#FDDAEA',
-          300: '#F9C4D8',
-          400: '#F5A8C5',
-          500: '#F2A0B8',
-          600: '#E87898',
-          700: '#D45070',
-          800: '#B03050',
-          900: '#7A1530',
+          DEFAULT: '#F5A0BE',
+          50:  '#FFF7FB',
+          100: '#FFEAF3',
+          200: '#FCD3E5',
+          300: '#F9B7D2',
+          400: '#F593BC',
+          500: '#F5A0BE',
+          600: '#E25C95',
+          700: '#C73D7A',
+          800: '#9A2A5C',
+          900: '#5B1838',
         },
 
-        // Mint Green (action, freshness, health)
+        // Light Blue (secondary — baby/sky, holographic shimmer)
+        // Token name kept as "mint" so existing class references (bg-mint-100,
+        // text-mint-700, surface-mint, btn-mint, shadow-mint) still resolve.
         'mint': {
-          DEFAULT: '#4BB88A',
-          50:  '#F0FAF5',
-          100: '#D5F2E5',
-          200: '#AAE5CC',
-          300: '#7DD8B3',
-          400: '#5CC99C',
-          500: '#4BB88A',
-          600: '#349E72',
-          700: '#26805C',
-          800: '#1A6145',
-          900: '#0F3F2C',
+          DEFAULT: '#7CB6E8',
+          50:  '#F4FAFF',
+          100: '#E3F1FE',
+          200: '#C7E2FB',
+          300: '#A5CFF7',
+          400: '#82BBF0',
+          500: '#7CB6E8',
+          600: '#5294D5',
+          700: '#3870AC',
+          800: '#285483',
+          900: '#1A395A',
         },
 
-        // Neutral — warm plum-tinted charcoal
+        // Maroon (text & dark surfaces — matches logo lettering)
+        // Token name kept as "charcoal" so existing references continue working.
         'charcoal': {
-          DEFAULT: '#2C1B2E',
-          50:  '#FAF7FB',
-          100: '#F0ECF2',
-          200: '#DDD5E0',
-          300: '#BFB3C3',
-          400: '#9A8AA0',
-          500: '#75607C',
-          600: '#5A4760',
-          700: '#3F2E45',
-          800: '#321D35',
-          900: '#2C1B2E',
+          DEFAULT: '#5B2828',
+          50:  '#FBF5F4',
+          100: '#F4E4E4',
+          200: '#E5C0C0',
+          300: '#D29797',
+          400: '#B96A6A',
+          500: '#9C4848',
+          600: '#7E3434',
+          700: '#5E2828',
+          800: '#421C1C',
+          900: '#2D1212',
         },
 
         // Utility
-        'cream':       '#FFFBFD',
-        'warm-white':  '#FFF6F9',
-        'surface':     '#FFF0F5',
-        'surface-mint':'#F0FAF5',
-        'gold':        '#C9A84C',
+        'cream':         '#FFF7FB',
+        'warm-white':    '#FFF0F7',
+        'surface':       '#FFEAF3',
+        'surface-mint':  '#E3F1FE', // light blue surface
+        'gold':          '#8B4423', // logo copper-maroon accent
+        'maroon':        '#6B2C2C',
+        'maroon-light':  '#8B3A3A',
+        'baby-blue':     '#C7E2FB',
+        'blush':         '#FCD3E5',
       },
 
       fontFamily: {
@@ -78,14 +86,14 @@ export default {
       },
 
       boxShadow: {
-        'xs':      '0 1px 2px rgba(44,27,46,0.05)',
-        'sm':      '0 2px 6px rgba(44,27,46,0.07)',
-        'DEFAULT': '0 2px 12px rgba(44,27,46,0.08)',
-        'md':      '0 4px 20px rgba(44,27,46,0.09)',
-        'lg':      '0 8px 36px rgba(44,27,46,0.10)',
-        'pink':    '0 6px 24px rgba(242,160,184,0.28)',
-        'mint':    '0 6px 24px rgba(75,184,138,0.28)',
-        'card':    '0 0 0 1px rgba(44,27,46,0.06), 0 4px 18px rgba(44,27,46,0.07)',
+        'xs':      '0 1px 2px rgba(91,40,40,0.05)',
+        'sm':      '0 2px 6px rgba(91,40,40,0.07)',
+        'DEFAULT': '0 2px 12px rgba(91,40,40,0.08)',
+        'md':      '0 4px 20px rgba(91,40,40,0.09)',
+        'lg':      '0 8px 36px rgba(91,40,40,0.10)',
+        'pink':    '0 6px 24px rgba(245,160,190,0.32)',
+        'mint':    '0 6px 24px rgba(124,182,232,0.32)', // light blue glow
+        'card':    '0 0 0 1px rgba(91,40,40,0.06), 0 4px 18px rgba(245,160,190,0.10)',
       },
 
       borderRadius: {
@@ -105,6 +113,7 @@ export default {
         'slideUp':   'slideUp 0.7s ease-out',
         'float':     'float 8s ease-in-out infinite',
         'pulse-slow':'pulse 5s cubic-bezier(0.4,0,0.6,1) infinite',
+        'shimmer':   'shimmer 6s ease-in-out infinite',
       },
 
       keyframes: {
@@ -119,6 +128,10 @@ export default {
         float: {
           '0%,100%': { transform: 'translateY(0)' },
           '50%':     { transform: 'translateY(-14px)' },
+        },
+        shimmer: {
+          '0%,100%': { backgroundPosition: '0% 50%' },
+          '50%':     { backgroundPosition: '100% 50%' },
         },
       },
     },

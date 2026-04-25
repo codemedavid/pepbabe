@@ -3,12 +3,12 @@ import { FlaskConical, Truck, HelpCircle, FileText, BookOpen, Leaf, Mail } from 
 
 const Footer: React.FC = () => {
   return (
-    <footer style={{ background: '#2C1B2E' }}>
+    <footer style={{ background: '#2D1212' }}>
 
-      {/* ── Pink-to-mint decorative top edge ── */}
+      {/* ── Pink-to-blue holographic top edge ── */}
       <div
         className="h-1 w-full"
-        style={{ background: 'linear-gradient(90deg, #F9C4D8, #F2A0B8, #AAE5CC, #7DD8B3, #AAE5CC, #F2A0B8, #F9C4D8)' }}
+        style={{ background: 'linear-gradient(90deg, #FCD3E5, #F593BC, #C7E2FB, #82BBF0, #C7E2FB, #F593BC, #FCD3E5)' }}
       />
 
       {/* ── Main content ── */}
@@ -18,16 +18,19 @@ const Footer: React.FC = () => {
           {/* Brand column */}
           <div className="lg:col-span-1">
             <img
-              src="/logo.png"
-              alt="Peptherapy PH"
-              className="h-12 w-auto object-contain mb-5"
-              style={{ filter: 'brightness(0) invert(1)' }}
+              src="/pepbabe-logo.jpg"
+              alt="Pepbabe"
+              className="h-20 w-auto object-contain mb-5 rounded-2xl"
+              style={{ boxShadow: '0 4px 24px rgba(245,160,190,0.35)' }}
             />
-            <p className="font-sans text-sm leading-relaxed mb-5" style={{ color: 'rgba(255,255,255,0.45)' }}>
-              Peptherapy PH — your trusted source for pharmaceutical-grade peptides in the Philippines. Health & vitality, backed by science.
+            <p className="font-sans text-sm leading-relaxed mb-2" style={{ color: 'rgba(255,255,255,0.65)' }}>
+              <span className="font-heading text-lg" style={{ color: '#FCD3E5' }}>Pepbabe</span> — peptide power, babe energy.
             </p>
-            <div className="flex items-center gap-2 text-xs font-sans" style={{ color: 'rgba(255,255,255,0.35)' }}>
-              <Leaf className="w-3.5 h-3.5" style={{ color: '#7DD8B3' }} />
+            <p className="font-sans text-sm leading-relaxed mb-5" style={{ color: 'rgba(255,255,255,0.45)' }}>
+              Cute, lab-tested peptides for the modern babe. Pharmaceutical-grade & delivered nationwide.
+            </p>
+            <div className="flex items-center gap-2 text-xs font-sans" style={{ color: 'rgba(255,255,255,0.45)' }}>
+              <Leaf className="w-3.5 h-3.5" style={{ color: '#C7E2FB' }} />
               99%+ Purity on every product
             </div>
           </div>
@@ -44,7 +47,7 @@ const Footer: React.FC = () => {
                     href="#"
                     className="font-sans text-sm transition-colors"
                     style={{ color: 'rgba(255,255,255,0.4)' }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = '#AAE5CC'; }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = '#C7E2FB'; }}
                     onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = 'rgba(255,255,255,0.4)'; }}
                   >
                     {item}
@@ -72,7 +75,7 @@ const Footer: React.FC = () => {
                     href={href}
                     className="flex items-center gap-2 font-sans text-sm transition-colors group"
                     style={{ color: 'rgba(255,255,255,0.4)' }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = '#F9C4D8'; }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = '#FCD3E5'; }}
                     onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = 'rgba(255,255,255,0.4)'; }}
                   >
                     <Icon className="w-3.5 h-3.5 flex-shrink-0" style={{ color: 'rgba(255,255,255,0.2)' }} />
@@ -106,9 +109,9 @@ const Footer: React.FC = () => {
               />
               <button
                 className="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-xl text-white transition-colors"
-                style={{ background: '#4BB88A' }}
-                onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = '#349E72'; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = '#4BB88A'; }}
+                style={{ background: '#E25C95' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = '#C73D7A'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = '#E25C95'; }}
                 aria-label="Subscribe"
               >
                 <Mail className="w-4 h-4" />
@@ -125,7 +128,7 @@ const Footer: React.FC = () => {
       <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
         <div className="container mx-auto px-5 md:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="font-sans text-xs" style={{ color: 'rgba(255,255,255,0.28)' }}>
-            © {new Date().getFullYear()} Peptherapy PH. All rights reserved.
+            © {new Date().getFullYear()} Pepbabe. All rights reserved.
           </p>
           <div className="flex items-center gap-5">
             {['Privacy Policy', 'Terms of Service', 'Shipping Policy'].map(item => (

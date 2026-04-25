@@ -35,22 +35,22 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
   return (
     <div
       className="group h-full flex flex-col bg-white overflow-hidden transition-all duration-300 rounded-2xl cursor-pointer"
-      style={{ border: '1px solid rgba(44,27,46,0.07)', boxShadow: '0 1px 4px rgba(44,27,46,0.04)' }}
+      style={{ border: '1px solid rgba(91,40,40,0.07)', boxShadow: '0 1px 4px rgba(91,40,40,0.04)' }}
       onMouseEnter={e => {
-        (e.currentTarget as HTMLDivElement).style.boxShadow = '0 10px 40px rgba(242,160,184,0.16), 0 2px 8px rgba(44,27,46,0.06)';
-        (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(242,160,184,0.40)';
+        (e.currentTarget as HTMLDivElement).style.boxShadow = '0 10px 40px rgba(245,160,190,0.16), 0 2px 8px rgba(91,40,40,0.06)';
+        (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(245,160,190,0.40)';
         (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-3px)';
       }}
       onMouseLeave={e => {
-        (e.currentTarget as HTMLDivElement).style.boxShadow = '0 1px 4px rgba(44,27,46,0.04)';
-        (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(44,27,46,0.07)';
+        (e.currentTarget as HTMLDivElement).style.boxShadow = '0 1px 4px rgba(91,40,40,0.04)';
+        (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(91,40,40,0.07)';
         (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)';
       }}
     >
       {/* ── Image ── */}
       <div
         className="relative overflow-hidden flex-shrink-0"
-        style={{ height: '144px', background: '#FFF8FB' }}
+        style={{ height: '144px', background: '#FFF7FB' }}
         onClick={() => onProductClick?.(product)}
       >
         {product.image_url && !imageError ? (
@@ -62,7 +62,7 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
-            <Package className="w-10 h-10" style={{ color: '#F9C4D8' }} />
+            <Package className="w-10 h-10" style={{ color: '#FCD3E5' }} />
           </div>
         )}
 
@@ -71,7 +71,7 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
           {product.featured && (
             <span
               className="px-2 py-0.5 text-[10px] font-sans font-semibold uppercase tracking-wider rounded-full text-white"
-              style={{ background: '#4BB88A' }}
+              style={{ background: '#E25C95' }}
             >
               Featured
             </span>
@@ -79,7 +79,7 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
           {hasDiscount && (
             <span
               className="px-2 py-0.5 text-[10px] font-sans font-semibold rounded-full text-white"
-              style={{ background: '#E87898' }}
+              style={{ background: '#E25C95' }}
             >
               {discountPct}% off
             </span>
@@ -91,7 +91,7 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
           <div className="absolute top-2.5 right-2.5 z-10">
             <span
               className="w-6 h-6 flex items-center justify-center rounded-full text-[11px] font-sans font-bold text-white"
-              style={{ background: '#4BB88A', boxShadow: '0 2px 8px rgba(75,184,138,0.4)' }}
+              style={{ background: '#E25C95', boxShadow: '0 2px 8px rgba(226,92,149,0.4)' }}
             >
               {cartQuantity}
             </span>
@@ -106,7 +106,7 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
           >
             <span
               className="text-xs font-sans font-semibold px-3 py-1.5 rounded-full uppercase tracking-wide"
-              style={{ background: '#F0ECF2', color: '#9A8AA0', border: '1px solid rgba(44,27,46,0.1)' }}
+              style={{ background: '#F4E4E4', color: '#B96A6A', border: '1px solid rgba(91,40,40,0.1)' }}
             >
               {!product.available ? 'Unavailable' : 'Out of Stock'}
             </span>
@@ -120,16 +120,16 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
         {/* Name */}
         <h3
           className="font-heading font-semibold text-sm sm:text-base mb-1 line-clamp-2 leading-snug transition-colors"
-          style={{ color: '#2C1B2E' }}
+          style={{ color: '#5B2828' }}
           onClick={() => onProductClick?.(product)}
-          onMouseEnter={e => { (e.currentTarget as HTMLHeadingElement).style.color = '#4BB88A'; }}
-          onMouseLeave={e => { (e.currentTarget as HTMLHeadingElement).style.color = '#2C1B2E'; }}
+          onMouseEnter={e => { (e.currentTarget as HTMLHeadingElement).style.color = '#E25C95'; }}
+          onMouseLeave={e => { (e.currentTarget as HTMLHeadingElement).style.color = '#5B2828'; }}
         >
           {product.name}
         </h3>
 
         {/* Description */}
-        <p className="font-sans text-[11px] sm:text-xs leading-relaxed mb-3 line-clamp-2" style={{ color: '#9A8AA0' }}>
+        <p className="font-sans text-[11px] sm:text-xs leading-relaxed mb-3 line-clamp-2" style={{ color: '#B96A6A' }}>
           {product.description}
         </p>
 
@@ -138,7 +138,7 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
           <div className="mb-3">
             <span
               className="inline-flex items-center text-[10px] font-sans font-semibold px-2.5 py-0.5 rounded-full"
-              style={{ background: '#F0FAF5', color: '#349E72' }}
+              style={{ background: '#E3F1FE', color: '#C73D7A' }}
             >
               {product.purity_percentage}% Purity
             </span>
@@ -150,7 +150,7 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
           <div className="mb-3">
             <span
               className="inline-flex items-center gap-1 text-[10px] font-sans px-2 py-0.5 rounded-full"
-              style={{ background: '#F0FAF5', color: '#4BB88A', border: '1px solid rgba(75,184,138,0.18)' }}
+              style={{ background: '#E3F1FE', color: '#E25C95', border: '1px solid rgba(226,92,149,0.18)' }}
             >
               {product.variations.length} option{product.variations.length > 1 ? 's' : ''} available
             </span>
@@ -160,13 +160,13 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
         <div className="flex-1" />
 
         {/* Price + CTA */}
-        <div className="pt-3 mt-2" style={{ borderTop: '1px solid rgba(44,27,46,0.06)' }}>
+        <div className="pt-3 mt-2" style={{ borderTop: '1px solid rgba(91,40,40,0.06)' }}>
           <div className="flex items-baseline gap-1.5 mb-3">
-            <span className="font-heading font-semibold text-base sm:text-lg" style={{ color: '#2C1B2E' }}>
+            <span className="font-heading font-semibold text-base sm:text-lg" style={{ color: '#5B2828' }}>
               ₱{currentPrice.toLocaleString('en-PH', { minimumFractionDigits: 0 })}
             </span>
             {hasDiscount && (
-              <span className="font-sans text-[11px] line-through" style={{ color: '#BFB3C3' }}>
+              <span className="font-sans text-[11px] line-through" style={{ color: '#D29797' }}>
                 ₱{originalPrice.toLocaleString('en-PH', { minimumFractionDigits: 0 })}
               </span>
             )}
@@ -186,11 +186,11 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
             className="w-full flex items-center justify-center gap-2 py-2.5 rounded-full text-xs sm:text-sm font-sans font-medium transition-all duration-200"
             style={
               isAvailable
-                ? { background: '#4BB88A', color: 'white', boxShadow: '0 3px 14px rgba(75,184,138,0.28)' }
-                : { background: '#F0ECF2', color: '#BFB3C3', cursor: 'not-allowed' }
+                ? { background: '#E25C95', color: 'white', boxShadow: '0 3px 14px rgba(226,92,149,0.28)' }
+                : { background: '#F4E4E4', color: '#D29797', cursor: 'not-allowed' }
             }
-            onMouseEnter={e => isAvailable && ((e.currentTarget as HTMLButtonElement).style.background = '#349E72')}
-            onMouseLeave={e => isAvailable && ((e.currentTarget as HTMLButtonElement).style.background = '#4BB88A')}
+            onMouseEnter={e => isAvailable && ((e.currentTarget as HTMLButtonElement).style.background = '#C73D7A')}
+            onMouseLeave={e => isAvailable && ((e.currentTarget as HTMLButtonElement).style.background = '#E25C95')}
           >
             <ShoppingCart className="w-3.5 h-3.5" />
             Add to Cart

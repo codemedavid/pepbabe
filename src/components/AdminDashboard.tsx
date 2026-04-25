@@ -482,12 +482,15 @@ const AdminDashboard: React.FC = () => {
           <div className="text-center mb-6">
             <div className="mx-auto mb-4">
               <img
-                src="/logo.jpg"
-                alt="BIORICH"
-                className="h-14 w-auto mx-auto object-contain"
+                src="/pepbabe-logo.jpg"
+                alt="Pepbabe"
+                className="h-24 w-auto mx-auto object-contain rounded-2xl"
+                style={{ boxShadow: '0 8px 32px rgba(245,160,190,0.35)' }}
               />
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-1">Admin Access</h1>
+            <h1 className="text-2xl font-bold text-gray-900 mb-1">
+              <span className="holo-text">Pepbabe</span> Admin Access
+            </h1>
             <p className="text-sm text-gray-400">
               Enter password to continue
             </p>
@@ -1390,9 +1393,9 @@ const AdminDashboard: React.FC = () => {
               <div className="flex items-center space-x-4">
                 <div className="h-10 flex items-center">
                   <img
-                    src="/logo.jpg"
-                    alt="BIORICH"
-                    className="h-10 w-auto object-contain"
+                    src="/pepbabe-logo.jpg"
+                    alt="Pepbabe"
+                    className="h-12 w-auto object-contain"
                   />
                 </div>
                 <div>

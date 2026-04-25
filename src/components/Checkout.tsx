@@ -296,7 +296,7 @@ const Checkout: React.FC<CheckoutProps> = ({ cartItems, totalPrice, onBack }) =>
             });
 
             const orderDetails = `
-✨ BIORICH - NEW ORDER
+✨ PEPBABE - NEW ORDER
 
 📅 ORDER DATE & TIME
 ${dateTimeStamp}

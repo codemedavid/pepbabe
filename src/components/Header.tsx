@@ -31,17 +31,17 @@ const Header: React.FC<HeaderProps> = ({ cartItemsCount, onCartClick, onMenuClic
       {/* ── Announcement bar ── */}
       <div
         className="text-center py-2.5 px-4 text-xs font-sans font-medium tracking-wide"
-        style={{ background: 'linear-gradient(90deg, #FDDAEA, #D5F2E5, #FDDAEA)', color: '#5A4760' }}
+        style={{ background: 'linear-gradient(90deg, #FCD3E5, #C7E2FB, #FCD3E5)', color: '#5B2828' }}
       >
-        Free shipping on orders over ₱5,000 &nbsp;·&nbsp; 99%+ purity certified on every batch
+        ✨ Free shipping on orders over ₱5,000 &nbsp;·&nbsp; 99%+ purity certified on every batch ✨
       </div>
 
       {/* ── Main header ── */}
       <header
         className="sticky top-0 z-50 bg-white/95 backdrop-blur-md transition-all duration-300"
         style={{
-          borderBottom: scrolled ? '1px solid rgba(242,160,184,0.3)' : '1px solid rgba(44,27,46,0.06)',
-          boxShadow: scrolled ? '0 4px 24px rgba(242,160,184,0.10)' : 'none',
+          borderBottom: scrolled ? '1px solid rgba(245,160,190,0.35)' : '1px solid rgba(91,40,40,0.08)',
+          boxShadow: scrolled ? '0 4px 24px rgba(245,160,190,0.14)' : 'none',
         }}
       >
         <div className="container mx-auto px-5 md:px-8 h-[68px] flex items-center justify-between gap-4">
@@ -51,7 +51,7 @@ const Header: React.FC<HeaderProps> = ({ cartItemsCount, onCartClick, onMenuClic
             onClick={() => { onMenuClick(); setMobileMenuOpen(false); }}
             className="flex items-center gap-3 flex-shrink-0 hover:opacity-80 transition-opacity"
           >
-            <img src="/logo.jpg" alt="Peptherapy PH" className="h-10 sm:h-11 w-auto object-contain" />
+            <img src="/pepbabe-logo.jpg" alt="Pepbabe" className="h-12 sm:h-14 w-auto object-contain" />
           </button>
 
           {/* Desktop nav */}
@@ -62,9 +62,9 @@ const Header: React.FC<HeaderProps> = ({ cartItemsCount, onCartClick, onMenuClic
                   key={label}
                   onClick={onMenuClick}
                   className="px-4 py-2 text-sm font-sans font-medium rounded-lg transition-colors"
-                  style={{ color: '#5A4760' }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#4BB88A'; (e.currentTarget as HTMLButtonElement).style.background = '#F0FAF5'; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = '#5A4760'; (e.currentTarget as HTMLButtonElement).style.background = 'transparent'; }}
+                  style={{ color: '#7E3434' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#E25C95'; (e.currentTarget as HTMLButtonElement).style.background = '#FFEAF3'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = '#7E3434'; (e.currentTarget as HTMLButtonElement).style.background = 'transparent'; }}
                 >
                   {label}
                 </button>
@@ -73,9 +73,9 @@ const Header: React.FC<HeaderProps> = ({ cartItemsCount, onCartClick, onMenuClic
                   key={label}
                   href={href}
                   className="px-4 py-2 text-sm font-sans font-medium rounded-lg transition-colors"
-                  style={{ color: '#5A4760' }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = '#4BB88A'; (e.currentTarget as HTMLAnchorElement).style.background = '#F0FAF5'; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = '#5A4760'; (e.currentTarget as HTMLAnchorElement).style.background = 'transparent'; }}
+                  style={{ color: '#7E3434' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = '#E25C95'; (e.currentTarget as HTMLAnchorElement).style.background = '#FFEAF3'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = '#7E3434'; (e.currentTarget as HTMLAnchorElement).style.background = 'transparent'; }}
                 >
                   {label}
                 </a>
@@ -89,15 +89,15 @@ const Header: React.FC<HeaderProps> = ({ cartItemsCount, onCartClick, onMenuClic
             <button
               onClick={onCartClick}
               className="relative p-2.5 rounded-full transition-all"
-              style={{ color: '#5A4760' }}
-              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = '#FFF0F5'; }}
+              style={{ color: '#7E3434' }}
+              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = '#E3F1FE'; }}
               onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'transparent'; }}
             >
               <ShoppingCart className="w-5 h-5" />
               {cartItemsCount > 0 && (
                 <span
                   className="absolute -top-0.5 -right-0.5 text-white text-[10px] font-sans font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 leading-none"
-                  style={{ background: '#4BB88A', boxShadow: '0 2px 8px rgba(75,184,138,0.4)' }}
+                  style={{ background: '#E25C95', boxShadow: '0 2px 8px rgba(226,92,149,0.45)' }}
                 >
                   {cartItemsCount > 99 ? '99+' : cartItemsCount}
                 </span>
@@ -113,8 +113,8 @@ const Header: React.FC<HeaderProps> = ({ cartItemsCount, onCartClick, onMenuClic
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="md:hidden p-2.5 rounded-full transition-colors"
-              style={{ color: '#5A4760' }}
-              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = '#FFF0F5'; }}
+              style={{ color: '#7E3434' }}
+              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = '#E3F1FE'; }}
               onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'transparent'; }}
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -128,24 +128,24 @@ const Header: React.FC<HeaderProps> = ({ cartItemsCount, onCartClick, onMenuClic
         <div className="md:hidden fixed inset-0 z-[60]">
           <div
             className="absolute inset-0 backdrop-blur-sm"
-            style={{ background: 'rgba(44,27,46,0.25)' }}
+            style={{ background: 'rgba(91,40,40,0.25)' }}
             onClick={() => setMobileMenuOpen(false)}
           />
           <div
             className="absolute top-0 right-0 bottom-0 w-[300px] bg-white flex flex-col"
-            style={{ boxShadow: '-8px 0 48px rgba(44,27,46,0.12)' }}
+            style={{ boxShadow: '-8px 0 48px rgba(91,40,40,0.14)' }}
           >
             {/* Drawer header */}
             <div
               className="flex items-center justify-between px-5 py-4"
-              style={{ borderBottom: '1px solid rgba(242,160,184,0.25)' }}
+              style={{ borderBottom: '1px solid rgba(245,160,190,0.30)' }}
             >
-              <img src="/logo.jpg" alt="Peptherapy PH" className="h-10 w-auto" />
+              <img src="/pepbabe-logo.jpg" alt="Pepbabe" className="h-12 w-auto" />
               <button
                 onClick={() => setMobileMenuOpen(false)}
                 className="p-2 rounded-full transition-colors"
-                style={{ color: '#9A8AA0' }}
-                onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = '#FFF0F5'; }}
+                style={{ color: '#B96A6A' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = '#E3F1FE'; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'transparent'; }}
               >
                 <X className="w-5 h-5" />
@@ -160,12 +160,12 @@ const Header: React.FC<HeaderProps> = ({ cartItemsCount, onCartClick, onMenuClic
                     key={label}
                     onClick={() => { onMenuClick(); setMobileMenuOpen(false); }}
                     className="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl text-left font-sans font-medium transition-colors"
-                    style={{ color: '#3F2E45' }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = '#F0FAF5'; }}
+                    style={{ color: '#421C1C' }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = '#FFEAF3'; }}
                     onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'transparent'; }}
                   >
-                    <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: '#F0FAF5' }}>
-                      <Icon className="w-4 h-4" style={{ color: '#4BB88A' }} />
+                    <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: '#FFEAF3' }}>
+                      <Icon className="w-4 h-4" style={{ color: '#E25C95' }} />
                     </div>
                     {label}
                   </button>
@@ -174,12 +174,12 @@ const Header: React.FC<HeaderProps> = ({ cartItemsCount, onCartClick, onMenuClic
                     key={label}
                     href={href}
                     className="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl font-sans font-medium transition-colors"
-                    style={{ color: '#3F2E45' }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = '#F0FAF5'; }}
+                    style={{ color: '#421C1C' }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = '#FFEAF3'; }}
                     onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'transparent'; }}
                   >
-                    <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: '#F0FAF5' }}>
-                      <Icon className="w-4 h-4" style={{ color: '#4BB88A' }} />
+                    <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: '#FFEAF3' }}>
+                      <Icon className="w-4 h-4" style={{ color: '#E25C95' }} />
                     </div>
                     {label}
                   </a>
@@ -188,12 +188,12 @@ const Header: React.FC<HeaderProps> = ({ cartItemsCount, onCartClick, onMenuClic
             </nav>
 
             {/* Mobile CTA */}
-            <div className="p-4" style={{ borderTop: '1px solid rgba(242,160,184,0.25)' }}>
+            <div className="p-4" style={{ borderTop: '1px solid rgba(245,160,190,0.30)' }}>
               <button
                 onClick={() => { onMenuClick(); setMobileMenuOpen(false); }}
                 className="btn-mint w-full py-3.5"
               >
-                Shop Peptides
+                Shop Peptides ✨
               </button>
             </div>
           </div>
