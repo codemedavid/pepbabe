@@ -27,6 +27,22 @@ export default {
           900: '#5B1838',
         },
 
+        // Backward-compatible aliases for older components that still use
+        // brand/navy utility classes.
+        'brand': {
+          DEFAULT: '#F5A0BE',
+          50:  '#FFF7FB',
+          100: '#FFEAF3',
+          200: '#FCD3E5',
+          300: '#F9B7D2',
+          400: '#F593BC',
+          500: '#F5A0BE',
+          600: '#E25C95',
+          700: '#C73D7A',
+          800: '#9A2A5C',
+          900: '#5B1838',
+        },
+
         // Light Blue (secondary — baby/sky, holographic shimmer)
         // Token name kept as "mint" so existing class references (bg-mint-100,
         // text-mint-700, surface-mint, btn-mint, shadow-mint) still resolve.
@@ -47,6 +63,20 @@ export default {
         // Maroon (text & dark surfaces — matches logo lettering)
         // Token name kept as "charcoal" so existing references continue working.
         'charcoal': {
+          DEFAULT: '#5B2828',
+          50:  '#FBF5F4',
+          100: '#F4E4E4',
+          200: '#E5C0C0',
+          300: '#D29797',
+          400: '#B96A6A',
+          500: '#9C4848',
+          600: '#7E3434',
+          700: '#5E2828',
+          800: '#421C1C',
+          900: '#2D1212',
+        },
+
+        'navy': {
           DEFAULT: '#5B2828',
           50:  '#FBF5F4',
           100: '#F4E4E4',
