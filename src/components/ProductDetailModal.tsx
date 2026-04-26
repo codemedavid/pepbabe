@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { X, Package, ShoppingCart, Plus, Minus, FlaskConical, Thermometer, Weight, Hash } from 'lucide-react';
 import type { Product, ProductVariation } from '../types';
 import { useReviews } from '../hooks/useReviews';
@@ -12,7 +11,6 @@ interface ProductDetailModalProps {
 
 const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClose, onAddToCart }) => {
   const { getReviewsForProduct } = useReviews();
-  const navigate = useNavigate();
   const [productReviews, setProductReviews] = useState<any[]>([]);
 
   useEffect(() => {
@@ -620,19 +618,6 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
                       </div>
                     ))}
                   </div>
-                  <button
-                    onClick={() => {
-                      onClose();
-                      navigate('/reviews');
-                    }}
-                    className="w-full mt-3 py-2.5 rounded-xl text-xs font-semibold transition-colors"
-                    style={{
-                      background: '#FFEAF3',
-                      color: '#E25C95',
-                    }}
-                  >
-                    See All Reviews
-                  </button>
                 </div>
               )}
 

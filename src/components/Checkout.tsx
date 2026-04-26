@@ -347,7 +347,7 @@ ${paymentMethod?.name || 'N/A'}
 ${paymentProofUrl ? 'Screenshot attached to order.' : 'Pending'}
 
 📱 CONTACT METHOD
-WhatsApp (+63 976 522 6036)
+WhatsApp (+63 930 034 0661)
 
 📋 ORDER NUMBER: ${customOrderNumber}
 
@@ -369,7 +369,7 @@ Please confirm this order. Thank you!
 
             // Auto-open WhatsApp
             setTimeout(() => {
-                const whatsappUrl = `https://wa.me/639765226036?text=${encodeURIComponent(orderDetails)}`;
+                const whatsappUrl = `https://wa.me/639300340661?text=${encodeURIComponent(orderDetails)}`;
                 window.open(whatsappUrl, '_blank');
             }, 1500);
         } catch (error) {
@@ -391,7 +391,7 @@ Please confirm this order. Thank you!
     };
 
     const handleOpenContact = () => {
-        const contactUrl = `https://wa.me/639765226036?text=${encodeURIComponent(orderMessage)}`;
+        const contactUrl = `https://wa.me/639300340661?text=${encodeURIComponent(orderMessage)}`;
         window.open(contactUrl, '_blank');
     };
 
@@ -469,7 +469,7 @@ Please confirm this order. Thank you!
                             </button>
 
                             <p className="text-sm text-gray-500">
-                                If WhatsApp doesn't open automatically, please send the copied message to <span className="font-bold">+63 976 522 6036 on WhatsApp</span>
+                                If WhatsApp doesn't open automatically, please send the copied message to <span className="font-bold">+63 930 034 0661 on WhatsApp</span>
                             </p>
                         </div>
 
