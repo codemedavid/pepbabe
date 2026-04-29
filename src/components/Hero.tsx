@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowRight, Shield, Zap, Award, Sparkles, Heart } from 'lucide-react';
+import { ArrowRight, Zap, Sparkles, Heart } from 'lucide-react';
 
 interface HeroProps {
   onShopAll: () => void;
@@ -109,15 +109,13 @@ const Hero: React.FC<HeroProps> = ({ onShopAll }) => {
               transitionDelay: '200ms',
             }}
           >
-            Glow Up with{' '}
+            Glow Up with Us,{' '}
             <em
               className="not-italic holo-text"
               style={{ fontStyle: 'italic' }}
             >
-              Babe Energy
+              Babe!
             </em>
-            {' '}&amp;{' '}
-            <span style={{ color: '#8B4423' }}>Peptide Power</span>
           </h1>
 
           {/* Subtitle */}
@@ -125,7 +123,7 @@ const Hero: React.FC<HeroProps> = ({ onShopAll }) => {
             className={`font-sans font-light leading-relaxed mb-10 max-w-xl transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
             style={{ fontSize: '1.125rem', color: '#7E3434', transitionDelay: '280ms' }}
           >
-            Cute, lab-tested peptides for the modern babe. Pharmaceutical-grade, third-party verified, and delivered nationwide across the Philippines.
+            We deliver peptides for the modern babe nationwide across the Philippines.
           </p>
 
           {/* CTAs */}
@@ -148,9 +146,7 @@ const Hero: React.FC<HeroProps> = ({ onShopAll }) => {
             style={{ transitionDelay: '440ms' }}
           >
             {[
-              { icon: Shield,  label: '99%+ Purity Guaranteed' },
               { icon: Zap,     label: 'Same-Day Dispatch' },
-              { icon: Award,   label: 'Lab Certified' },
               { icon: Heart,   label: 'PH Nationwide Delivery' },
             ].map(({ icon: Icon, label }) => (
               <div
