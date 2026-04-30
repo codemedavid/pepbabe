@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import MenuItemCard from './MenuItemCard';
 import Hero from './Hero';
+import ShippingSchedule from './ShippingSchedule';
 import ProductDetailModal from './ProductDetailModal';
 import type { Product, ProductVariation, CartItem } from '../types';
 import { Search, SlidersHorizontal, Package, FlaskConical, ShieldCheck, Truck, BadgeCheck, Microscope, ArrowRight } from 'lucide-react';
@@ -110,7 +111,10 @@ const Menu: React.FC<MenuProps> = ({ menuItems, addToCart, cartItems }) => {
         {/* ── Hero ── */}
         <Hero onShopAll={() => productsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })} />
 
-  
+        {/* ── Shipping Schedule ── */}
+        <ShippingSchedule />
+
+
 
         {/* ── Products Section ── */}
         <section

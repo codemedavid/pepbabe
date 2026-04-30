@@ -167,34 +167,6 @@ const Hero: React.FC<HeroProps> = ({ onShopAll }) => {
         </div>
       </div>
 
-      {/* ── Stats bar ── */}
-      <div
-        className={`relative z-10 border-t transition-all duration-700 ${visible ? 'opacity-100' : 'opacity-0'}`}
-        style={{ borderColor: 'rgba(245,160,190,0.30)', background: 'white', transitionDelay: '500ms' }}
-      >
-        <div className="container mx-auto px-5 md:px-8 py-7">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            {[
-              { value: '99%+',   label: 'Purity Rate',     color: '#E25C95' },
-              { value: '500+',   label: 'Happy Babes',     color: '#5294D5' },
-              { value: '20+',    label: 'Peptide SKUs',    color: '#E25C95' },
-              { value: '24hr',   label: 'Average Dispatch',color: '#5294D5' },
-            ].map(({ value, label, color }) => (
-              <div key={label} className="flex flex-col items-center gap-1">
-                <span
-                  className="font-heading font-semibold"
-                  style={{ fontSize: '1.85rem', color, letterSpacing: '-0.02em' }}
-                >
-                  {value}
-                </span>
-                <span className="font-sans text-xs font-medium" style={{ color: '#8B3A3A', letterSpacing: '0.04em' }}>
-                  {label}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
     </section>
   );
 };

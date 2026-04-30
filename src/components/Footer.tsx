@@ -1,7 +1,18 @@
 import React from 'react';
-import { FlaskConical, Truck, HelpCircle, FileText, BookOpen, Leaf } from 'lucide-react';
+import { FlaskConical, Truck, HelpCircle, FileText, BookOpen } from 'lucide-react';
+import { useCOAPageSetting } from '../hooks/useCOAPageSetting';
 
 const Footer: React.FC = () => {
+  const { coaPageEnabled } = useCOAPageSetting();
+
+  const resourceLinks = [
+    { icon: BookOpen,    label: 'Protocols',      href: '/protocols' },
+    ...(coaPageEnabled ? [{ icon: FileText, label: 'COA Documents', href: '/coa' }] : []),
+    { icon: HelpCircle,  label: 'FAQ',            href: '/faq' },
+    { icon: Truck,       label: 'Track Order',    href: '/track-order' },
+    { icon: FlaskConical,label: 'Product Catalog',href: '/' },
+  ];
+
   return (
     <footer style={{ background: '#2D1212' }}>
 
@@ -29,10 +40,6 @@ const Footer: React.FC = () => {
             <p className="font-sans text-sm leading-relaxed mb-5" style={{ color: 'rgba(255,255,255,0.45)' }}>
               Cute, lab-tested peptides for the modern babe. Pharmaceutical-grade & delivered nationwide.
             </p>
-            <div className="flex items-center gap-2 text-xs font-sans" style={{ color: 'rgba(255,255,255,0.45)' }}>
-              <Leaf className="w-3.5 h-3.5" style={{ color: '#C7E2FB' }} />
-              99%+ Purity on every product
-            </div>
           </div>
 
           {/* Products */}
@@ -63,13 +70,7 @@ const Footer: React.FC = () => {
               Resources
             </h4>
             <ul className="space-y-3">
-              {[
-                { icon: BookOpen,    label: 'Protocols',      href: '/protocols' },
-                { icon: FileText,    label: 'COA Documents',  href: '/coa' },
-                { icon: HelpCircle,  label: 'FAQ',            href: '/faq' },
-                { icon: Truck,       label: 'Track Order',    href: '/track-order' },
-                { icon: FlaskConical,label: 'Product Catalog',href: '/' },
-              ].map(({ icon: Icon, label, href }) => (
+              {resourceLinks.map(({ icon: Icon, label, href }) => (
                 <li key={label}>
                   <a
                     href={href}
