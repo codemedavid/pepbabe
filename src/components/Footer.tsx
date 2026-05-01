@@ -29,16 +29,13 @@ const Footer: React.FC = () => {
           {/* Brand column */}
           <div className="lg:col-span-1">
             <img
-              src="/pepbabe-logo.jpg"
+              src="/pepbabe-logo.png"
               alt="Pepbabe"
               className="h-20 w-auto object-contain mb-5 rounded-2xl"
               style={{ boxShadow: '0 4px 24px rgba(245,160,190,0.35)' }}
             />
             <p className="font-sans text-sm leading-relaxed mb-2" style={{ color: 'rgba(255,255,255,0.65)' }}>
               <span className="font-heading text-lg" style={{ color: '#FCD3E5' }}>Pepbabe</span> — peptide power, babe energy.
-            </p>
-            <p className="font-sans text-sm leading-relaxed mb-5" style={{ color: 'rgba(255,255,255,0.45)' }}>
-              Cute, lab-tested peptides for the modern babe. Pharmaceutical-grade & delivered nationwide.
             </p>
           </div>
 

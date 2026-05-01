@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ShoppingCart, Menu, X, FlaskConical, Truck, HelpCircle, FileText, BookOpen } from 'lucide-react';
+import { useCOAPageSetting } from '../hooks/useCOAPageSetting';
 
 interface HeaderProps {
   cartItemsCount: number;
@@ -10,6 +11,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ cartItemsCount, onCartClick, onMenuClick }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { coaPageEnabled } = useCOAPageSetting();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 6);
@@ -21,7 +23,7 @@ const Header: React.FC<HeaderProps> = ({ cartItemsCount, onCartClick, onMenuClic
     { label: 'Products',    href: undefined,        isButton: true,  icon: FlaskConical },
     { label: 'Track Order', href: '/track-order',   isButton: false, icon: Truck },
     { label: 'FAQ',         href: '/faq',           isButton: false, icon: HelpCircle },
-    { label: 'COA',         href: '/coa',           isButton: false, icon: FileText },
+    ...(coaPageEnabled ? [{ label: 'COA', href: '/coa', isButton: false, icon: FileText }] : []),
     { label: 'Protocols',   href: '/protocols',     isButton: false, icon: BookOpen },
   ];
 
@@ -42,7 +44,7 @@ const Header: React.FC<HeaderProps> = ({ cartItemsCount, onCartClick, onMenuClic
             onClick={() => { onMenuClick(); setMobileMenuOpen(false); }}
             className="flex items-center gap-3 flex-shrink-0 hover:opacity-80 transition-opacity"
           >
-            <img src="/pepbabe-logo.jpg" alt="Pepbabe" className="h-12 sm:h-14 w-auto object-contain" />
+            <img src="/pepbabe-logo.png" alt="Pepbabe" className="h-12 sm:h-14 w-auto object-contain" />
           </button>
 
           {/* Desktop nav */}
@@ -131,7 +133,7 @@ const Header: React.FC<HeaderProps> = ({ cartItemsCount, onCartClick, onMenuClic
               className="flex items-center justify-between px-5 py-4"
               style={{ borderBottom: '1px solid rgba(245,160,190,0.30)' }}
             >
-              <img src="/pepbabe-logo.jpg" alt="Pepbabe" className="h-12 w-auto" />
+              <img src="/pepbabe-logo.png" alt="Pepbabe" className="h-12 w-auto" />
               <button
                 onClick={() => setMobileMenuOpen(false)}
                 className="p-2 rounded-full transition-colors"

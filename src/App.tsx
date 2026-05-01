@@ -1,5 +1,5 @@
 import { Suspense, lazy, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useCart } from './hooks/useCart';
 import Header from './components/Header';
 import SubNav from './components/SubNav';
@@ -19,7 +19,7 @@ const OrderTracking = lazy(() => import('./components/OrderTracking'));
 const ProtocolGuide = lazy(() => import('./components/ProtocolGuide'));
 
 import { useMenu } from './hooks/useMenu';
-// import { useCOAPageSetting } from './hooks/useCOAPageSetting';
+import { useCOAPageSetting } from './hooks/useCOAPageSetting';
 
 function MainApp() {
     const cart = useCart();
@@ -100,14 +100,17 @@ function MainApp() {
 
 
 function App() {
-    //   const { coaPageEnabled } = useCOAPageSetting();
+    const { coaPageEnabled, loading: coaLoading } = useCOAPageSetting();
 
     return (
         <Router>
             <Suspense fallback={<LoadingSpinner />}>
                 <Routes>
                     <Route path="/" element={<MainApp />} />
-                    <Route path="/coa" element={<COA />} />
+                    <Route
+                        path="/coa"
+                        element={coaLoading ? <LoadingSpinner /> : (coaPageEnabled ? <COA /> : <Navigate to="/" replace />)}
+                    />
                     <Route path="/faq" element={<FAQ />} />
                     <Route path="/calculator" element={<PeptideCalculator />} />
                     <Route path="/track-order" element={<OrderTracking />} />

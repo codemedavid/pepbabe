@@ -71,7 +71,7 @@ const Hero: React.FC<HeroProps> = ({ onShopAll }) => {
             style={{ transitionDelay: '0ms' }}
           >
             <img
-              src="/pepbabe-logo.jpg"
+              src="/pepbabe-logo.png"
               alt="Pepbabe"
               className="h-32 md:h-40 w-auto object-contain mx-auto rounded-3xl"
               style={{

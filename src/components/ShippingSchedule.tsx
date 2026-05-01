@@ -1,5 +1,5 @@
 import React from 'react';
-import { Truck, Bike, Check, X, Clock, Package } from 'lucide-react';
+import { Truck, Check, X, Clock, Package } from 'lucide-react';
 
 const ShippingSchedule: React.FC = () => {
   return (
@@ -31,7 +31,7 @@ const ShippingSchedule: React.FC = () => {
         </div>
 
         {/* Courier cards */}
-        <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+        <div className="max-w-xl mx-auto">
           {/* J&T Card */}
           <div
             className="rounded-3xl p-7 md:p-8"
@@ -111,65 +111,6 @@ const ShippingSchedule: React.FC = () => {
             </div>
           </div>
 
-          {/* Lalamove Card */}
-          <div
-            className="rounded-3xl p-7 md:p-8"
-            style={{
-              background: 'white',
-              border: '1px solid rgba(124,182,232,0.30)',
-              boxShadow: '0 4px 16px rgba(124,182,232,0.12)',
-            }}
-          >
-            <div className="flex items-center gap-3 mb-5">
-              <div
-                className="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0"
-                style={{ background: 'linear-gradient(135deg, #E3F1FE, #FFEAF3)' }}
-              >
-                <Bike className="w-5 h-5" style={{ color: '#5294D5' }} />
-              </div>
-              <h3
-                className="font-heading font-semibold"
-                style={{ fontSize: '1.5rem', color: '#5B2828', letterSpacing: '-0.01em' }}
-              >
-                Lalamove
-              </h3>
-            </div>
-
-            <ul className="space-y-2.5 mb-5">
-              <li className="flex items-start gap-2.5 font-sans text-sm" style={{ color: '#5B2828' }}>
-                <Check className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: '#3FA980' }} />
-                <span>Monday to Friday</span>
-              </li>
-              <li className="flex items-start gap-2.5 font-sans text-sm" style={{ color: '#5B2828' }}>
-                <Check className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: '#3FA980' }} />
-                <span>We will send you a form to fill out</span>
-              </li>
-              <li className="flex items-start gap-2.5 font-sans text-sm" style={{ color: '#5B2828' }}>
-                <Clock className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: '#5294D5' }} />
-                <span>Starts at 3pm onwards</span>
-              </li>
-              <li className="flex items-start gap-2.5 font-sans text-sm" style={{ color: '#7E3434' }}>
-                <X className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: '#C45252' }} />
-                <span>No deliveries on Sundays</span>
-              </li>
-            </ul>
-
-            <div
-              className="rounded-2xl p-4"
-              style={{ background: '#F4F9FE', border: '1px solid rgba(124,182,232,0.20)' }}
-            >
-              <p
-                className="font-sans text-sm text-center"
-                style={{ color: '#5B2828' }}
-              >
-                Same-day delivery within Metro Manila.
-                <br />
-                <span className="text-xs" style={{ color: '#7E3434' }}>
-                  Rates calculated based on distance.
-                </span>
-              </p>
-            </div>
-          </div>
         </div>
       </div>
     </section>

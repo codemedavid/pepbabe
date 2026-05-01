@@ -482,7 +482,7 @@ const AdminDashboard: React.FC = () => {
           <div className="text-center mb-6">
             <div className="mx-auto mb-4">
               <img
-                src="/pepbabe-logo.jpg"
+                src="/pepbabe-logo.png"
                 alt="Pepbabe"
                 className="h-24 w-auto mx-auto object-contain rounded-2xl"
                 style={{ boxShadow: '0 8px 32px rgba(245,160,190,0.35)' }}
@@ -1393,7 +1393,7 @@ const AdminDashboard: React.FC = () => {
               <div className="flex items-center space-x-4">
                 <div className="h-10 flex items-center">
                   <img
-                    src="/pepbabe-logo.jpg"
+                    src="/pepbabe-logo.png"
                     alt="Pepbabe"
                     className="h-12 w-auto object-contain"
                   />

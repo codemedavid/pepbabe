@@ -270,10 +270,6 @@ const Cart: React.FC<CartProps> = ({
                 </div>
                 <div className="flex items-center gap-2 text-xs text-gray-500">
                   <div className="w-4 h-4 rounded-full bg-emerald-600/10 flex items-center justify-center text-emerald-600">✓</div>
-                  <span>HPLC Verified Purity</span>
-                </div>
-                <div className="flex items-center gap-2 text-xs text-gray-500">
-                  <div className="w-4 h-4 rounded-full bg-emerald-600/10 flex items-center justify-center text-emerald-600">✓</div>
                   <span>Discreet Packaging</span>
                 </div>
               </div>
