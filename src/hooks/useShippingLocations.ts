@@ -14,6 +14,9 @@ const defaultLocations: ShippingLocation[] = [
     { id: 'LBC_METRO', name: 'LBC - Metro Manila', fee: 150, is_active: true, order_index: 1 },
     { id: 'LBC_PROVINCIAL', name: 'LBC - Provincial', fee: 200, is_active: true, order_index: 2 },
     { id: 'LALAMOVE', name: 'Lalamove (Metro Manila / Davao)', fee: 0, is_active: true, order_index: 3 },
+    { id: 'JNT_LUZON', name: 'J&T - Luzon', fee: 120, is_active: true, order_index: 4 },
+    { id: 'JNT_VISAYAS', name: 'J&T - Visayas', fee: 150, is_active: true, order_index: 5 },
+    { id: 'JNT_MINDANAO', name: 'J&T - Mindanao', fee: 200, is_active: true, order_index: 6 },
 ];
 
 export const useShippingLocations = () => {

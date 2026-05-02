@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, ShieldCheck, Package, CreditCard, Activity, Copy, Check, MessageCircle, Tag, Upload, Database, Lock, Truck } from 'lucide-react';
+import { ArrowLeft, ShieldCheck, Package, CreditCard, Activity, Copy, Check, MessageCircle, Tag, Upload, Database, Lock, Truck, Clock, X } from 'lucide-react';
 import type { CartItem } from '../types';
 import { usePaymentMethods } from '../hooks/usePaymentMethods';
 import { useShippingLocations } from '../hooks/useShippingLocations';
@@ -66,9 +66,25 @@ const Checkout: React.FC<CheckoutProps> = ({ cartItems, totalPrice, onBack }) =>
         }
     }, [paymentMethods, selectedPaymentMethod]);
 
+    const jntCourier = couriers.find(c =>
+        c.is_active && (c.code.toLowerCase() === 'jnt' || c.name.toLowerCase().includes('j&t'))
+    );
+    const jntCourierId = jntCourier?.id || '';
+
+    React.useEffect(() => {
+        if (jntCourierId && selectedCourierId !== jntCourierId) {
+            setSelectedCourierId(jntCourierId);
+            setShippingLocation('');
+        }
+    }, [jntCourierId, selectedCourierId]);
+
     // Calculate shipping fee based on location
     const selectedLocation = shippingLocations.find(loc => loc.id === shippingLocation);
     const shippingFee = selectedLocation ? selectedLocation.fee : 0;
+    const selectedCourier = jntCourier && selectedCourierId === jntCourier.id ? jntCourier : undefined;
+    const selectedCourierCode = selectedCourier?.code.toLowerCase();
+    const isJntSelected = selectedCourierCode === 'jnt' || selectedCourier?.name.toLowerCase().includes('j&t');
+    const shippingLocationLabel = selectedLocation?.name || shippingLocation.replace('_', ' & ');
 
     // Calculate final total (Subtotal + Shipping - Discount)
     const finalTotal = Math.max(0, totalPrice + shippingFee - discountAmount);
@@ -336,7 +352,7 @@ ${cartItems.map(item => {
 
 💰 PRICING
 Product Total: ₱${totalPrice.toLocaleString('en-PH', { minimumFractionDigits: 0 })}
-Shipping Fee: ₱${shippingFee.toLocaleString('en-PH', { minimumFractionDigits: 0 })} (${shippingLocation.replace('_', ' & ')})
+Shipping Fee: ₱${shippingFee.toLocaleString('en-PH', { minimumFractionDigits: 0 })} (${shippingLocationLabel})
 ${discountAmount > 0 ? `Discount (${appliedPromo?.code}): -₱${discountAmount.toLocaleString('en-PH', { minimumFractionDigits: 0 })}\n` : ''}Grand Total: ₱${finalTotal.toLocaleString('en-PH', { minimumFractionDigits: 0 })}
 
 💳 PAYMENT METHOD
@@ -859,26 +875,10 @@ Please confirm this order. Thank you!
                     <div className="bg-white rounded shadow-clinical p-6 border border-gray-100">
                         <h2 className="font-heading text-lg font-bold text-charcoal-900 mb-3 flex items-center gap-2">
                             <Truck className="w-5 h-5 text-brand-600" />
-                            Select Courier Provider *
+                            Courier Provider *
                         </h2>
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                            {couriers
-                                .filter(c => c.is_active)
-                                .map((courier) => (
-                                    <button
-                                        key={courier.id}
-                                        onClick={() => {
-                                            setSelectedCourierId(courier.id);
-                                            setShippingLocation(''); // Reset location when courier changes
-                                        }}
-                                        className={`p-4 rounded border transition-all text-left flex items-center gap-3 ${selectedCourierId === courier.id
-                                            ? 'border-brand-600 bg-brand-50 ring-1 ring-brand-600'
-                                            : 'border-gray-200 hover:border-brand-300'
-                                            }`}
-                                    >
-                                        <div className="font-bold text-charcoal-900 text-sm">{courier.name}</div>
-                                    </button>
-                                ))}
+                        <div className="p-4 rounded border border-brand-600 bg-brand-50 ring-1 ring-brand-600 text-left flex items-center gap-3">
+                            <div className="font-bold text-charcoal-900 text-sm">J&amp;T Express</div>
                         </div>
                     </div>
 
@@ -896,13 +896,12 @@ Please confirm this order. Thank you!
                             {shippingLocations
                                 .filter(loc => {
                                     if (!selectedCourierId) return false;
-                                    const courier = couriers.find(c => c.id === selectedCourierId);
-                                    if (!courier) return false;
+                                    if (!selectedCourier) return false;
 
                                     // Match logic:
                                     // 1. If location ID explicitly contains courier code (e.g. LBC_METRO contains LBC)
                                     // 2. Or check against common patterns if codes don't strictly match
-                                    const code = courier.code.toLowerCase();
+                                    const code = selectedCourier.code.toLowerCase();
                                     const locId = loc.id.toLowerCase();
                                     const locName = loc.name.toLowerCase();
 
@@ -923,6 +922,48 @@ Please confirm this order. Thank you!
                                 ))}
                         </div>
                     </div>
+
+                    {isJntSelected && (
+                        <div className="bg-white rounded shadow-clinical p-6 border border-gray-100">
+                            <h2 className="font-heading text-lg font-bold text-charcoal-900 mb-4 flex items-center gap-2">
+                                <Truck className="w-5 h-5 text-brand-600" />
+                                J&amp;T Express Details
+                            </h2>
+                            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-gray-700 mb-4">
+                                <li className="flex items-start gap-2">
+                                    <Check className="w-4 h-4 mt-0.5 text-emerald-600 shrink-0" />
+                                    <span>Tuesday, Thursday and Saturday</span>
+                                </li>
+                                <li className="flex items-start gap-2">
+                                    <Clock className="w-4 h-4 mt-0.5 text-blue-600 shrink-0" />
+                                    <span>Cut-off 12pm</span>
+                                </li>
+                                <li className="flex items-start gap-2">
+                                    <Package className="w-4 h-4 mt-0.5 text-brand-600 shrink-0" />
+                                    <span>Pick up 4-5pm</span>
+                                </li>
+                                <li className="flex items-start gap-2">
+                                    <X className="w-4 h-4 mt-0.5 text-red-500 shrink-0" />
+                                    <span>No pick up on Sundays</span>
+                                </li>
+                            </ul>
+                            <p className="text-xs italic text-gray-500 mb-4">
+                                Our small box fits perfectly in J&amp;T medium pouch.
+                            </p>
+                            <div className="grid grid-cols-3 gap-2 text-center bg-brand-50/30 border border-brand-100 rounded p-3">
+                                {[
+                                    { region: 'Luzon', price: '₱120' },
+                                    { region: 'Visayas', price: '₱150' },
+                                    { region: 'Mindanao', price: '₱200' },
+                                ].map(({ region, price }) => (
+                                    <div key={region}>
+                                        <p className="text-[11px] uppercase tracking-wide text-brand-700 font-bold">{region}</p>
+                                        <p className="font-heading text-base font-bold text-charcoal-900">{price}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
 
                     <button
                         onClick={handleProceedToPayment}

@@ -30,12 +30,24 @@ const mockCouriers = [
         sort_order: 1,
         created_at: '2024-01-01T00:00:00Z',
     },
+    {
+        id: 'courier-2',
+        name: 'J&T Express',
+        code: 'jnt',
+        tracking_url_template: null,
+        is_active: true,
+        sort_order: 2,
+        created_at: '2024-01-01T00:00:00Z',
+    },
 ];
 
 // Mock shipping locations data
 const mockShippingLocations = [
     { id: 'LBC_METRO', name: 'LBC - Metro Manila', fee: 150, is_active: true, order_index: 1 },
     { id: 'LBC_PROVINCIAL', name: 'LBC - Provincial', fee: 200, is_active: true, order_index: 2 },
+    { id: 'JNT_LUZON', name: 'J&T - Luzon', fee: 120, is_active: true, order_index: 3 },
+    { id: 'JNT_VISAYAS', name: 'J&T - Visayas', fee: 150, is_active: true, order_index: 4 },
+    { id: 'JNT_MINDANAO', name: 'J&T - Mindanao', fee: 200, is_active: true, order_index: 5 },
 ];
 
 // Mock hooks
@@ -153,10 +165,10 @@ describe('Checkout - Place Order Flow', () => {
         await fillDetailsForm(user);
 
         // Select courier
-        await user.click(screen.getByText('LBC Express'));
+        await user.click(screen.getByText('J&T Express'));
 
         // Select shipping location
-        await user.click(screen.getByText('LBC - Metro Manila'));
+        await user.click(screen.getByText('J&T - Luzon'));
 
         const proceedBtn = screen.getByText('Proceed to Payment');
         expect(proceedBtn).not.toBeDisabled();
@@ -167,8 +179,8 @@ describe('Checkout - Place Order Flow', () => {
         render(<Checkout cartItems={cartItems} totalPrice={totalPrice} onBack={onBack} />);
 
         await fillDetailsForm(user);
-        await user.click(screen.getByText('LBC Express'));
-        await user.click(screen.getByText('LBC - Metro Manila'));
+        await user.click(screen.getByText('J&T Express'));
+        await user.click(screen.getByText('J&T - Luzon'));
         await user.click(screen.getByText('Proceed to Payment'));
 
         expect(screen.getByText('Payment & Verification')).toBeInTheDocument();
@@ -181,8 +193,8 @@ describe('Checkout - Place Order Flow', () => {
         render(<Checkout cartItems={cartItems} totalPrice={totalPrice} onBack={onBack} />);
 
         await fillDetailsForm(user);
-        await user.click(screen.getByText('LBC Express'));
-        await user.click(screen.getByText('LBC - Metro Manila'));
+        await user.click(screen.getByText('J&T Express'));
+        await user.click(screen.getByText('J&T - Luzon'));
         await user.click(screen.getByText('Proceed to Payment'));
 
         const completeBtn = screen.getByText('Complete Order');
@@ -195,8 +207,8 @@ describe('Checkout - Place Order Flow', () => {
 
         // Step 1: Fill details
         await fillDetailsForm(user);
-        await user.click(screen.getByText('LBC Express'));
-        await user.click(screen.getByText('LBC - Metro Manila'));
+        await user.click(screen.getByText('J&T Express'));
+        await user.click(screen.getByText('J&T - Luzon'));
         await user.click(screen.getByText('Proceed to Payment'));
 
         // Step 2: Upload payment proof
@@ -228,8 +240,8 @@ describe('Checkout - Place Order Flow', () => {
                     order_status: 'new',
                     payment_status: 'pending',
                     payment_proof_url: 'https://example.com/proof.png',
-                    contact_method: 'viber',
-                    shipping_fee: 150,
+                    contact_method: 'whatsapp',
+                    shipping_fee: 120,
                     payment_method_id: 'pm-1',
                     payment_method_name: 'GCash',
                 }),
@@ -247,8 +259,8 @@ describe('Checkout - Place Order Flow', () => {
         render(<Checkout cartItems={cartItems} totalPrice={totalPrice} onBack={onBack} />);
 
         await fillDetailsForm(user);
-        await user.click(screen.getByText('LBC Express'));
-        await user.click(screen.getByText('LBC - Metro Manila'));
+        await user.click(screen.getByText('J&T Express'));
+        await user.click(screen.getByText('J&T - Luzon'));
         await user.click(screen.getByText('Proceed to Payment'));
 
         // The button should be disabled, but let's verify the handlePlaceOrder guard too
@@ -267,8 +279,8 @@ describe('Checkout - Place Order Flow', () => {
         render(<Checkout cartItems={cartItems} totalPrice={totalPrice} onBack={onBack} />);
 
         await fillDetailsForm(user);
-        await user.click(screen.getByText('LBC Express'));
-        await user.click(screen.getByText('LBC - Metro Manila'));
+        await user.click(screen.getByText('J&T Express'));
+        await user.click(screen.getByText('J&T - Luzon'));
         await user.click(screen.getByText('Proceed to Payment'));
 
         const file = new File(['proof-image'], 'proof.png', { type: 'image/png' });
@@ -294,8 +306,8 @@ describe('Checkout - Place Order Flow', () => {
         render(<Checkout cartItems={cartItems} totalPrice={totalPrice} onBack={onBack} />);
 
         await fillDetailsForm(user);
-        await user.click(screen.getByText('LBC Express'));
-        await user.click(screen.getByText('LBC - Metro Manila'));
+        await user.click(screen.getByText('J&T Express'));
+        await user.click(screen.getByText('J&T - Luzon'));
         await user.click(screen.getByText('Proceed to Payment'));
 
         const file = new File(['proof-image'], 'proof.png', { type: 'image/png' });
@@ -318,8 +330,8 @@ describe('Checkout - Place Order Flow', () => {
         render(<Checkout cartItems={cartItems} totalPrice={totalPrice} onBack={onBack} />);
 
         await fillDetailsForm(user);
-        await user.click(screen.getByText('LBC Express'));
-        await user.click(screen.getByText('LBC - Metro Manila'));
+        await user.click(screen.getByText('J&T Express'));
+        await user.click(screen.getByText('J&T - Luzon'));
         await user.click(screen.getByText('Proceed to Payment'));
 
         expect(screen.getByText('Payment & Verification')).toBeInTheDocument();
@@ -350,12 +362,33 @@ describe('Checkout - Place Order Flow', () => {
         render(<Checkout cartItems={cartItems} totalPrice={totalPrice} onBack={onBack} />);
 
         await fillDetailsForm(user);
-        await user.click(screen.getByText('LBC Express'));
-        await user.click(screen.getByText('LBC - Metro Manila'));
+        await user.click(screen.getByText('J&T Express'));
+        await user.click(screen.getByText('J&T - Luzon'));
         await user.click(screen.getByText('Proceed to Payment'));
 
         expect(screen.getByText('GCash')).toBeInTheDocument();
         const radio = screen.getByRole('radio') as HTMLInputElement;
         expect(radio.checked).toBe(true);
+    });
+
+    it('shows updated J&T Express checkout details and regional rates', async () => {
+        const user = userEvent.setup();
+        render(<Checkout cartItems={cartItems} totalPrice={totalPrice} onBack={onBack} />);
+
+        await fillDetailsForm(user);
+        await user.click(screen.getByText('J&T Express'));
+
+        expect(screen.getByText('J&T Express Details')).toBeInTheDocument();
+        expect(screen.getByText('Tuesday, Thursday and Saturday')).toBeInTheDocument();
+        expect(screen.getByText('Cut-off 12pm')).toBeInTheDocument();
+        expect(screen.getByText('Pick up 4-5pm')).toBeInTheDocument();
+        expect(screen.getByText('No pick up on Sundays')).toBeInTheDocument();
+        expect(screen.getByText('Our small box fits perfectly in J&T medium pouch.')).toBeInTheDocument();
+        expect(screen.getByText('J&T - Luzon')).toBeInTheDocument();
+        expect(screen.getByText('J&T - Visayas')).toBeInTheDocument();
+        expect(screen.getByText('J&T - Mindanao')).toBeInTheDocument();
+        expect(screen.getAllByText('₱120').length).toBeGreaterThan(0);
+        expect(screen.getAllByText('₱150').length).toBeGreaterThan(0);
+        expect(screen.getAllByText('₱200').length).toBeGreaterThan(0);
     });
 });
