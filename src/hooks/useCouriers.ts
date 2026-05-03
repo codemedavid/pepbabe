@@ -20,11 +20,15 @@ export const useCouriers = () => {
             setLoading(true);
             const { data, error } = await supabase
                 .from('couriers')
-                .select('*')
-                .order('sort_order', { ascending: true });
+                .select('*');
 
             if (error) throw error;
-            setCouriers(data || []);
+            setCouriers((data || [])
+                .map((courier, index) => ({
+                    ...courier,
+                    sort_order: courier.sort_order ?? index + 1,
+                }))
+                .sort((a, b) => a.sort_order - b.sort_order));
         } catch (error) {
             console.error('Error fetching couriers:', error);
             // Return default couriers if table doesn't exist

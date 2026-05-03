@@ -19,6 +19,11 @@ const defaultLocations: ShippingLocation[] = [
     { id: 'JNT_MINDANAO', name: 'J&T - Mindanao', fee: 200, is_active: true, order_index: 6 },
 ];
 
+const normalizeLocation = (location: ShippingLocation): ShippingLocation => ({
+    ...location,
+    fee: Number(location.fee) || 0,
+});
+
 export const useShippingLocations = () => {
     const [locations, setLocations] = useState<ShippingLocation[]>(defaultLocations);
     const [loading, setLoading] = useState(true);
@@ -37,7 +42,7 @@ export const useShippingLocations = () => {
                 console.warn('Shipping locations table not found, using defaults:', fetchError.message);
                 setLocations(defaultLocations);
             } else if (data && data.length > 0) {
-                setLocations(data);
+                setLocations(data.map(normalizeLocation));
             } else {
                 setLocations(defaultLocations);
             }
@@ -80,7 +85,7 @@ export const useShippingLocationsAdmin = () => {
                 setLocations([]);
                 setError('Table not found. Please run the migration.');
             } else {
-                setLocations(data || []);
+                setLocations((data || []).map(normalizeLocation));
                 setError(null);
             }
         } catch (err) {

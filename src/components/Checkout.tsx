@@ -13,6 +13,20 @@ interface CheckoutProps {
     onBack: () => void;
 }
 
+const defaultJntRegions = [
+    { id: 'JNT_LUZON', name: 'J&T - Luzon', fee: 120, is_active: true, order_index: 1 },
+    { id: 'JNT_VISAYAS', name: 'J&T - Visayas', fee: 150, is_active: true, order_index: 2 },
+    { id: 'JNT_MINDANAO', name: 'J&T - Mindanao', fee: 200, is_active: true, order_index: 3 },
+];
+
+const normalizeShippingText = (value: string) => value.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+const isJntCourier = (courier: { code: string; name: string; is_active?: boolean }) => {
+    const code = normalizeShippingText(courier.code);
+    const name = normalizeShippingText(courier.name);
+    return courier.is_active !== false && (code === 'jnt' || code === 'jt' || name.includes('jtexpress'));
+};
+
 const Checkout: React.FC<CheckoutProps> = ({ cartItems, totalPrice, onBack }) => {
     const { paymentMethods } = usePaymentMethods();
     const { locations: shippingLocations } = useShippingLocations();
@@ -66,9 +80,7 @@ const Checkout: React.FC<CheckoutProps> = ({ cartItems, totalPrice, onBack }) =>
         }
     }, [paymentMethods, selectedPaymentMethod]);
 
-    const jntCourier = couriers.find(c =>
-        c.is_active && (c.code.toLowerCase() === 'jnt' || c.name.toLowerCase().includes('j&t'))
-    );
+    const jntCourier = couriers.find(isJntCourier);
     const jntCourierId = jntCourier?.id || '';
 
     React.useEffect(() => {
@@ -78,12 +90,26 @@ const Checkout: React.FC<CheckoutProps> = ({ cartItems, totalPrice, onBack }) =>
         }
     }, [jntCourierId, selectedCourierId]);
 
+    const selectedCourier = couriers.find(c => c.id === selectedCourierId) || jntCourier;
+    const isJntSelected = selectedCourier ? isJntCourier(selectedCourier) : Boolean(jntCourierId);
+    const shippingRegionOptions = isJntSelected
+        ? defaultJntRegions.map(defaultRegion => {
+            const databaseRegion = shippingLocations.find(loc => loc.id === defaultRegion.id);
+            return databaseRegion || defaultRegion;
+        })
+        : shippingLocations.filter(loc => {
+            if (!selectedCourierId || !selectedCourier) return false;
+
+            const code = normalizeShippingText(selectedCourier.code);
+            const locId = normalizeShippingText(loc.id);
+            const locName = normalizeShippingText(loc.name);
+
+            return code !== '' && (locId.includes(code) || locName.includes(code));
+        });
+
     // Calculate shipping fee based on location
-    const selectedLocation = shippingLocations.find(loc => loc.id === shippingLocation);
+    const selectedLocation = shippingRegionOptions.find(loc => loc.id === shippingLocation) || shippingLocations.find(loc => loc.id === shippingLocation);
     const shippingFee = selectedLocation ? selectedLocation.fee : 0;
-    const selectedCourier = jntCourier && selectedCourierId === jntCourier.id ? jntCourier : undefined;
-    const selectedCourierCode = selectedCourier?.code.toLowerCase();
-    const isJntSelected = selectedCourierCode === 'jnt' || selectedCourier?.name.toLowerCase().includes('j&t');
     const shippingLocationLabel = selectedLocation?.name || shippingLocation.replace('_', ' & ');
 
     // Calculate final total (Subtotal + Shipping - Discount)
@@ -893,20 +919,7 @@ Please confirm this order. Thank you!
                                 : 'Please select a courier provider above first.'}
                         </p>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            {shippingLocations
-                                .filter(loc => {
-                                    if (!selectedCourierId) return false;
-                                    if (!selectedCourier) return false;
-
-                                    // Match logic:
-                                    // 1. If location ID explicitly contains courier code (e.g. LBC_METRO contains LBC)
-                                    // 2. Or check against common patterns if codes don't strictly match
-                                    const code = selectedCourier.code.toLowerCase();
-                                    const locId = loc.id.toLowerCase();
-                                    const locName = loc.name.toLowerCase();
-
-                                    return locId.includes(code) || locName.includes(code);
-                                })
+                            {shippingRegionOptions
                                 .map((loc) => (
                                     <button
                                         key={loc.id}
